@@ -1,25 +1,21 @@
-var tablaPersona;
+var tablaTarjeta;
 function init(){
-    Iniciar_Componentes();
-    Listar_Estado();
-    Listar_Persona();
+   Iniciar_Componentes();
+   Listar_Tarjeta();
+	Listar_Estado();
 }
 function Iniciar_Componentes(){
    //var fecha=hoyFecha();
 
 	//$('#date_fecha_comprobante').datepicker('setDate',fecha);
 
-    $("#FormularioPersona").on("submit",function(e)
+    $("#FormularioTarjeta").on("submit",function(e)
 	{
-	      RegistroPersona(e);
+	      RegistroTarjeta(e);
 	});
- 	$('#dateFechaNacimiento').datepicker({
-      format: 'dd/mm/yyyy',
-      language: 'es'
-   });
 
 }
-function RegistroPersona(event){
+function RegistroTarjeta(event){
 	  //cargar(true);
 	event.preventDefault(); //No se activará la acción predeterminada del evento
     var error="";
@@ -31,18 +27,18 @@ function RegistroPersona(event){
     });
 
     if(error==""){
-		$("#ModalPersona #cuerpo").addClass("whirl");
-		$("#ModalPersona #cuerpo").addClass("ringed");
-		setTimeout('AjaxRegistroPersona()', 2000);
+		$("#ModalTarjeta #cuerpo").addClass("whirl");
+		$("#ModalTarjeta #cuerpo").addClass("ringed");
+		setTimeout('AjaxRegistroTarjeta()', 2000);
 	}else{
  		notificar_warning("Complete :<br>"+error);
 	}
 }
-function AjaxRegistroPersona(){
-    var formData = new FormData($("#FormularioPersona")[0]);
+function AjaxRegistroTarjeta(){
+    var formData = new FormData($("#FormularioTarjeta")[0]);
 		console.log(formData);
 		$.ajax({
-			url: "../../controlador/Mantenimiento/CPersona.php?op=AccionPersona",
+			url: "../../controlador/Mantenimiento/CTarjeta.php?op=AccionTarjeta",
 			 type: "POST",
 			 data: formData,
 			 contentType: false,
@@ -54,31 +50,31 @@ function AjaxRegistroPersona(){
 					var Mensaje=data.Mensaje;
 				 	var Error=data.Registro;
 					if(!Error){
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalTarjeta #cuerpo").removeClass("whirl");
+						$("#ModalTarjeta #cuerpo").removeClass("ringed");
+						$("#ModalTarjeta").modal("hide");
 						swal("Error:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarTarjeta();
+						tablaTarjeta.ajax.reload();
 					}else{
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalTarjeta #cuerpo").removeClass("whirl");
+						$("#ModalTarjeta #cuerpo").removeClass("ringed");
+						$("#ModalTarjeta").modal("hide");
 					   swal("Acción:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarTarjeta();
+						tablaTarjeta.ajax.reload();
 					}
 			 }
 		});
 }
 function Listar_Estado(){
-	 $.post("../../controlador/Mantenimiento/CPersona.php?op=listar_estados", function (ts) {
-      $("#PersonaEstado").append(ts);
+	 $.post("../../controlador/Mantenimiento/CTarjeta.php?op=listar_estados", function (ts) {
+      $("#TarjetaEstado").append(ts);
    });
 }
+function Listar_Tarjeta(){
 
-function Listar_Persona(){
-	tablaPersona = $('#tablaPersona').dataTable({
+	tablaTarjeta = $('#tablaTarjeta').dataTable({
 		"aProcessing": true,
 		"aServerSide": true,
 		"processing": true,
@@ -87,7 +83,7 @@ function Listar_Persona(){
 		"info": false, // Informacion de cabecera tabla
 		"responsive": true, // Accion de responsive
 	   "ajax": { //Solicitud Ajax Servidor
-			url: '../../controlador/Mantenimiento/CPersona.php?op=Listar_Persona',
+			url: '../../controlador/Mantenimiento/CTarjeta.php?op=Listar_Tarjeta',
 			type: "POST",
 			dataType: "JSON",
 			error: function (e) {
@@ -98,7 +94,7 @@ function Listar_Persona(){
         , "columnDefs": [
             {
                "className": "text-center"
-               , "targets": [1,2,3,4,5,6]
+               , "targets": [1,2]
             }
             , {
                "className": "text-left"
@@ -133,8 +129,8 @@ function Listar_Persona(){
 		oLanguage: español,
 	}).DataTable();
 	//Aplicar ordenamiento y autonumeracion , index
-	tablaPersona.on('order.dt search.dt', function () {
-		tablaPersona.column(0, {
+	tablaTarjeta.on('order.dt search.dt', function () {
+		tablaTarjeta.column(0, {
 			search: 'applied',
 			order: 'applied'
 		}).nodes().each(function (cell, i) {
@@ -142,59 +138,52 @@ function Listar_Persona(){
 		});
 	}).draw();
 }
-function NuevoPersona(){
-    $("#ModalPersona").modal({
+function NuevoTarjeta(){
+    $("#ModalTarjeta").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Nuevo Persona:");
+    $("#ModalTarjeta").modal("show");
+    $("#tituloModalTarjeta").empty();
+    $("#tituloModalTarjeta").append("Nueva Tarjeta:");
 }
-function EditarPersona(idPersona){
-    $("#ModalPersona").modal({
+function EditarTarjeta(idTarjeta){
+    $("#ModalTarjeta").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Editar Persona:");
-	RecuperarPersona(idPersona);
+    $("#ModalTarjeta").modal("show");
+    $("#tituloModalTarjeta").empty();
+    $("#tituloModalTarjeta").append("Editar Tarjeta:");
+	RecuperarTarjeta(idTarjeta);
 }
-function RecuperarPersona(idPersona){
+function RecuperarTarjeta(idTarjeta){
 	//solicitud de recuperar Proveedor
-	$.post("../../controlador/Mantenimiento/CPersona.php?op=RecuperarInformacion_Persona",{"idPersona":idPersona}, function(data, status){
+	$.post("../../controlador/Mantenimiento/CTarjeta.php?op=RecuperarInformacion_Tarjeta",{"idTarjeta":idTarjeta}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
 
-$("#idPersona").val(data.idPersona);
-$("#PersonaNombre").val(data.nombrePersona);
-$("#PersonaFechaNacimiento").val(data.fechaNacimiento);
-$("#PersonaApellidoP").val(data.apellidoPaterno);
-$("#PersonaDNI").val(data.DNI);
-$("#PersonaApellidoM").val(data.apellidoMaterno);
-$("#PersonaCorreo").val(data.correo);
-$("#PersonaTelefono").val(data.telefono);
-$("#PersonaDireccion").val(data.direccion);
-$("#PersonaEstado").val(data.Estado_idEstado);
+	$("#idTarjeta").val(data.idTipoTarjeta);
+	$("#TarjetaNombre").val(data.Descripcion);
+	$("#TarjetaEstado").val(data.Estado_idEstado);
 
 	});
 }
-function EliminarPersona(idPersona){
+function EliminarTarjeta(idTarjeta){
       swal({
       title: "Eliminar?",
-      text: "Esta Seguro que desea Eliminar Persona!",
+      text: "Esta Seguro que desea Eliminar Tarjeta!",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarPersona(idPersona);
+      ajaxEliminarTarjeta(idTarjeta);
    });
 }
-function ajaxEliminarPersona(idPersona){
-    $.post("../../controlador/Mantenimiento/CPersona.php?op=Eliminar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxEliminarTarjeta(idTarjeta){
+    $.post("../../controlador/Mantenimiento/CTarjeta.php?op=Eliminar_Tarjeta", {idTarjeta: idTarjeta}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -202,25 +191,25 @@ function ajaxEliminarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaTarjeta.ajax.reload();
       }
    });
 }
-function HabilitarPersona(idPersona){
+function HabilitarTarjeta(idTarjeta){
       swal({
       title: "Habilitar?",
-      text: "Esta Seguro que desea Habilitar Persona!",
+      text: "Esta Seguro que desea Habilitar Tarjeta!",
       type: "info",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Habilitar!",
       closeOnConfirm: false
    }, function () {
-      ajaxHabilitarPersona(idPersona);
+      ajaxHabilitarTarjeta(idTarjeta);
    });
 }
-function ajaxHabilitarPersona(idPersona){
-       $.post("../../controlador/Mantenimiento/CPersona.php?op=Recuperar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxHabilitarTarjeta(idTarjeta){
+       $.post("../../controlador/Mantenimiento/CTarjeta.php?op=Recuperar_Tarjeta", {idTarjeta: idTarjeta}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -228,19 +217,19 @@ function ajaxHabilitarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaTarjeta.ajax.reload();
       }
    });
 }
-function LimpiarPersona(){
-   $('#FormularioPersona')[0].reset();
-	$("#idPersona").val("");
+function LimpiarTarjeta(){
+   $('#FormularioTarjeta')[0].reset();
+	$("#idTarjeta").val("");
 
 }
 function Cancelar(){
-    LimpiarPersona();
-    $("#ModalPersona").modal("hide");
-
+    LimpiarTarjeta();
+    $("#ModalTarjeta").modal("hide");
 }
+
 
 init();

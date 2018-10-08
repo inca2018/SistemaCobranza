@@ -34,12 +34,7 @@ require_once('../layaout/Header.php');
       <section class="section-container">
          <!-- Page content-->
          <div class="content-wrapper">
-            <div class="content-heading">
-               <div>Menu Principal
-                  <small data-localize="dashboard.WELCOME"></small>
-               </div>
-               <!-- END Language list-->
-            </div>
+
             <div class="row">
                <div class="col-12 text-center">
                   <h2 class="text-thin">Cerrando Sesión</h2>

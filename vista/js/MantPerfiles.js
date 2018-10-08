@@ -79,7 +79,7 @@ function Listar_Perfil(){
 		"aServerSide": true,
 		"processing": true,
 		"paging": true, // Paginacion en tabla
-		"ordering": false, // Ordenamiento en columna de tabla
+		"ordering": true, // Ordenamiento en columna de tabla
 		"info": false, // Informacion de cabecera tabla
 		"responsive": true, // Accion de responsive
 	   "ajax": { //Solicitud Ajax Servidor

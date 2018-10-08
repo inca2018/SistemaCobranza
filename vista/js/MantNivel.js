@@ -1,25 +1,21 @@
-var tablaPersona;
+var tablaNivel;
 function init(){
-    Iniciar_Componentes();
-    Listar_Estado();
-    Listar_Persona();
+   Iniciar_Componentes();
+   Listar_Nivel();
+	Listar_Estado();
 }
 function Iniciar_Componentes(){
    //var fecha=hoyFecha();
 
 	//$('#date_fecha_comprobante').datepicker('setDate',fecha);
 
-    $("#FormularioPersona").on("submit",function(e)
+    $("#FormularioNivel").on("submit",function(e)
 	{
-	      RegistroPersona(e);
+	      RegistroNivel(e);
 	});
- 	$('#dateFechaNacimiento').datepicker({
-      format: 'dd/mm/yyyy',
-      language: 'es'
-   });
 
 }
-function RegistroPersona(event){
+function RegistroNivel(event){
 	  //cargar(true);
 	event.preventDefault(); //No se activará la acción predeterminada del evento
     var error="";
@@ -31,18 +27,18 @@ function RegistroPersona(event){
     });
 
     if(error==""){
-		$("#ModalPersona #cuerpo").addClass("whirl");
-		$("#ModalPersona #cuerpo").addClass("ringed");
-		setTimeout('AjaxRegistroPersona()', 2000);
+		$("#ModalNivel #cuerpo").addClass("whirl");
+		$("#ModalNivel #cuerpo").addClass("ringed");
+		setTimeout('AjaxRegistroNivel()', 2000);
 	}else{
  		notificar_warning("Complete :<br>"+error);
 	}
 }
-function AjaxRegistroPersona(){
-    var formData = new FormData($("#FormularioPersona")[0]);
+function AjaxRegistroNivel(){
+    var formData = new FormData($("#FormularioNivel")[0]);
 		console.log(formData);
 		$.ajax({
-			url: "../../controlador/Mantenimiento/CPersona.php?op=AccionPersona",
+			url: "../../controlador/Mantenimiento/CNivel.php?op=AccionNivel",
 			 type: "POST",
 			 data: formData,
 			 contentType: false,
@@ -54,31 +50,31 @@ function AjaxRegistroPersona(){
 					var Mensaje=data.Mensaje;
 				 	var Error=data.Registro;
 					if(!Error){
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalNivel #cuerpo").removeClass("whirl");
+						$("#ModalNivel #cuerpo").removeClass("ringed");
+						$("#ModalNivel").modal("hide");
 						swal("Error:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarNivel();
+						tablaNivel.ajax.reload();
 					}else{
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalNivel #cuerpo").removeClass("whirl");
+						$("#ModalNivel #cuerpo").removeClass("ringed");
+						$("#ModalNivel").modal("hide");
 					   swal("Acción:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarNivel();
+						tablaNivel.ajax.reload();
 					}
 			 }
 		});
 }
 function Listar_Estado(){
-	 $.post("../../controlador/Mantenimiento/CPersona.php?op=listar_estados", function (ts) {
-      $("#PersonaEstado").append(ts);
+	 $.post("../../controlador/Mantenimiento/CNivel.php?op=listar_estados", function (ts) {
+      $("#NivelEstado").append(ts);
    });
 }
+function Listar_Nivel(){
 
-function Listar_Persona(){
-	tablaPersona = $('#tablaPersona').dataTable({
+	tablaNivel = $('#tablaNivel').dataTable({
 		"aProcessing": true,
 		"aServerSide": true,
 		"processing": true,
@@ -87,7 +83,7 @@ function Listar_Persona(){
 		"info": false, // Informacion de cabecera tabla
 		"responsive": true, // Accion de responsive
 	   "ajax": { //Solicitud Ajax Servidor
-			url: '../../controlador/Mantenimiento/CPersona.php?op=Listar_Persona',
+			url: '../../controlador/Mantenimiento/CNivel.php?op=Listar_Nivel',
 			type: "POST",
 			dataType: "JSON",
 			error: function (e) {
@@ -98,7 +94,7 @@ function Listar_Persona(){
         , "columnDefs": [
             {
                "className": "text-center"
-               , "targets": [1,2,3,4,5,6]
+               , "targets": [1,2]
             }
             , {
                "className": "text-left"
@@ -133,8 +129,8 @@ function Listar_Persona(){
 		oLanguage: español,
 	}).DataTable();
 	//Aplicar ordenamiento y autonumeracion , index
-	tablaPersona.on('order.dt search.dt', function () {
-		tablaPersona.column(0, {
+	tablaNivel.on('order.dt search.dt', function () {
+		tablaNivel.column(0, {
 			search: 'applied',
 			order: 'applied'
 		}).nodes().each(function (cell, i) {
@@ -142,59 +138,52 @@ function Listar_Persona(){
 		});
 	}).draw();
 }
-function NuevoPersona(){
-    $("#ModalPersona").modal({
+function NuevoNivel(){
+    $("#ModalNivel").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Nuevo Persona:");
+    $("#ModalNivel").modal("show");
+    $("#tituloModalNivel").empty();
+    $("#tituloModalNivel").append("Nuevo Nivel:");
 }
-function EditarPersona(idPersona){
-    $("#ModalPersona").modal({
+function EditarNivel(idNivel){
+    $("#ModalNivel").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Editar Persona:");
-	RecuperarPersona(idPersona);
+    $("#ModalNivel").modal("show");
+    $("#tituloModalNivel").empty();
+    $("#tituloModalNivel").append("Editar Nivel:");
+	RecuperarNivel(idNivel);
 }
-function RecuperarPersona(idPersona){
+function RecuperarNivel(idNivel){
 	//solicitud de recuperar Proveedor
-	$.post("../../controlador/Mantenimiento/CPersona.php?op=RecuperarInformacion_Persona",{"idPersona":idPersona}, function(data, status){
+	$.post("../../controlador/Mantenimiento/CNivel.php?op=RecuperarInformacion_Nivel",{"idNivel":idNivel}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
 
-$("#idPersona").val(data.idPersona);
-$("#PersonaNombre").val(data.nombrePersona);
-$("#PersonaFechaNacimiento").val(data.fechaNacimiento);
-$("#PersonaApellidoP").val(data.apellidoPaterno);
-$("#PersonaDNI").val(data.DNI);
-$("#PersonaApellidoM").val(data.apellidoMaterno);
-$("#PersonaCorreo").val(data.correo);
-$("#PersonaTelefono").val(data.telefono);
-$("#PersonaDireccion").val(data.direccion);
-$("#PersonaEstado").val(data.Estado_idEstado);
+	$("#idNivel").val(data.idNivel);
+	$("#NivelNombre").val(data.Descripcion);
+	$("#NivelEstado").val(data.Estado_idEstado);
 
 	});
 }
-function EliminarPersona(idPersona){
+function EliminarNivel(idNivel){
       swal({
       title: "Eliminar?",
-      text: "Esta Seguro que desea Eliminar Persona!",
+      text: "Esta Seguro que desea Eliminar Nivel!",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarPersona(idPersona);
+      ajaxEliminarNivel(idNivel);
    });
 }
-function ajaxEliminarPersona(idPersona){
-    $.post("../../controlador/Mantenimiento/CPersona.php?op=Eliminar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxEliminarNivel(idNivel){
+    $.post("../../controlador/Mantenimiento/CNivel.php?op=Eliminar_Nivel", {idNivel: idNivel}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -202,25 +191,25 @@ function ajaxEliminarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaNivel.ajax.reload();
       }
    });
 }
-function HabilitarPersona(idPersona){
+function HabilitarNivel(idNivel){
       swal({
       title: "Habilitar?",
-      text: "Esta Seguro que desea Habilitar Persona!",
+      text: "Esta Seguro que desea Habilitar Nivel!",
       type: "info",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Habilitar!",
       closeOnConfirm: false
    }, function () {
-      ajaxHabilitarPersona(idPersona);
+      ajaxHabilitarNivel(idNivel);
    });
 }
-function ajaxHabilitarPersona(idPersona){
-       $.post("../../controlador/Mantenimiento/CPersona.php?op=Recuperar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxHabilitarNivel(idNivel){
+       $.post("../../controlador/Mantenimiento/CNivel.php?op=Recuperar_Nivel", {idNivel: idNivel}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -228,19 +217,19 @@ function ajaxHabilitarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaNivel.ajax.reload();
       }
    });
 }
-function LimpiarPersona(){
-   $('#FormularioPersona')[0].reset();
-	$("#idPersona").val("");
+function LimpiarNivel(){
+   $('#FormularioNivel')[0].reset();
+	$("#idNivel").val("");
 
 }
 function Cancelar(){
-    LimpiarPersona();
-    $("#ModalPersona").modal("hide");
-
+    LimpiarNivel();
+    $("#ModalNivel").modal("hide");
 }
+
 
 init();

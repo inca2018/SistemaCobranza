@@ -1,25 +1,21 @@
-var tablaPersona;
+var tablaGrado;
 function init(){
-    Iniciar_Componentes();
-    Listar_Estado();
-    Listar_Persona();
+   Iniciar_Componentes();
+   Listar_Grado();
+	Listar_Estado();
 }
 function Iniciar_Componentes(){
    //var fecha=hoyFecha();
 
 	//$('#date_fecha_comprobante').datepicker('setDate',fecha);
 
-    $("#FormularioPersona").on("submit",function(e)
+    $("#FormularioGrado").on("submit",function(e)
 	{
-	      RegistroPersona(e);
+	      RegistroGrado(e);
 	});
- 	$('#dateFechaNacimiento').datepicker({
-      format: 'dd/mm/yyyy',
-      language: 'es'
-   });
 
 }
-function RegistroPersona(event){
+function RegistroGrado(event){
 	  //cargar(true);
 	event.preventDefault(); //No se activará la acción predeterminada del evento
     var error="";
@@ -31,18 +27,18 @@ function RegistroPersona(event){
     });
 
     if(error==""){
-		$("#ModalPersona #cuerpo").addClass("whirl");
-		$("#ModalPersona #cuerpo").addClass("ringed");
-		setTimeout('AjaxRegistroPersona()', 2000);
+		$("#ModalGrado #cuerpo").addClass("whirl");
+		$("#ModalGrado #cuerpo").addClass("ringed");
+		setTimeout('AjaxRegistroGrado()', 2000);
 	}else{
  		notificar_warning("Complete :<br>"+error);
 	}
 }
-function AjaxRegistroPersona(){
-    var formData = new FormData($("#FormularioPersona")[0]);
+function AjaxRegistroGrado(){
+    var formData = new FormData($("#FormularioGrado")[0]);
 		console.log(formData);
 		$.ajax({
-			url: "../../controlador/Mantenimiento/CPersona.php?op=AccionPersona",
+			url: "../../controlador/Mantenimiento/CGrado.php?op=AccionGrado",
 			 type: "POST",
 			 data: formData,
 			 contentType: false,
@@ -54,31 +50,31 @@ function AjaxRegistroPersona(){
 					var Mensaje=data.Mensaje;
 				 	var Error=data.Registro;
 					if(!Error){
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalGrado #cuerpo").removeClass("whirl");
+						$("#ModalGrado #cuerpo").removeClass("ringed");
+						$("#ModalGrado").modal("hide");
 						swal("Error:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarGrado();
+						tablaGrado.ajax.reload();
 					}else{
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalGrado #cuerpo").removeClass("whirl");
+						$("#ModalGrado #cuerpo").removeClass("ringed");
+						$("#ModalGrado").modal("hide");
 					   swal("Acción:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarGrado();
+						tablaGrado.ajax.reload();
 					}
 			 }
 		});
 }
 function Listar_Estado(){
-	 $.post("../../controlador/Mantenimiento/CPersona.php?op=listar_estados", function (ts) {
-      $("#PersonaEstado").append(ts);
+	 $.post("../../controlador/Mantenimiento/CGrado.php?op=listar_estados", function (ts) {
+      $("#GradoEstado").append(ts);
    });
 }
+function Listar_Grado(){
 
-function Listar_Persona(){
-	tablaPersona = $('#tablaPersona').dataTable({
+	tablaGrado = $('#tablaGrado').dataTable({
 		"aProcessing": true,
 		"aServerSide": true,
 		"processing": true,
@@ -87,7 +83,7 @@ function Listar_Persona(){
 		"info": false, // Informacion de cabecera tabla
 		"responsive": true, // Accion de responsive
 	   "ajax": { //Solicitud Ajax Servidor
-			url: '../../controlador/Mantenimiento/CPersona.php?op=Listar_Persona',
+			url: '../../controlador/Mantenimiento/CGrado.php?op=Listar_Grado',
 			type: "POST",
 			dataType: "JSON",
 			error: function (e) {
@@ -98,7 +94,7 @@ function Listar_Persona(){
         , "columnDefs": [
             {
                "className": "text-center"
-               , "targets": [1,2,3,4,5,6]
+               , "targets": [1,2]
             }
             , {
                "className": "text-left"
@@ -133,8 +129,8 @@ function Listar_Persona(){
 		oLanguage: español,
 	}).DataTable();
 	//Aplicar ordenamiento y autonumeracion , index
-	tablaPersona.on('order.dt search.dt', function () {
-		tablaPersona.column(0, {
+	tablaGrado.on('order.dt search.dt', function () {
+		tablaGrado.column(0, {
 			search: 'applied',
 			order: 'applied'
 		}).nodes().each(function (cell, i) {
@@ -142,59 +138,52 @@ function Listar_Persona(){
 		});
 	}).draw();
 }
-function NuevoPersona(){
-    $("#ModalPersona").modal({
+function NuevoGrado(){
+    $("#ModalGrado").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Nuevo Persona:");
+    $("#ModalGrado").modal("show");
+    $("#tituloModalGrado").empty();
+    $("#tituloModalGrado").append("Nuevo Grado:");
 }
-function EditarPersona(idPersona){
-    $("#ModalPersona").modal({
+function EditarGrado(idGrado){
+    $("#ModalGrado").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Editar Persona:");
-	RecuperarPersona(idPersona);
+    $("#ModalGrado").modal("show");
+    $("#tituloModalGrado").empty();
+    $("#tituloModalGrado").append("Editar Grado:");
+	RecuperarGrado(idGrado);
 }
-function RecuperarPersona(idPersona){
+function RecuperarGrado(idGrado){
 	//solicitud de recuperar Proveedor
-	$.post("../../controlador/Mantenimiento/CPersona.php?op=RecuperarInformacion_Persona",{"idPersona":idPersona}, function(data, status){
+	$.post("../../controlador/Mantenimiento/CGrado.php?op=RecuperarInformacion_Grado",{"idGrado":idGrado}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
 
-$("#idPersona").val(data.idPersona);
-$("#PersonaNombre").val(data.nombrePersona);
-$("#PersonaFechaNacimiento").val(data.fechaNacimiento);
-$("#PersonaApellidoP").val(data.apellidoPaterno);
-$("#PersonaDNI").val(data.DNI);
-$("#PersonaApellidoM").val(data.apellidoMaterno);
-$("#PersonaCorreo").val(data.correo);
-$("#PersonaTelefono").val(data.telefono);
-$("#PersonaDireccion").val(data.direccion);
-$("#PersonaEstado").val(data.Estado_idEstado);
+	$("#idGrado").val(data.idGrado);
+	$("#GradoNombre").val(data.Descripcion);
+	$("#GradoEstado").val(data.Estado_idEstado);
 
 	});
 }
-function EliminarPersona(idPersona){
+function EliminarGrado(idGrado){
       swal({
       title: "Eliminar?",
-      text: "Esta Seguro que desea Eliminar Persona!",
+      text: "Esta Seguro que desea Eliminar Grado!",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarPersona(idPersona);
+      ajaxEliminarGrado(idGrado);
    });
 }
-function ajaxEliminarPersona(idPersona){
-    $.post("../../controlador/Mantenimiento/CPersona.php?op=Eliminar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxEliminarGrado(idGrado){
+    $.post("../../controlador/Mantenimiento/CGrado.php?op=Eliminar_Grado", {idGrado: idGrado}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -202,25 +191,25 @@ function ajaxEliminarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaGrado.ajax.reload();
       }
    });
 }
-function HabilitarPersona(idPersona){
+function HabilitarGrado(idGrado){
       swal({
       title: "Habilitar?",
-      text: "Esta Seguro que desea Habilitar Persona!",
+      text: "Esta Seguro que desea Habilitar Grado!",
       type: "info",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Habilitar!",
       closeOnConfirm: false
    }, function () {
-      ajaxHabilitarPersona(idPersona);
+      ajaxHabilitarGrado(idGrado);
    });
 }
-function ajaxHabilitarPersona(idPersona){
-       $.post("../../controlador/Mantenimiento/CPersona.php?op=Recuperar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxHabilitarGrado(idGrado){
+       $.post("../../controlador/Mantenimiento/CGrado.php?op=Recuperar_Grado", {idGrado: idGrado}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -228,19 +217,19 @@ function ajaxHabilitarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaGrado.ajax.reload();
       }
    });
 }
-function LimpiarPersona(){
-   $('#FormularioPersona')[0].reset();
-	$("#idPersona").val("");
+function LimpiarGrado(){
+   $('#FormularioGrado')[0].reset();
+	$("#idGrado").val("");
 
 }
 function Cancelar(){
-    LimpiarPersona();
-    $("#ModalPersona").modal("hide");
-
+    LimpiarGrado();
+    $("#ModalGrado").modal("hide");
 }
+
 
 init();

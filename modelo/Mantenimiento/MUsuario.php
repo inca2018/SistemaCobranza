@@ -33,7 +33,7 @@
              $sql="CALL `SP_USUARIO_ACTUALIZAR`('$UsuarioUsuario','$UsuarioPassword','$UsuarioPerfil','$UsuarioEstado',$idUsuario,'$login_idLog');";
 
         }
-         echo $sql;
+
          return ejecutarConsulta($sql);
       }
 		public function Recuperar_Usuario($idUsuario){
