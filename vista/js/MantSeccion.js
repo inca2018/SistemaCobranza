@@ -79,17 +79,12 @@ function Listar_Seccion(){
 		"aServerSide": true,
 		"processing": true,
 		"paging": true, // Paginacion en tabla
-		"ordering": tr, // Ordenamiento en columna de tabla
+		"ordering": true, // Ordenamiento en columna de tabla
 		"info": false, // Informacion de cabecera tabla
 		"responsive": true, // Accion de responsive
-	   "ajax": { //Solicitud Ajax Servidor
-			url: '../../controlador/Mantenimiento/CSeccion.php?op=Listar_Seccion',
-			type: "POST",
-			dataType: "JSON",
-			error: function (e) {
-				console.log(e.responseText);
-			}
-		},
+	   dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
 		"bDestroy": true
         , "columnDefs": [
             {
@@ -125,6 +120,14 @@ function Listar_Seccion(){
                , className: 'btn-info'
             }
             ],
+          "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Mantenimiento/CSeccion.php?op=Listar_Seccion',
+			type: "POST",
+			dataType: "JSON",
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
 		// cambiar el lenguaje de datatable
 		oLanguage: español,
 	}).DataTable();

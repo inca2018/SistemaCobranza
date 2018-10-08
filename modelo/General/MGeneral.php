@@ -27,6 +27,18 @@
          $sql="CALL `SP_PERFIL_LISTAR`();";
          return ejecutarConsulta($sql);
        }
+       public function Listar_Niveles(){
+         $sql="CALL `SP_NIVEL_LISTAR`();";
+         return ejecutarConsulta($sql);
+       }
+        public function Listar_Grados(){
+         $sql="CALL `SP_GRADO_LISTAR`();";
+         return ejecutarConsulta($sql);
+       }
+        public function Listar_Secciones(){
+         $sql="CALL `SP_SECCION_LISTAR`();";
+         return ejecutarConsulta($sql);
+       }
 
 
 

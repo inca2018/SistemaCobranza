@@ -82,14 +82,10 @@ function Listar_Tarjeta(){
 		"ordering": true, // Ordenamiento en columna de tabla
 		"info": false, // Informacion de cabecera tabla
 		"responsive": true, // Accion de responsive
-	   "ajax": { //Solicitud Ajax Servidor
-			url: '../../controlador/Mantenimiento/CTarjeta.php?op=Listar_Tarjeta',
-			type: "POST",
-			dataType: "JSON",
-			error: function (e) {
-				console.log(e.responseText);
-			}
-		},
+          dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
+
 		"bDestroy": true
         , "columnDefs": [
             {
@@ -125,6 +121,14 @@ function Listar_Tarjeta(){
                , className: 'btn-info'
             }
             ],
+        "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Mantenimiento/CTarjeta.php?op=Listar_Tarjeta',
+			type: "POST",
+			dataType: "JSON",
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
 		// cambiar el lenguaje de datatable
 		oLanguage: español,
 	}).DataTable();

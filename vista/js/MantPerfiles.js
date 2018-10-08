@@ -80,18 +80,13 @@ function Listar_Perfil(){
 		"processing": true,
 		"paging": true, // Paginacion en tabla
 		"ordering": true, // Ordenamiento en columna de tabla
-		"info": false, // Informacion de cabecera tabla
+		"info": true, // Informacion de cabecera tabla
 		"responsive": true, // Accion de responsive
-	   "ajax": { //Solicitud Ajax Servidor
-			url: '../../controlador/Mantenimiento/CPerfil.php?op=Listar_Perfil',
-			type: "POST",
-			dataType: "JSON",
-			error: function (e) {
-				console.log(e.responseText);
-			}
-		},
-		"bDestroy": true
-        , "columnDefs": [
+	    dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
+		"bDestroy": true,
+         "columnDefs": [
             {
                "className": "text-center"
                , "targets": [1,2]
@@ -125,6 +120,14 @@ function Listar_Perfil(){
                , className: 'btn-info'
             }
             ],
+        "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Mantenimiento/CPerfil.php?op=Listar_Perfil',
+			type: "POST",
+			dataType: "JSON",
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
 		// cambiar el lenguaje de datatable
 		oLanguage: español,
 	}).DataTable();

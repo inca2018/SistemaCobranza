@@ -1,17 +1,20 @@
-var tablaPersona;
+var tablaAlumno;
 function init(){
     Iniciar_Componentes();
     Listar_Estado();
-    Listar_Persona();
+    Listar_Nivel();
+    Listar_Grado();
+    Listar_Seccion();
+    //Listar_Alumno();
 }
 function Iniciar_Componentes(){
    //var fecha=hoyFecha();
 
 	//$('#date_fecha_comprobante').datepicker('setDate',fecha);
 
-    $("#FormularioPersona").on("submit",function(e)
+    $("#FormularioAlumno").on("submit",function(e)
 	{
-	      RegistroPersona(e);
+	      RegistroAlumno(e);
 	});
  	$('#dateFechaNacimiento').datepicker({
       format: 'dd/mm/yyyy',
@@ -19,7 +22,7 @@ function Iniciar_Componentes(){
    });
 
 }
-function RegistroPersona(event){
+function RegistroAlumno(event){
 	  //cargar(true);
 	event.preventDefault(); //No se activará la acción predeterminada del evento
     var error="";
@@ -31,18 +34,18 @@ function RegistroPersona(event){
     });
 
     if(error==""){
-		$("#ModalPersona #cuerpo").addClass("whirl");
-		$("#ModalPersona #cuerpo").addClass("ringed");
-		setTimeout('AjaxRegistroPersona()', 2000);
+		$("#ModalAlumno #cuerpo").addClass("whirl");
+		$("#ModalAlumno #cuerpo").addClass("ringed");
+		setTimeout('AjaxRegistroAlumno()', 2000);
 	}else{
  		notificar_warning("Complete :<br>"+error);
 	}
 }
-function AjaxRegistroPersona(){
-    var formData = new FormData($("#FormularioPersona")[0]);
+function AjaxRegistroAlumno(){
+    var formData = new FormData($("#FormularioAlumno")[0]);
 		console.log(formData);
 		$.ajax({
-			url: "../../controlador/Mantenimiento/CPersona.php?op=AccionPersona",
+			url: "../../controlador/Mantenimiento/CAlumno.php?op=AccionAlumno",
 			 type: "POST",
 			 data: formData,
 			 contentType: false,
@@ -54,31 +57,47 @@ function AjaxRegistroPersona(){
 					var Mensaje=data.Mensaje;
 				 	var Error=data.Registro;
 					if(!Error){
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalAlumno #cuerpo").removeClass("whirl");
+						$("#ModalAlumno #cuerpo").removeClass("ringed");
+						$("#ModalAlumno").modal("hide");
 						swal("Error:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarAlumno();
+						tablaAlumno.ajax.reload();
 					}else{
-						$("#ModalPersona #cuerpo").removeClass("whirl");
-						$("#ModalPersona #cuerpo").removeClass("ringed");
-						$("#ModalPersona").modal("hide");
+						$("#ModalAlumno #cuerpo").removeClass("whirl");
+						$("#ModalAlumno #cuerpo").removeClass("ringed");
+						$("#ModalAlumno").modal("hide");
 					   swal("Acción:", Mensaje);
-						LimpiarPersona();
-						tablaPersona.ajax.reload();
+						LimpiarAlumno();
+						tablaAlumno.ajax.reload();
 					}
 			 }
 		});
 }
 function Listar_Estado(){
-	 $.post("../../controlador/Mantenimiento/CPersona.php?op=listar_estados", function (ts) {
-      $("#PersonaEstado").append(ts);
+	 $.post("../../controlador/Mantenimiento/CAlumno.php?op=listar_estados", function (ts) {
+      $("#AlumnoEstado").append(ts);
    });
 }
+function Listar_Nivel(){
+	 $.post("../../controlador/Mantenimiento/CAlumno.php?op=listar_niveles", function (ts) {
+      $("#AlumnoNivel").append(ts);
+   });
+}
+function Listar_Grado(){
+	 $.post("../../controlador/Mantenimiento/CAlumno.php?op=listar_grados", function (ts) {
+      $("#AlumnoGrado").append(ts);
+ });
+}
+function Listar_Seccion(){
+	 $.post("../../controlador/Mantenimiento/CAlumno.php?op=listar_secciones", function (ts) {
+      $("#AlumnoSeccion").append(ts);
+ });
+}
 
-function Listar_Persona(){
-	tablaPersona = $('#tablaPersona').dataTable({
+
+function Listar_Alumno(){
+	tablaAlumno = $('#tablaAlumno').dataTable({
 		"aProcessing": true,
 		"aServerSide": true,
 		"processing": true,
@@ -126,7 +145,7 @@ function Listar_Persona(){
             }
             ],
          "ajax": { //Solicitud Ajax Servidor
-			url: '../../controlador/Mantenimiento/CPersona.php?op=Listar_Persona',
+			url: '../../controlador/Mantenimiento/CAlumno.php?op=Listar_Alumno',
 			type: "POST",
 			dataType: "JSON",
 			error: function (e) {
@@ -137,8 +156,8 @@ function Listar_Persona(){
 		oLanguage: español,
 	}).DataTable();
 	//Aplicar ordenamiento y autonumeracion , index
-	tablaPersona.on('order.dt search.dt', function () {
-		tablaPersona.column(0, {
+	tablaAlumno.on('order.dt search.dt', function () {
+		tablaAlumno.column(0, {
 			search: 'applied',
 			order: 'applied'
 		}).nodes().each(function (cell, i) {
@@ -146,59 +165,59 @@ function Listar_Persona(){
 		});
 	}).draw();
 }
-function NuevoPersona(){
-    $("#ModalPersona").modal({
+function NuevoAlumno(){
+    $("#ModalAlumno").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Nuevo Persona:");
+    $("#ModalAlumno").modal("show");
+    $("#tituloModalAlumno").empty();
+    $("#tituloModalAlumno").append("Nuevo Alumno:");
 }
-function EditarPersona(idPersona){
-    $("#ModalPersona").modal({
+function EditarAlumno(idAlumno){
+    $("#ModalAlumno").modal({
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalPersona").modal("show");
-    $("#tituloModalPersona").empty();
-    $("#tituloModalPersona").append("Editar Persona:");
-	RecuperarPersona(idPersona);
+    $("#ModalAlumno").modal("show");
+    $("#tituloModalAlumno").empty();
+    $("#tituloModalAlumno").append("Editar Alumno:");
+	RecuperarAlumno(idAlumno);
 }
-function RecuperarPersona(idPersona){
+function RecuperarAlumno(idAlumno){
 	//solicitud de recuperar Proveedor
-	$.post("../../controlador/Mantenimiento/CPersona.php?op=RecuperarInformacion_Persona",{"idPersona":idPersona}, function(data, status){
+	$.post("../../controlador/Mantenimiento/CAlumno.php?op=RecuperarInformacion_Alumno",{"idAlumno":idAlumno}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
 
-$("#idPersona").val(data.idPersona);
-$("#PersonaNombre").val(data.nombrePersona);
-$("#PersonaFechaNacimiento").val(data.fechaNacimiento);
-$("#PersonaApellidoP").val(data.apellidoPaterno);
-$("#PersonaDNI").val(data.DNI);
-$("#PersonaApellidoM").val(data.apellidoMaterno);
-$("#PersonaCorreo").val(data.correo);
-$("#PersonaTelefono").val(data.telefono);
-$("#PersonaDireccion").val(data.direccion);
-$("#PersonaEstado").val(data.Estado_idEstado);
+$("#idAlumno").val(data.idAlumno);
+$("#AlumnoNombre").val(data.nombreAlumno);
+$("#AlumnoFechaNacimiento").val(data.fechaNacimiento);
+$("#AlumnoApellidoP").val(data.apellidoPaterno);
+$("#AlumnoDNI").val(data.DNI);
+$("#AlumnoApellidoM").val(data.apellidoMaterno);
+$("#AlumnoCorreo").val(data.correo);
+$("#AlumnoTelefono").val(data.telefono);
+$("#AlumnoDireccion").val(data.direccion);
+$("#AlumnoEstado").val(data.Estado_idEstado);
 
 	});
 }
-function EliminarPersona(idPersona){
+function EliminarAlumno(idAlumno){
       swal({
       title: "Eliminar?",
-      text: "Esta Seguro que desea Eliminar Persona!",
+      text: "Esta Seguro que desea Eliminar Alumno!",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarPersona(idPersona);
+      ajaxEliminarAlumno(idAlumno);
    });
 }
-function ajaxEliminarPersona(idPersona){
-    $.post("../../controlador/Mantenimiento/CPersona.php?op=Eliminar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxEliminarAlumno(idAlumno){
+    $.post("../../controlador/Mantenimiento/CAlumno.php?op=Eliminar_Alumno", {idAlumno: idAlumno}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -206,25 +225,25 @@ function ajaxEliminarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaAlumno.ajax.reload();
       }
    });
 }
-function HabilitarPersona(idPersona){
+function HabilitarAlumno(idAlumno){
       swal({
       title: "Habilitar?",
-      text: "Esta Seguro que desea Habilitar Persona!",
+      text: "Esta Seguro que desea Habilitar Alumno!",
       type: "info",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Si, Habilitar!",
       closeOnConfirm: false
    }, function () {
-      ajaxHabilitarPersona(idPersona);
+      ajaxHabilitarAlumno(idAlumno);
    });
 }
-function ajaxHabilitarPersona(idPersona){
-       $.post("../../controlador/Mantenimiento/CPersona.php?op=Recuperar_Persona", {idPersona: idPersona}, function (data, e) {
+function ajaxHabilitarAlumno(idAlumno){
+       $.post("../../controlador/Mantenimiento/CAlumno.php?op=Recuperar_Alumno", {idAlumno: idAlumno}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -232,18 +251,18 @@ function ajaxHabilitarPersona(idPersona){
          swal("Error", Mensaje, "error");
       } else {
          swal("Eliminado!", Mensaje, "success");
-         tablaPersona.ajax.reload();
+         tablaAlumno.ajax.reload();
       }
    });
 }
-function LimpiarPersona(){
-   $('#FormularioPersona')[0].reset();
-	$("#idPersona").val("");
+function LimpiarAlumno(){
+   $('#FormularioAlumno')[0].reset();
+	$("#idAlumno").val("");
 
 }
 function Cancelar(){
-    LimpiarPersona();
-    $("#ModalPersona").modal("hide");
+    LimpiarAlumno();
+    $("#ModalAlumno").modal("hide");
 
 }
 
