@@ -59,7 +59,7 @@ $conexionConfig = new Conexion();
    <link rel="stylesheet" href="<?php echo $conexionConfig->ruta(); ?>css/bootstrap.css" id="bscss">
    <!-- =============== APP STYLES ===============-->
    <link rel="stylesheet" href="<?php echo $conexionConfig->ruta(); ?>css/app.css" id="maincss">
-   <link rel="stylesheet" href="<?php echo $conexionConfig->ruta(); ?>css/theme-g.css" id="maincss">
+   <link rel="stylesheet" href="<?php echo $conexionConfig->ruta(); ?>css/theme-i.css" id="maincss">
    <!-- =============== APP STYLES PERSONAL ===============-->
    <link rel="stylesheet" href="<?php echo $conexionConfig->rutaOP(); ?>assets/css/style.css" id="maincss">
 </head>
