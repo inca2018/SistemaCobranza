@@ -5,7 +5,7 @@
    $mantenimiento = new MAlumno();
    $general = new MGeneral();
 
-
+    $idPersona=isset($_POST["idPersona"])?limpiarCadena($_POST["idPersona"]):"";
     $idAlumno=isset($_POST["idAlumno"])?limpiarCadena($_POST["idAlumno"]):"";
     $AlumnoNombre=isset($_POST["AlumnoNombre"])?limpiarCadena($_POST["AlumnoNombre"]):"";
     $AlumnoFechaNacimiento=isset($_POST["AlumnoFechaNacimiento"])?limpiarCadena($_POST["AlumnoFechaNacimiento"]):"";
@@ -16,6 +16,7 @@
     $AlumnoTelefono=isset($_POST["AlumnoTelefono"])?limpiarCadena($_POST["AlumnoTelefono"]):"";
     $AlumnoDireccion=isset($_POST["AlumnoDireccion"])?limpiarCadena($_POST["AlumnoDireccion"]):"";
     $AlumnoEstado=isset($_POST["AlumnoEstado"])?limpiarCadena($_POST["AlumnoEstado"]):"";
+
 
     $AlumnoNivel=isset($_POST["AlumnoNivel"])?limpiarCadena($_POST["AlumnoNivel"]):"";
     $AlumnoGrado=isset($_POST["AlumnoGrado"])?limpiarCadena($_POST["AlumnoGrado"]):"";
@@ -28,7 +29,8 @@
 
 	$login_idLog=$_SESSION['idUsuario'];
 
-
+    $date = str_replace('/', '-', $AlumnoFechaNacimiento);
+   $AlumnoFechaNacimiento = date("Y-m-d", strtotime($date));
 
     function BuscarEstado($reg){
         if($reg->Estado_idEstado=='1' || $reg->Estado_idEstado==1 ){
@@ -40,31 +42,40 @@
         }
     }
     function BuscarAccion($reg){
+        $rep="";
         if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
-            return '
-            <button type="button" title="Editar" class="btn btn-warning btn-sm" onclick="EditarAlumno('.$reg->idAlumno.')"><i class="fa fa-edit"></i></button>
-               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="EliminarAlumno('.$reg->idAlumno.')"><i class="fa fa-trash"></i></button>
+            $rep.='
+            <button type="button" title="Editar" class="btn btn-warning btn-sm m-1" onclick="EditarAlumno('.$reg->idPersona.','.$reg->idAlumno.');"><i class="fa fa-edit"></i></button>
+               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm m-1" onclick="EliminarAlumno('.$reg->idPersona.','.$reg->idAlumno.');"><i class="fa fa-trash"></i></button>
                ';
         }elseif($reg->Estado_idEstado==4){
-            return '<button type="button"  title="Habilitar" class="btn btn-info btn-sm" onclick="HabilitarAlumno('.$reg->idAlumno.')"><i class="fa fa-sync"></i></button>';
+            $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarAlumno('.$reg->idPersona.','.$reg->idAlumno.');"><i class="fa fa-sync"></i></button>';
         }
+
+        if($reg->PlanP==0 || $reg->PlanP=='0'){
+            $rep.='<button type="button"  title="Generar Plan de Pago" class="btn btn-success btn-sm m-1" onclick="CrearPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="fas fa-plus-square"></i></button>';
+        }else{
+            $rep.='<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>';
+        }
+
+        return $rep;
     }
 
    switch($_GET['op']){
         case 'AccionAlumno':
 		 	$rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
-         if(empty($idAlumno)){
+         if(empty($idPersona)){
 
                 /*--  validar si el numero de la factura ya se encuentra emitido  --*/
-                $validarAlumno=$mantenimiento->ValidarAlumno($AlumnoNombre,$idAlumno);
+                $validarAlumno=$mantenimiento->ValidarAlumno($AlumnoDNI,$idPersona);
                 if($validarAlumno>0){
-                    $rspta["Mensaje"].="El Alumno ya se encuentra Registrado ";
+                    $rspta["Mensaje"].="La Persona ya se encuentra Registrado ";
                     $rspta["Error"]=true;
                 }
                 if($rspta["Error"]){
                     $rspta["Mensaje"].="Por estas razones no se puede Registrar el Alumno.";
                 }else{
-                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idAlumno,$AlumnoNombre,$AlumnoEstado,$login_idLog);
+                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idPersona,$idAlumno,$AlumnoNombre,$AlumnoApellidoP,$AlumnoApellidoM,$AlumnoDNI,$AlumnoFechaNacimiento,$AlumnoCorreo,$AlumnoTelefono,$AlumnoDireccion,$AlumnoEstado,$AlumnoImagen,$AlumnoNivel,$AlumnoGrado,$AlumnoSeccion,$login_idLog);
                     if($RespuestaRegistro){
                         $rspta["Registro"]=true;
                         $rspta["Mensaje"]="Alumno se registro Correctamente.";
@@ -75,16 +86,16 @@
                 }
             }else{
 
-                 $validarAlumno=$mantenimiento->ValidarAlumno($AlumnoNombre,$idAlumno);
+                 $validarAlumno=$mantenimiento->ValidarAlumno($AlumnoDNI,$idPersona);
                 if($validarAlumno>0){
-                    $rspta["Mensaje"].="El Alumno ya se encuentra Registrado ";
+                    $rspta["Mensaje"].="La Persona ya se encuentra Registrado ";
                     $rspta["Error"]=true;
                 }
                 if($rspta["Error"]){
                     $rspta["Mensaje"].="Por estas razones no se puede Registrar el Alumno.";
                 }else{
 
-                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idAlumno,$AlumnoNombre,$AlumnoEstado,$login_idLog);
+                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idPersona,$idAlumno,$AlumnoNombre,$AlumnoApellidoP,$AlumnoApellidoM,$AlumnoDNI,$AlumnoFechaNacimiento,$AlumnoCorreo,$AlumnoTelefono,$AlumnoDireccion,$AlumnoEstado,$AlumnoImagen,$AlumnoNivel,$AlumnoGrado,$AlumnoSeccion,$login_idLog);
                     if($RespuestaRegistro){
                         $rspta["Registro"]=true;
                         $rspta["Mensaje"]="Alumno se Actualizo Correctamente.";
@@ -113,14 +124,14 @@
          	}
        break;
          case 'listar_grados':
-
+           echo '<option value="0">--SELECCIONE--</option>';
       		$rpta = $general->Listar_Grados();
          	while ($reg = $rpta->fetch_object()){
 					echo '<option   value=' . $reg->idGrado . '>' . $reg->Descripcion . '</option>';
          	}
        break;
          case 'listar_secciones':
-
+           echo '<option value="0">--SELECCIONE--</option>';
       		$rpta = $general->Listar_Secciones();
          	while ($reg = $rpta->fetch_object()){
 					echo '<option   value=' . $reg->idSeccion . '>' . $reg->Descripcion . '</option>';
@@ -135,9 +146,13 @@
          $data[]=array(
                "0"=>'',
                "1"=>BuscarEstado($reg),
-               "2"=>$reg->Descripcion,
-               "3"=>$reg->fechaRegistro,
-               "4"=>BuscarAccion($reg)
+               "2"=>$reg->NombrePersona,
+               "3"=>$reg->DNI,
+               "4"=>$reg->NivelNombre,
+               "5"=>$reg->GradoNombre,
+               "6"=>$reg->SeccionNombre,
+               "7"=>$reg->fechaRegistro,
+               "8"=>BuscarAccion($reg)
             );
          }
          $results = array(
@@ -151,7 +166,7 @@
       case 'Eliminar_Alumno':
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
-         $rspta['Eliminar']=$mantenimiento->Eliminar_Alumno($idAlumno,1,$login_idLog);
+         $rspta['Eliminar']=$mantenimiento->Eliminar_Alumno($idPersona,1,$login_idLog);
 
          $rspta['Eliminar']?$rspta['Mensaje']="Alumno Eliminado.":$rspta['Mensaje']="Alumno no se pudo eliminar comuniquese con el area de soporte";
          echo json_encode($rspta);
@@ -160,14 +175,14 @@
       case 'Recuperar_Alumno':
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
-         $rspta['Eliminar']=$mantenimiento->Eliminar_Alumno($idAlumno,2,$login_idLog);
+         $rspta['Eliminar']=$mantenimiento->Eliminar_Alumno($idPersona,2,$login_idLog);
 
          $rspta['Eliminar']?$rspta['Mensaje']="Alumno Restablecido.":$rspta['Mensaje']="Alumno no se pudo Restablecer comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
 
       case 'RecuperarInformacion_Alumno':
-			$rspta=$mantenimiento->Recuperar_Alumno($idAlumno);
+			$rspta=$mantenimiento->Recuperar_Alumno($idPersona,$idAlumno);
          echo json_encode($rspta);
       break;
 

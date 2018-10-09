@@ -22,6 +22,7 @@
                         </div>
                         <hr class="mt-2 mb-2">
                          <div class="row">
+
                             <div class="col-md-2 offset-10">
                                 <button class="btn btn-success btn-block btn-sm" onclick="NuevoUsuario();"><i class="fa fa-plus fa-lg mr-2"></i> Nuevo Usuario</button>
                             </div>

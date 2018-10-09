@@ -153,6 +153,11 @@
                               <span> Alumnos </span>
                            </a>
                         </li>
+                         <li id="" class="">
+                           <a href="<?php echo  $conexionConfig->rutaOP().'vista/Mantenimiento/MantApoderado.php';?>" title="Apoderados">
+                              <span> Apoderados </span>
+                           </a>
+                        </li>
                         <li id="" class="">
                            <a href="<?php echo  $conexionConfig->rutaOP().'vista/Mantenimiento/MantTarjeta.php';?>" title="Tipo de Tarjeta">
                               <span> Tipo de Tarjeta </span>

@@ -24,20 +24,25 @@
          return ejecutarConsulta($sql);
        }
         public function Listar_Perfiles(){
-         $sql="CALL `SP_PERFIL_LISTAR`();";
+         $sql="CALL `SP_LISTAR_PERFILES`();";
          return ejecutarConsulta($sql);
        }
        public function Listar_Niveles(){
-         $sql="CALL `SP_NIVEL_LISTAR`();";
+         $sql="CALL `SP_LISTAR_NIVELES`();";
          return ejecutarConsulta($sql);
        }
         public function Listar_Grados(){
-         $sql="CALL `SP_GRADO_LISTAR`();";
+         $sql="CALL `SP_LISTAR_GRADOS`();";
          return ejecutarConsulta($sql);
        }
         public function Listar_Secciones(){
-         $sql="CALL `SP_SECCION_LISTAR`();";
+         $sql="CALL `SP_LISTAR_SECCIONES`();";
          return ejecutarConsulta($sql);
+       }
+
+       public function Listar_TipoTarjeta(){
+           $sql="CALL `SP_TIPO_TARJETA_LISTAR`();";
+           return  ejecutarConsulta($sql);
        }
 
 

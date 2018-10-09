@@ -5,7 +5,7 @@ function init(){
     Listar_Nivel();
     Listar_Grado();
     Listar_Seccion();
-    //Listar_Alumno();
+    Listar_Alumno();
 }
 function Iniciar_Componentes(){
    //var fecha=hoyFecha();
@@ -94,8 +94,6 @@ function Listar_Seccion(){
       $("#AlumnoSeccion").append(ts);
  });
 }
-
-
 function Listar_Alumno(){
 	tablaAlumno = $('#tablaAlumno').dataTable({
 		"aProcessing": true,
@@ -113,7 +111,7 @@ function Listar_Alumno(){
         , "columnDefs": [
             {
                "className": "text-center"
-               , "targets": [1,2,3,4,5,6]
+               , "targets": [1,2,3,4,5,6,7,8]
             }
             , {
                "className": "text-left"
@@ -174,7 +172,7 @@ function NuevoAlumno(){
     $("#tituloModalAlumno").empty();
     $("#tituloModalAlumno").append("Nuevo Alumno:");
 }
-function EditarAlumno(idAlumno){
+function EditarAlumno(idPersona,idAlumno){
     $("#ModalAlumno").modal({
       backdrop: 'static'
       , keyboard: false
@@ -182,16 +180,17 @@ function EditarAlumno(idAlumno){
     $("#ModalAlumno").modal("show");
     $("#tituloModalAlumno").empty();
     $("#tituloModalAlumno").append("Editar Alumno:");
-	RecuperarAlumno(idAlumno);
+	RecuperarAlumno(idPersona,idAlumno);
 }
-function RecuperarAlumno(idAlumno){
+function RecuperarAlumno(idPersona,idAlumno){
 	//solicitud de recuperar Proveedor
-	$.post("../../controlador/Mantenimiento/CAlumno.php?op=RecuperarInformacion_Alumno",{"idAlumno":idAlumno}, function(data, status){
+	$.post("../../controlador/Mantenimiento/CAlumno.php?op=RecuperarInformacion_Alumno",{"idPersona":idPersona,"idAlumno":idAlumno}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
 
 $("#idAlumno").val(data.idAlumno);
-$("#AlumnoNombre").val(data.nombreAlumno);
+$("#idPersona").val(data.idPersona);
+$("#AlumnoNombre").val(data.nombrePersona);
 $("#AlumnoFechaNacimiento").val(data.fechaNacimiento);
 $("#AlumnoApellidoP").val(data.apellidoPaterno);
 $("#AlumnoDNI").val(data.DNI);
@@ -201,9 +200,14 @@ $("#AlumnoTelefono").val(data.telefono);
 $("#AlumnoDireccion").val(data.direccion);
 $("#AlumnoEstado").val(data.Estado_idEstado);
 
+$("#AlumnoNivel").val(data.idNivel);
+$("#AlumnoGrado").val(data.idGrado);
+$("#AlumnoSeccion").val(data.idSeccion);
+
+
 	});
 }
-function EliminarAlumno(idAlumno){
+function EliminarAlumno(idPersona,idAlumno){
       swal({
       title: "Eliminar?",
       text: "Esta Seguro que desea Eliminar Alumno!",
@@ -213,11 +217,11 @@ function EliminarAlumno(idAlumno){
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarAlumno(idAlumno);
+      ajaxEliminarAlumno(idPersona,idAlumno);
    });
 }
-function ajaxEliminarAlumno(idAlumno){
-    $.post("../../controlador/Mantenimiento/CAlumno.php?op=Eliminar_Alumno", {idAlumno: idAlumno}, function (data, e) {
+function ajaxEliminarAlumno(idPersona,idAlumno){
+    $.post("../../controlador/Mantenimiento/CAlumno.php?op=Eliminar_Alumno", {idPersona:idPersona,idAlumno: idAlumno}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -229,7 +233,7 @@ function ajaxEliminarAlumno(idAlumno){
       }
    });
 }
-function HabilitarAlumno(idAlumno){
+function HabilitarAlumno(idPersona,idAlumno){
       swal({
       title: "Habilitar?",
       text: "Esta Seguro que desea Habilitar Alumno!",
@@ -239,11 +243,11 @@ function HabilitarAlumno(idAlumno){
       confirmButtonText: "Si, Habilitar!",
       closeOnConfirm: false
    }, function () {
-      ajaxHabilitarAlumno(idAlumno);
+      ajaxHabilitarAlumno(idPersona,idAlumno);
    });
 }
-function ajaxHabilitarAlumno(idAlumno){
-       $.post("../../controlador/Mantenimiento/CAlumno.php?op=Recuperar_Alumno", {idAlumno: idAlumno}, function (data, e) {
+function ajaxHabilitarAlumno(idPersona,idAlumno){
+       $.post("../../controlador/Mantenimiento/CAlumno.php?op=Recuperar_Alumno", {idPersona:idPersona,idAlumno: idAlumno}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -265,5 +269,15 @@ function Cancelar(){
     $("#ModalAlumno").modal("hide");
 
 }
+function Volver(){
+    $.redirect('../Operaciones/Operaciones.php');
+}
 
+function CrearPlanPago(idPersona,idAlumno){
+    $("#ModalPlanPago").modal({
+      backdrop: 'static'
+      , keyboard: false
+    });
+    $("#ModalPlanPago").modal("show");
+}
 init();

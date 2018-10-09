@@ -38,7 +38,7 @@
                                                </div>
                                             </div>
                                          </div>
-                                         <a class="card-footer p-2 bg-info  bt0 clearfix btn-block d-flex" href="#" onclick="MostrarInformacionFacturado();">
+                                         <a class="card-footer p-2 bg-info  bt0 clearfix btn-block d-flex" href="#" onclick="MostrarGestionAlumnos();">
                                             <span>Gestión</span>
                                             <span class="ml-auto">
                                                <em class="fa fa-chevron-circle-right"></em>
@@ -63,7 +63,7 @@
                                                </div>
                                             </div>
                                          </div>
-                                         <a class="card-footer p-2 bg-warning bt0 clearfix btn-block d-flex" href="#" onclick="MostrarInformacionPrefacturado();">
+                                         <a class="card-footer p-2 bg-warning bt0 clearfix btn-block d-flex" href="#" onclick="MostrarGestionApoderados();">
                                             <span>Gestión</span>
                                             <span class="ml-auto">
                                                <em class="fa fa-chevron-circle-right"></em>
@@ -80,7 +80,7 @@
                                          <div class="card-header">
                                             <div class="row align-items-center">
                                                <div class="col-3">
-                                                  <em class="fa fa-users fa-4x"></em>
+                                                 <em class="far fa-money-bill-alt fa-4x"></em>
                                                </div>
                                                <div class="col-9 text-right">
                                                   <div class="text-lg" id="ind_empleados_operaciones">0</div>
