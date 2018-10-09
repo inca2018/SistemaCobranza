@@ -273,11 +273,134 @@ function Volver(){
     $.redirect('../Operaciones/Operaciones.php');
 }
 
-function CrearPlanPago(idPersona,idAlumno){
+function VerPlanPago(idPersona,idAlumno){
     $("#ModalPlanPago").modal({
       backdrop: 'static'
       , keyboard: false
     });
     $("#ModalPlanPago").modal("show");
+
+    Mostrar_Informacion_Alumno(idPersona,idAlumno);
+    iniciar_valores();
 }
+function Mostrar_Informacion_Alumno(idPersona,idAlumno){
+    $.post("../../controlador/Mantenimiento/CAlumno.php?op=RecuperarInformacion_Alumno",{"idPersona":idPersona,"idAlumno":idAlumno}, function(data, status){
+		data = JSON.parse(data);
+		console.log(data);
+
+    $("#O_idPersona").val(data.idPersona);
+    $("#O_idAlumno").val(data.idAlumno);
+    $("#O_PlanCreado").val(data.PlanP);
+    $("#datos_dni").val(data.DNI);
+    $("#datos_apellido").val(data.apellidoPaterno+" "+data.apellidoMaterno);
+    $("#datos_nombres").val(data.nombrePersona);
+    $("#datos_direccion").val(data.direccion);
+    $("#datos_telefono").val(data.telefono);
+    $("#datos_nivel").val(data.NivelNombre);
+    $("#datos_grado").val(data.GradoNombre);
+    $("#datos_seccion").val(data.SeccionNombre);
+
+    if(data.PlanP==0){
+        $("#importe_matricula").removeAttr("disabled");
+        $("#importe_cuota").removeAttr("disabled");
+        $("#importe_adicional1").removeAttr("disabled");
+        $("#importe_adicional2").removeAttr("disabled");
+        $("#datos_observaciones").removeAttr("disabled");
+    }else{
+        $("#importe_matricula").attr("disabled","true");
+        $("#importe_cuota").attr("disabled","true");
+        $("#importe_adicional1").attr("disabled","true");
+        $("#importe_adicional2").attr("disabled","true");
+        $("#datos_observaciones").attr("disabled","true");
+    }
+
+	});
+}
+function iniciar_valores(){
+
+
+    $("#importe_matricula").change(function(){
+	 	var ingreso_adelanto=$("#importe_matricula").val();
+		if(ingreso_adelanto!=''){
+					$("#O_importe_matricula").val(parseFloat($("#importe_matricula").val()));
+					$("#importe_matricula").val("S/."+Formato_Moneda(parseFloat($("#importe_matricula").val()),2))
+
+				}else{
+					$("#O_importe_matricula").val(0);
+					$("#importe_matricula").val('S/. 0.00');
+
+				}
+	});
+
+    $("#importe_matricula").click(function(){
+		$("#importe_matricula").val($("#O_importe_matricula").val());
+	});
+	$("#importe_matricula").blur(function(){
+		$("#importe_matricula").val("S/. "+Formato_Moneda($("#O_importe_matricula").val(),2));
+	});
+
+
+     $("#importe_cuota").change(function(){
+	 	var ingreso_adelanto=$("#importe_matricula").val();
+		if(ingreso_adelanto!=''){
+					$("#O_importe_cuota").val(parseFloat($("#importe_cuota").val()));
+					$("#importe_cuota").val("S/."+Formato_Moneda(parseFloat($("#importe_cuota").val()),2))
+
+				}else{
+					$("#O_importe_cuota").val(0);
+					$("#importe_cuota").val('S/. 0.00');
+				}
+	});
+
+    $("#importe_cuota").click(function(){
+		$("#importe_cuota").val($("#O_importe_cuota").val());
+	});
+	$("#importe_cuota").blur(function(){
+		$("#importe_cuota").val("S/. "+Formato_Moneda($("#O_importe_cuota").val(),2));
+	});
+
+
+     $("#importe_adicional1").change(function(){
+	 	var ingreso_adelanto=$("#importe_adicional1").val();
+		if(ingreso_adelanto!=''){
+					$("#O_importe_adicional1").val(parseFloat($("#importe_adicional1").val()));
+					$("#importe_adicional1").val("S/."+Formato_Moneda(parseFloat($("#importe_adicional1").val()),2))
+
+				}else{
+					$("#O_importe_adicional1").val(0);
+					$("#importe_adicional1").val('S/. 0.00');
+				}
+	});
+
+    $("#importe_adicional1").click(function(){
+		$("#importe_adicional1").val($("#O_importe_adicional1").val());
+	});
+	$("#importe_adicional1").blur(function(){
+		$("#importe_adicional1").val("S/. "+Formato_Moneda($("#O_importe_adicional1").val(),2));
+	});
+
+
+
+     $("#importe_adicional2").change(function(){
+	 	var ingreso_adelanto=$("#importe_adicional1").val();
+		if(ingreso_adelanto!=''){
+					$("#O_importe_adicional2").val(parseFloat($("#importe_adicional2").val()));
+					$("#importe_adicional2").val("S/."+Formato_Moneda(parseFloat($("#importe_adicional2").val()),2))
+
+				}else{
+					$("#O_importe_adicional2").val(0);
+					$("#importe_adicional2").val('S/. 0.00');
+				}
+	});
+
+    $("#importe_adicional2").click(function(){
+		$("#importe_adicional2").val($("#O_importe_adicional2").val());
+	});
+	$("#importe_adicional1").blur(function(){
+		$("#importe_adicional2").val("S/. "+Formato_Moneda($("#O_importe_adicional2").val(),2));
+	});
+
+
+}
+
 init();

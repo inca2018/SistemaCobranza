@@ -29,6 +29,7 @@
                                 <button class="btn btn-success btn-block btn-sm" onclick="NuevoAlumno();"><i class="fa fa-plus fa-lg mr-2"></i> Nueva Alumno</button>
                             </div>
                         </div>
+                        <hr>
                         <h5 class="mt-3 mb-3 titulo_area" ><em><b>Lista General de Alumno:</b></em></h5>
                         <div class="row ">
                             <div class="col-md-12">
@@ -243,145 +244,17 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade " id="ModalPlanPago2" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
-	<div class="modal-dialog modal-lg  ">
-		<div class="modal-content">
-            <div class="row m-1 bb">
-                <div class="col-md-12">
-                    <h4 class="text-center text-">NUEVO PLAN DE PAGO:</h4>
-                </div>
-            </div>
-			<div class="modal-body " >
-				<form id="FormularioAlumno" method="POST" autocomplete="off">
-                     <input type="hidden" name="idPersona" id="idPersona">
-                     <input type="hidden" name="idAlumno" id="idAlumno">
-
-                     <div class="row mb-3 mt-1">
-                         <div class="col-md-3">
-                             <label class=""><span class="red">(*) Campos Obligatorios</span></label>
-                         </div>
-                         <div class="col-md-1 offset-8">
-                              <button type="button" class="btn btn-info btn-sm btn-display" title="Limpiar Campos" onclick="LimpiarAlumno();">
-                              <i class="fa fa-trash-alt fa-lg "></i>
-                              </button>
-                         </div>
-                     </div>
-
-					 <div class="row" id="cuerpo">
-					      <div class="col-md-12 bl">
-                                <h5 class="mt-3 mb-3 titulo_area" ><em><b>Información de Alumno:</b></em></h5>
-                                <div class="row">
-                                      <div class="col-md-6 br">
-                                        <div class="form-group row">
-                                            <label for="AlumnoNombre" class="col-md-5 col-form-label"><i class="fas fa-address-book fa-lg mr-2"></i>Nombres<span class="red">*</span>:</label>
-                                            <div class="col-md-7">
-                                                <input class="form-control validarPanel" id="AlumnoNombre" name="AlumnoNombre" data-message="- Nombre de Alumno"  placeholder="Nombre" type="text" onkeypress="return SoloLetras(event,40,this.id);">
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                      <div class="col-md-6 br">
-                                        <div class="form-group row">
-                                            <label for="AlumnoFechaNacimiento" class="col-md-5 col-form-label"><i class="far fa-calendar-check fa-lg mr-2"></i>F.Nacimiento<span class="red">*</span>:</label>
-                                            <div class="col-md-7">
-                                                <div class=" row">
-																<div class="input-group date  col-md-12" id="dateFechaNacimiento"   >
-																	<input class="form-control validarPanel" type="text" id="AlumnoFechaNacimiento" name="AlumnoFechaNacimiento"  autocomplete="off" data-message="- Fecha de Nacimiento">
-																	<span class="input-group-append input-group-addon">
-
-																		<span class="input-group-text "><i class="fa fa-calendar fa-lg"></i></span>
-																	</span>
-																</div>
-															</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                     <div class="col-md-6 br">
-                                           <div class="form-group row">
-                                                <label for="AlumnoApellidoP " class="col-md-5 col-form-label  "><i class="far fa-address-book mr-2 fa-lg"></i>Apellido P.<span class="red">*</span>:</label>
-                                                <div class="col-md-7">
-                                                    <input type="text" class="form-control validarPanel" placeholder="Apellido Paterno" name="AlumnoApellidoP" id="AlumnoApellidoP" data-message="- Apellido Paterno" onkeypress="return SoloLetras(event,40,this.id);">
-                                                </div>
-                                            </div>
-                                     </div>
-
-                                      <div class="col-md-6">
-                                           <div class="form-group row">
-                                                <label for="AlumnoDNI" class="col-md-5 col-form-label"><i class="fa fa-lock mr-2 fa-lg"></i>DNI:<span class="red">*</span>:</label>
-                                                <div class="col-md-7">
-                                                    <input type="number" class="form-control validarPanel" placeholder="Dni" name="AlumnoDNI" id="AlumnoDNI" data-message="- DNI" onkeypress="return SoloNumerosModificado(event,8,this.id);">
-                                                </div>
-                                            </div>
-                                     </div>
-
-
-                                     <div class="col-md-6 br">
-                                        <div class="form-group row">
-                                            <label for="AlumnoApellidoM" class="col-md-5 col-form-label"><i class="fa fa-address-card mr-2 fa-lg"></i>Apellido M.<span class="red">*</span>:</label>
-                                            <div class="col-md-7">
-                                                <input type="text" class="form-control validarPanel" placeholder="Apellido Materno" name="AlumnoApellidoM" id="AlumnoApellidoM" data-message="- Apellido Materno" onkeypress="return SoloLetras(event,40,this.id);">
-                                            </div>
-                                        </div>
-                                    </div>
-                                     <div class="col-md-6">
-                                           <div class="form-group row">
-                                                <label for="AlumnoCorreo " class="col-md-5 col-form-label"><i class="fa fa-at mr-2 fa-lg"></i>Correo:</label>
-                                                <div class="col-md-7">
-                                                    <input type="email" class="form-control " placeholder="Correo" name="AlumnoCorreo" id="AlumnoCorreo" maxlength="40">
-                                                </div>
-                                            </div>
-                                     </div>
-                                    <div class="col-md-6 br">
-                                        <div class="form-group row">
-                                            <label for="AlumnoTelefono" class="col-md-5 col-form-label"><i class="fa fa-phone fa-lg mr-3"></i>Telefono:</label>
-                                            <div class="col-md-7">
-                                               <input type="number" class="form-control " placeholder="Telefono" name="AlumnoTelefono" id="AlumnoTelefono" onkeypress="return SoloNumerosModificado(event,9,this.id);">
-                                            </div>
-                                        </div>
-                                    </div>
-                                      <div class="col-md-12 ">
-                                        <div class="form-group ">
-                                            <label for="AlumnoDireccion" class=" col-form-label"><i class="fa fa-address-card fa-lg mr-3"></i>Dirección:</label>
-
-                                                 <textarea id="AlumnoDireccion" name="AlumnoDireccion" rows="2" class="form-control" >
-
-                                                 </textarea>
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-                                <hr>
-                                <div class="row mr-1 ml-1">
-                                           <button type="submit" class="col-md-2 btn btn-success btn-sm" title="Guardar">
-                                              <i class="fa fa-save fa-lg mr-2"></i>GUARDAR
-                                           </button>
-
-                                           <button type="button" class="col-md-2 btn btn-danger btn-sm  offset-8" title="Cancelar" onclick="Cancelar();">
-                                              <i class="fa fa-times fa-lg mr-2"></i>CANCELAR
-                                           </button>
-
-                               </div>
-
-                            </div>
-					 </div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
 
 <div class="modal fade" id="ModalPlanPago" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
 	<form  id="FormEmisionComprobante" method="POST" autocomplete="off">
-		<input type="hidden" id="general_id_empleado" name="general_id_empleado">
-		<input type="hidden" id="general_diasMes_actual" name="general_diasMes_actual" value="0">
+		<input type="hidden" id="O_idPersona" name="O_idPersona">
+		<input type="hidden" id="O_idAlumno" name="O_idAlumno">
+		<input type="hidden" id="O_PlanCreado" name="O_PlanCreado">
 
+        <input type="hidden" id="O_importe_matricula" name="O_importe_matricula" value="0">
+        <input type="hidden" id="O_importe_cuota" name="O_importe_cuota" value="0">
+        <input type="hidden" id="O_importe_adicional1" name="O_importe_adicional1" value="0">
+        <input type="hidden" id="O_importe_adicional2" name="O_importe_adicional2" value="0">
 
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -402,7 +275,7 @@
 								<ul class="nav nav-pills " role="tablist">
 									<li class="nav-item pill-1 m-2 " role="presentation"><a class="nav-link active" href="#op_datos" aria-controls="home" role="tab" data-toggle="tab">Datos del Alumno</a>
 									</li>
-									<li class="nav-item pill-2 m-2" role="presentation"><a class="nav-link" href="#op_info" aria-controls="profile" role="tab" data-toggle="tab">Información de Matricula</a>
+									<li class="nav-item pill-2 m-2" role="presentation"><a class="nav-link" href="#op_info" aria-controls="profile" role="tab" data-toggle="tab">Matricula</a>
 									</li>
 									<li class="nav-item pill-3 m-2" role="presentation"><a class="nav-link" href="#op_cuotas" aria-controls="messages" role="tab" data-toggle="tab">Cuotas Pensión</a>
 									</li>
@@ -415,7 +288,7 @@
 										<div class="row ">
 											<div class=" col-md-4">
 												<div class="form-group row p-0" >
-													<label for="cod_comprobante" class="col-md-4 col-form-label texto-x12" ><b>Nº DNI:</b></label>
+													<label for="datos_dni" class="col-md-4 col-form-label texto-x12" ><b>Nº DNI:</b></label>
 													<div class="col-md-8">
 														<input type="text" class="form-control texto-x12" placeholder="" name="datos_dni" id="datos_dni" readonly  value=""  >
 													</div>
@@ -423,7 +296,7 @@
 											</div>
 											<div class=" col-md-4">
 												<div class="form-group row p-0" >
-													<label for="cod_comprobante" class="col-md-4 col-form-label texto-x12" ><b>APELLIDOS:</b></label>
+													<label for="datos_apellido" class="col-md-4 col-form-label texto-x12" ><b>APELLIDOS:</b></label>
 													<div class="col-md-8">
 														<input type="text" class="form-control texto-x12" placeholder="" name="datos_apellido" id="datos_apellido" readonly  value=""  >
 													</div>
@@ -431,7 +304,7 @@
 											</div>
 											<div class=" col-md-4">
 												<div class="form-group row p-0" >
-													<label for="cod_comprobante" class="col-md-4 col-form-label texto-x12" ><b>NOMBRES:</b></label>
+													<label for="datos_nombres" class="col-md-4 col-form-label texto-x12" ><b>NOMBRES:</b></label>
 													<div class="col-md-8">
 														<input type="text" class="form-control texto-x12" placeholder="" name="datos_nombres" id="datos_nombres" readonly  value=""  >
 													</div>
@@ -439,17 +312,41 @@
 											</div>
 											<div class=" col-md-8">
 												<div class="form-group row p-0" >
-													<label for="cod_comprobante" class="col-md-2 col-form-label texto-x12" ><b>DIRECCIÓN:</b></label>
+													<label for="datos_direccion" class="col-md-2 col-form-label texto-x12" ><b>DIRECCIÓN:</b></label>
 													<div class="col-md-10">
-														<input type="text" class="form-control texto-x12" placeholder="" name="datos_seguro" id="datos_seguro" readonly  value=""  >
+														<input type="text" class="form-control texto-x12" placeholder="" name="datos_direccion" id="datos_direccion" readonly  value=""  >
 													</div>
 												</div>
 											</div>
 											<div class=" col-md-4">
 												<div class="form-group row p-0" >
-													<label for="cod_comprobante" class="col-md-4 col-form-label texto-x12" ><b>TELEFONO:</b></label>
+													<label for="datos_telefono" class="col-md-4 col-form-label texto-x12" ><b>TELEFONO:</b></label>
 													<div class="col-md-8">
-														<input type="text" class="form-control texto-x12" placeholder="" name="datos_cussp" id="datos_cussp" readonly  value=""  >
+														<input type="text" class="form-control texto-x12" placeholder="" name="datos_telefono" id="datos_telefono" readonly  value=""  >
+													</div>
+												</div>
+											</div>
+											<div class=" col-md-4">
+												<div class="form-group row p-0" >
+													<label for="datos_nivel" class="col-md-4 col-form-label texto-x12" ><b>NIVEL:</b></label>
+													<div class="col-md-8">
+														<input type="text" class="form-control texto-x12" placeholder="" name="datos_nivel" id="datos_nivel" readonly  value=""  >
+													</div>
+												</div>
+											</div>
+											<div class=" col-md-4">
+												<div class="form-group row p-0" >
+													<label for="datos_grado" class="col-md-4 col-form-label texto-x12" ><b>GRADO:</b></label>
+													<div class="col-md-8">
+														<input type="text" class="form-control texto-x12" placeholder="" name="datos_grado" id="datos_grado" readonly  value=""  >
+													</div>
+												</div>
+											</div>
+											<div class=" col-md-4">
+												<div class="form-group row p-0" >
+													<label for="datos_seccion" class="col-md-4 col-form-label texto-x12" ><b>SECCION:</b></label>
+													<div class="col-md-8">
+														<input type="text" class="form-control texto-x12" placeholder="" name="datos_seccion" id="datos_seccion" readonly  value=""  >
 													</div>
 												</div>
 											</div>
@@ -462,104 +359,59 @@
 								</div>
 								<div class="tab-pane" id="op_info" role="tabpanel">
 									<div class="container">
-										<div class="row">
+									 	<div class="row">
 											<div class="col-md-6 br">
-												<h5 class="mt-2 mb-2 titulo_area2" id="titulo_gasto"><em><b>Dias de jornada:</b></em></h5>
+												<h5 class="mt-2 mb-2 titulo_area2" id="titulo_gasto"><em><b>Pagos:</b></em></h5>
 												<div class="row">
 													<div class=" col-md-12">
 														<div class="form-group row p-0" >
-															<label for="cod_comprobante" class="col-md-4 col-form-label texto-x12" ><b>Mes Actual:</b></label>
-															<div class="col-md-8">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="jornada_mes" id="jornada_mes" readonly  value=""  >
+															<label for="importe_matricula" class="col-md-8 col-form-label texto-x12" ><b>Importe Matricula:</b></label>
+															<div class="col-md-4">
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_matricula" id="importe_matricula"    value="S/. 0.00"  >
 															</div>
 														</div>
 													</div>
 													<div class=" col-md-12">
 														<div class="form-group row p-0" >
-															<label for="cod_comprobante" class="col-md-8 col-form-label texto-x12" ><b>Dias Habiles del Mes Actual:</b></label>
+															<label for="importe_cuota" class="col-md-8 col-form-label texto-x12" ><b>Importe Cuota:</b></label>
 															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="jornada_diaMes" id="jornada_diaMes" readonly  value="0"  >
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_cuota" id="importe_cuota"    value="S/. 0.00"  >
 															</div>
 														</div>
 													</div>
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="cod_comprobante" class="col-md-8 col-form-label texto-x12" ><b>Dias Laborados del Mes Actual:</b></label>
-															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="jornada_dias_laborados" id="jornada_dias_laborados"   value="0" onkeypress="return SoloNumerosModificado(event,2,this.id);" >
-															</div>
-														</div>
-													</div>
+
+
+
 												</div>
 											</div>
 											<div class="col-md-6">
-												<h5 class="mt-2 mb-2 titulo_area2" id="titulo_gasto"><em><b>Dias no Laborados:</b></em></h5>
+												<h5 class="mt-2 mb-2 titulo_area2" id="titulo_gasto"><em><b>Otros Pagos:</b></em></h5>
 												<div class="row">
 													<div class=" col-md-12">
 														<div class="form-group row p-0" >
-															<label for="cod_comprobante" class="col-md-9 col-form-label texto-x12" ><b>Dias Subsidiados por Incapacidad Temporal:</b></label>
-															<div class="col-md-3">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="jornada_dias_inc_temp" id="jornada_dias_inc_temp" value="0" onkeypress="return SoloNumerosModificado(event,2,this.id);" >
+															<label for="importe_adicional1" class="col-md-8 col-form-label texto-x12" ><b>Importe Adicional Ingles:</b></label>
+															<div class="col-md-4">
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_adicional1" id="importe_adicional1"   value="S/. 0.00"  >
 															</div>
 														</div>
 													</div>
 													<div class=" col-md-12">
 														<div class="form-group row p-0" >
-															<label for="cod_comprobante" class="col-md-9 col-form-label texto-x12" ><b>Dias Subsidiados por Maternidad:</b></label>
-															<div class="col-md-3">
-																<input type="text" class="form-control texto-x12 text-center " placeholder="" name="jornada_dias_maternidad" id="jornada_dias_maternidad" value="0" onkeypress="return SoloNumerosModificado(event,2,this.id);" >
-															</div>
-														</div>
-													</div>
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="cod_comprobante" class="col-md-9 col-form-label texto-x12" ><b>Dias de Vaciones:</b></label>
-															<div class="col-md-3">
-																<input type="text" class="form-control texto-x12 text-center " placeholder="" name="jornada_dias_vacaciones" id="jornada_dias_vacaciones" value="0" onkeypress="return SoloNumerosModificado(event,2,this.id);" >
+															<label for="importe_adicional2" class="col-md-8 col-form-label texto-x12" ><b>Importe Adicional Otros:</b></label>
+															<div class="col-md-4">
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_adicional2" id="importe_adicional2"   value="S/. 0.00"  >
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<hr>
-										<div class="row">
-											<div class="col-md-4">
-												<div class="row">
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="cod_comprobante" class="col-md-7 col-form-label texto-x12" ><b>Total Dias Laborados:</b></label>
-															<div class="col-md-5">
-																<input type="number" class="form-control texto-x12 text-center" placeholder="" name="jornada_total_laborados" id="jornada_total_laborados"  readonly value="0"  >
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-4">
-												<div class="row">
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="jornada_total_subsidiados" class="col-md-7 col-form-label texto-x12" ><b>Total Dias Subsidiados:</b></label>
-															<div class="col-md-5">
-																<input type="number" class="form-control texto-x12 text-center " placeholder="" name="jornada_total_subsidiados" id="jornada_total_subsidiados"  readonly value="0"  >
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-4">
-												<div class="row">
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="jornada_total_nolaborados" class="col-md-7 col-form-label texto-x12" ><b>Total Dias no Laborados:</b></label>
-															<div class="col-md-5">
-																<input type="number" class="form-control texto-x12 text-center " placeholder="" name="jornada_total_nolaborados" id="jornada_total_nolaborados"  readonly value="0"  >
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+                                             <div class="col-md-12 ">
+                                                <div class="form-group ">
+                                                    <label for="datos_observaciones" class=" col-form-label texto-x12">Observaciones:</label>
+                                                    <textarea id="datos_observaciones" name="datos_observaciones" rows="2" class="form-control" >
+                                                    </textarea>
+                                                </div>
+                                            </div>
 										</div>
 
 									</div>
@@ -567,69 +419,34 @@
 								<div class="tab-pane" id="op_cuotas" role="tabpanel">
 									<div class="container">
 										<div class="row">
-											<div class="col-md-6 br">
-												<h5 class="mt-2 mb-2 titulo_area3" id="titulo_gasto"><em><b>Ingresos:</b></em></h5>
+											<div class="col-md-12">
+												<h5 class="mt-2 mb-2 titulo_area3" id="titulo_gasto"><em><b>Listado de Cuotas del Alumno:</b></em></h5>
 												<div class="row">
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="ingreso_base" class="col-md-8 col-form-label texto-x12" ><b>Sueldo Base:</b></label>
-															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="ingreso_base" id="ingreso_base" readonly  value="S/. 0.00"  >
-															</div>
-														</div>
-													</div>
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="ingreso_base" class="col-md-8 col-form-label texto-x12" ><b>Sueldo neto:</b></label>
-															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="ingreso_neto" id="ingreso_neto" readonly  value="S/. 0.00"  >
-															</div>
-														</div>
-													</div>
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="ingreso_asignacion" class="col-md-8 col-form-label texto-x12" ><b>Importe Asignación Familiar:</b></label>
-															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="ingreso_asignacion" id="ingreso_asignacion" readonly  value="S/. 0.00" readonly >
-															</div>
-														</div>
-													</div>
-
-
+												    <button class="btn btn-success">
+												        AGREGAR CUOTA
+												    </button>
+												</div>
+												<div class="row">
+													 <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaCuotas">
+                                                        <thead class="thead-light text-center">
+                                                            <tr>
+                                                                <th data-priority="1">#</th>
+                                                                <th>ESTADO</th>
+                                                                <th>CUOTA</th>
+                                                                <th>IMPORTE</th>
+                                                                <th>DIFERENCIA</th>
+                                                                <th>FECHA REGISTRO</th>
+                                                                <th>FECHA VENCIMIENTO</th>
+                                                                <th>ACCION</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
 												</div>
 											</div>
-											<div class="col-md-6">
-												<h5 class="mt-2 mb-2 titulo_area3" id="titulo_gasto"><em><b>Otros Ingresos:</b></em></h5>
-												<div class="row">
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-														<label for="ingreso_grati" class="col-md-8 col-form-label texto-x12" ><b>Gratificación:</b></label>
-														<div class="col-md-4">
-															<input type="text" class="form-control texto-x12 text-center" placeholder="" name="ingreso_grati" id="ingreso_grati"   value="0"  onkeypress="return SoloNumerosModificado(event,7,this.id);">
-														</div>
-														</div>
-													</div>
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="ingreso_bonificacion" class="col-md-8 col-form-label texto-x12" ><b>Bonificación:</b></label>
-															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="ingreso_bonificacion" id="ingreso_bonificacion"   value="0"  onkeypress="return SoloNumerosModificado(event,7,this.id);">
-															</div>
-														</div>
-													</div>
-													<div class=" col-md-12">
-														<div class="form-group row p-0" >
-															<label for="ingreso_comp" class="col-md-8 col-form-label texto-x12" ><b>Compensación por Tiempo de Servicio (CTS):</b></label>
-															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="ingreso_comp" id="ingreso_comp"   value="0"  onkeypress="return SoloNumerosModificado(event,7,this.id);">
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+
 										</div>
-
-
 									</div>
 								</div>
 								</div>

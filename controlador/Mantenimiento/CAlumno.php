@@ -52,11 +52,9 @@
             $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarAlumno('.$reg->idPersona.','.$reg->idAlumno.');"><i class="fa fa-sync"></i></button>';
         }
 
-        if($reg->PlanP==0 || $reg->PlanP=='0'){
-            $rep.='<button type="button"  title="Generar Plan de Pago" class="btn btn-success btn-sm m-1" onclick="CrearPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="fas fa-plus-square"></i></button>';
-        }else{
-            $rep.='<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>';
-        }
+
+        $rep.='<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>';
+
 
         return $rep;
     }
