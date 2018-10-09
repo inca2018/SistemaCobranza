@@ -55,11 +55,15 @@
 
 		public function Recuperar_Alumno($idPersona,$idAlumno){
 			$sql="CALL `SP_ALUMNO_RECUPERAR`('$idPersona','$idAlumno');";
-
 			return ejecutarConsultaSimpleFila($sql);
 		}
 
 
+		public function Matricular($idPersona,$idAlumno,$O_importe_matricula,$O_importe_cuota,$O_importe_adicional1,$O_importe_adicional2,$O_observaciones,$login_idLog){
+			$sql="INSERT INTO `planpago`(`Alumno_idAlumno`, `fechaRegistro`, `montoCuota`, `montoMatricula`, `otroPago1`, `otroPago2`, `Observaciones`, `Estado_idEstado`) VALUES ('$idAlumno',NOW(),'$O_importe_cuota','$O_importe_matricula','$O_importe_adicional1','$O_importe_adicional2','$O_observaciones',1);";
+
+			return ejecutarConsulta($sql);
+		}
    }
 
 ?>

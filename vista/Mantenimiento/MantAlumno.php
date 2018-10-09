@@ -246,7 +246,7 @@
 </div>
 
 <div class="modal fade" id="ModalPlanPago" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
-	<form  id="FormEmisionComprobante" method="POST" autocomplete="off">
+	<form  id="FormularioMatricula" method="POST" autocomplete="off">
 		<input type="hidden" id="O_idPersona" name="O_idPersona">
 		<input type="hidden" id="O_idAlumno" name="O_idAlumno">
 		<input type="hidden" id="O_PlanCreado" name="O_PlanCreado">
@@ -255,6 +255,8 @@
         <input type="hidden" id="O_importe_cuota" name="O_importe_cuota" value="0">
         <input type="hidden" id="O_importe_adicional1" name="O_importe_adicional1" value="0">
         <input type="hidden" id="O_importe_adicional2" name="O_importe_adicional2" value="0">
+
+        <input type="hidden" id="O_observaciones" name="O_observaciones" value="">
 
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -359,7 +361,21 @@
 								</div>
 								<div class="tab-pane" id="op_info" role="tabpanel">
 									<div class="container">
-									 	<div class="row">
+                                       <div class="row">
+										    <button type="submit" id="boton_matricula"  class="btn btn-primary col-md-2 offset-10 "><i class="fa fa-check fa-lg mr-2"></i>Matricular</button>
+										</div>
+										<hr>
+										<div class="row">
+										    <div class="col-md-6">
+										         <h3 id="fechaMatricula" class="texto-x12"></h3>
+										    </div>
+										    <div class="col-md-6">
+										         <h4 id="mensajeMatricula" >ALUMNO MATRICULADO</h4>
+										    </div>
+										</div>
+
+									 	<div class="row" id="cuerpo_matricula">
+
 											<div class="col-md-6 br">
 												<h5 class="mt-2 mb-2 titulo_area2" id="titulo_gasto"><em><b>Pagos:</b></em></h5>
 												<div class="row">
@@ -407,7 +423,7 @@
 											</div>
                                              <div class="col-md-12 ">
                                                 <div class="form-group ">
-                                                    <label for="datos_observaciones" class=" col-form-label texto-x12">Observaciones:</label>
+                                                    <label for="datos_observaciones" class=" col-form-label texto-x12"><b>Observaciones:</b> </label>
                                                     <textarea id="datos_observaciones" name="datos_observaciones" rows="2" class="form-control" >
                                                     </textarea>
                                                 </div>
@@ -418,14 +434,17 @@
 								</div>
 								<div class="tab-pane" id="op_cuotas" role="tabpanel">
 									<div class="container">
+									    <div class="row">
+                                            <button class="btn btn-primary btn-sm col-md-2 offset-10" title="Agregar Cuota">
+                                                <i class="fa fa-plus fa-lg mr-2"></i>Agregar Cuota
+                                            </button>
+				                        </div>
+
+				                        <hr>
 										<div class="row">
 											<div class="col-md-12">
 												<h5 class="mt-2 mb-2 titulo_area3" id="titulo_gasto"><em><b>Listado de Cuotas del Alumno:</b></em></h5>
-												<div class="row">
-												    <button class="btn btn-success">
-												        AGREGAR CUOTA
-												    </button>
-												</div>
+
 												<div class="row">
 													 <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaCuotas">
                                                         <thead class="thead-light text-center">
@@ -455,10 +474,8 @@
 					</div>
 				</div>
 				<div class="row m-2">
-					<div class="col-md-2  p-3">
-						<button class="btn btn-success btn-sm btn-block">GUARDAR</button>
-					</div>
-					<div class="col-md-2 offset-8 p-3">
+
+					<div class="col-md-2 p-3">
 						<button class="btn btn-danger btn-sm btn-block">SALIR</button>
 					</div>
 				</div>

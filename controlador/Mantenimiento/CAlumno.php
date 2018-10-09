@@ -24,6 +24,14 @@
 
     $AlumnoImagen=isset($_POST["AlumnoImagen"])?limpiarCadena($_POST["AlumnoImagen"]):"";
 
+    $O_importe_matricula=isset($_POST["O_importe_matricula"])?limpiarCadena($_POST["O_importe_matricula"]):"";
+    $O_importe_cuota=isset($_POST["O_importe_cuota"])?limpiarCadena($_POST["O_importe_cuota"]):"";
+    $O_importe_adicional1=isset($_POST["O_importe_adicional1"])?limpiarCadena($_POST["O_importe_adicional1"]):"";
+    $O_importe_adicional2=isset($_POST["O_importe_adicional2"])?limpiarCadena($_POST["O_importe_adicional2"]):"";
+    $O_observaciones=isset($_POST["O_observaciones"])?limpiarCadena($_POST["O_observaciones"]):"";
+
+    $O_idPersona=isset($_POST["O_idPersona"])?limpiarCadena($_POST["O_idPersona"]):"";
+    $O_idAlumno=isset($_POST["O_idAlumno"])?limpiarCadena($_POST["O_idAlumno"]):"";
 
 
 
@@ -183,6 +191,17 @@
 			$rspta=$mantenimiento->Recuperar_Alumno($idPersona,$idAlumno);
          echo json_encode($rspta);
       break;
+
+
+      case 'AccionMatricula':
+         $rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Registro']=$mantenimiento->Matricular($O_idPersona,$O_idAlumno,$O_importe_matricula,$O_importe_cuota,$O_importe_adicional1,$O_importe_adicional2,$O_observaciones,$login_idLog);
+
+         $rspta['Registro']?$rspta['Mensaje']="Alumno Matriculado.":$rspta['Mensaje']="Alumno no se pudo matricular comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
 
 
    }

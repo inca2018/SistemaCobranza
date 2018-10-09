@@ -272,7 +272,6 @@ function Cancelar(){
 function Volver(){
     $.redirect('../Operaciones/Operaciones.php');
 }
-
 function VerPlanPago(idPersona,idAlumno){
     $("#ModalPlanPago").modal({
       backdrop: 'static'
@@ -300,23 +299,56 @@ function Mostrar_Informacion_Alumno(idPersona,idAlumno){
     $("#datos_grado").val(data.GradoNombre);
     $("#datos_seccion").val(data.SeccionNombre);
 
+
+
     if(data.PlanP==0){
         $("#importe_matricula").removeAttr("disabled");
         $("#importe_cuota").removeAttr("disabled");
         $("#importe_adicional1").removeAttr("disabled");
         $("#importe_adicional2").removeAttr("disabled");
         $("#datos_observaciones").removeAttr("disabled");
+
+        $("#importe_matricula").removeAttr("disabled");
+        $("#importe_cuota").removeAttr("disabled");
+        $("#importe_adicional1").removeAttr("disabled");
+        $("#importe_adicional2").removeAttr("disabled");
+        $("#datos_observaciones").removeAttr("disabled");
+
+        $("#boton_matricula").removeAttr("disabled");
+
+        $("#mensajeMatricula").empty();
+        $("#fechaMatricula").empty();
+
     }else{
         $("#importe_matricula").attr("disabled","true");
         $("#importe_cuota").attr("disabled","true");
         $("#importe_adicional1").attr("disabled","true");
         $("#importe_adicional2").attr("disabled","true");
         $("#datos_observaciones").attr("disabled","true");
+
+        $("#boton_matricula").attr("disabled","true");
+
+        $("#fechaMatricula").empty();
+        $("#fechaMatricula").html("Fecha de Matricula: "+data.fechaMatricula);
+
+        $("#importe_matricula").val("S/."+Formato_Moneda(parseFloat(data.montoMatricula),2));
+        $("#importe_cuota").val("S/."+Formato_Moneda(parseFloat(data.montoCuota),2));
+        $("#importe_adicional1").val("S/."+Formato_Moneda(parseFloat(data.otroPago1),2));
+        $("#importe_adicional2").val("S/."+Formato_Moneda(parseFloat(data.otroPago2),2));
+        $("#datos_observaciones").val(data.Observaciones);
+
+        $("#mensajeMatricula").empty();
+        $("#mensajeMatricula").html("ALUMNO MATRICULADO");
     }
 
 	});
 }
 function iniciar_valores(){
+
+     $("#FormularioMatricula").on("submit",function(e)
+	{
+	      RegistroMatricula(e);
+	});
 
 
     $("#importe_matricula").change(function(){
@@ -400,7 +432,79 @@ function iniciar_valores(){
 		$("#importe_adicional2").val("S/. "+Formato_Moneda($("#O_importe_adicional2").val(),2));
 	});
 
+     $("#datos_observaciones").change(function(){
+	 	var ff=$("#datos_observaciones").val();
+		if(ff!=''){
+					$("#O_observaciones").val($("#datos_observaciones").val());
+				}else{
+					$("#O_importe_adicional2").val('');
+					$("#datos_observaciones").val('');
+				}
+	});
 
+
+
+}
+
+function RegistroMatricula(event){
+    event.preventDefault();
+
+    var error="";
+
+    var imp_matricula=$("#O_importe_matricula").val();
+    var imp_cuota=$("#O_importe_cuota").val();
+    var imp_adicional1=$("#O_importe_adicional1").val();
+    var imp_adicional2=$("#O_importe_adicional2").val();
+
+    if(imp_matricula==0){
+        error=error+"- Importe Matricula. <br>";
+       }
+    if(imp_cuota==0){
+        error=error+"- Importe Cuota. <br>";
+       }
+
+    if(error==""){
+		$("#cuerpo_matricula").addClass("whirl");
+		$("#cuerpo_matricula").addClass("ringed");
+		setTimeout('AjaxRegistroMatricula()', 2000);
+	}else{
+ 		notificar_warning("Complete :<br>"+error);
+	}
+
+}
+
+function AjaxRegistroMatricula(){
+     var formData = new FormData($("#FormularioMatricula")[0]);
+		console.log(formData);
+		$.ajax({
+			url: "../../controlador/Mantenimiento/CAlumno.php?op=AccionMatricula",
+			 type: "POST",
+			 data: formData,
+			 contentType: false,
+			 processData: false,
+			 success: function(data, status)
+			 {
+					data = JSON.parse(data);
+					console.log(data);
+					var Mensaje=data.Mensaje;
+				 	var Error=data.Registro;
+					if(!Error){
+						$("#cuerpo_matricula").removeClass("whirl");
+						$("#cuerpo_matricula").removeClass("ringed");
+						//$("#ModalPlanPago").modal("hide");
+						swal("Error:", Mensaje);
+					}else{
+						$("#cuerpo_matricula").removeClass("whirl");
+						$("#cuerpo_matricula").removeClass("ringed");
+						//$("#ModalPlanPago").modal("hide");
+					    swal("Acción:", Mensaje);
+
+                        var idPersona=$("#O_idPersona").val();
+                        var idAlumno=$("#O_idAlumno").val();
+                        Mostrar_Informacion_Alumno(idPersona,idAlumno);
+					}
+			 }
+		});
 }
 
 init();
