@@ -62,6 +62,18 @@
 
 			return ejecutarConsultaSimpleFila($sql);
 		}
+        public function Listar_Hijos($idApoderado){
+            $sql="CALL `SP_RELACION_LISTAR`('$idApoderado');";
+            return ejecutarConsulta($sql);
+        }
+        public function Agregar_hijo($idApoderado,$idAlumno,$creador){
+            $sql="CALL `SP_RELACION_AGREGAR`('$idApoderado');";
+            return ejecutarConsulta($sql);
+        }
+        public function Quitar_hijo($idRelacion,$creador){
+            $sql="CALL `SP_RELACION_ELIMINAR`('$idApoderado');";
+            return ejecutarConsulta($sql);
+        }
 
 
    }

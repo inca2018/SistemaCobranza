@@ -215,4 +215,38 @@
 	</div>
 </div>
 
+
+<div class="modal fade " id="ModalAsignacionHijos" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
+	<div class="modal-dialog modal-lg  ">
+		<div class="modal-content">
+            <div class="row m-1 bb">
+                <div class="col-md-12">
+                    <h4 class="text-center text-" >Asignación de Hijos del Apoderado</h4>
+                </div>
+            </div>
+			<div class="modal-body " >
+				    <div class="row">
+                                   <div class="col-md-12">
+                                        <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaHijosDisponibles">
+                                            <thead class="thead-light text-center">
+                                                <tr>
+                                                    <th data-priority="1">#</th>
+                                                    <th>ESTADO</th>
+                                                    <th>NOMBRE DE ALUMNO</th>
+                                                    <th>DNI</th>
+                                                    <th>FECHA DE ASIGNACION</th>
+                                                    <th>ACCION</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                   </div>
+                    </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script src="<?php echo $conexionConfig->rutaOP(); ?>vista/js/MantApoderado.js"></script>

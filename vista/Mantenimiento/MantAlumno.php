@@ -275,16 +275,16 @@
 						<div class="col-xl-12">
 							<div role="tabpanel">
 								<ul class="nav nav-pills " role="tablist">
-									<li class="nav-item pill-1 m-2 " role="presentation"><a class="nav-link active" href="#op_datos" aria-controls="home" role="tab" data-toggle="tab">Datos del Alumno</a>
+									<li class="nav-item pill-1 m-2 " role="presentation"><a class="nav-link active panelBoton" href="#op_datos" aria-controls="home" role="tab" data-toggle="tab" id="menu1">Datos del Alumno</a>
 									</li>
-									<li class="nav-item pill-2 m-2" role="presentation"><a class="nav-link" href="#op_info" aria-controls="profile" role="tab" data-toggle="tab">Matricula</a>
+									<li class="nav-item pill-2 m-2" role="presentation"><a class="nav-link panelBoton" href="#op_info" aria-controls="profile" role="tab" data-toggle="tab">Matricula</a>
 									</li>
-									<li class="nav-item pill-3 m-2" role="presentation"><a class="nav-link" href="#op_cuotas" aria-controls="messages" role="tab" data-toggle="tab">Cuotas Pensión</a>
+									<li class="nav-item pill-3 m-2" role="presentation"><a class="nav-link panelBoton" href="#op_cuotas" aria-controls="messages" role="tab" data-toggle="tab">Cuotas Pensión</a>
 									</li>
 
 								</ul>
 								<div class="tab-content">
-								<div class="tab-pane active" id="op_datos" role="tabpanel">
+								<div class="tab-pane active  panelAccion" id="op_datos" role="tabpanel">
 									<div class="container">
 										<h5 class="mt-2 mb-2 titulo_area" id="titulo_gasto"><em><b>Datos Personales:</b></em></h5>
 										<div class="row ">
@@ -359,7 +359,7 @@
 
 									</div>
 								</div>
-								<div class="tab-pane" id="op_info" role="tabpanel">
+								<div class="tab-pane panelAccion" id="op_info" role="tabpanel">
 									<div class="container">
                                        <div class="row">
 										    <button type="submit" id="boton_matricula"  class="btn btn-primary col-md-2 offset-10 "><i class="fa fa-check fa-lg mr-2"></i>Matricular</button>
@@ -370,7 +370,7 @@
 										         <h3 id="fechaMatricula" class="texto-x12"></h3>
 										    </div>
 										    <div class="col-md-6">
-										         <h4 id="mensajeMatricula" >ALUMNO MATRICULADO</h4>
+										         <h4 id="mensajeMatricula" class="text-danger" >ALUMNO MATRICULADO</h4>
 										    </div>
 										</div>
 
@@ -395,8 +395,6 @@
 															</div>
 														</div>
 													</div>
-
-
 
 												</div>
 											</div>
@@ -432,7 +430,7 @@
 
 									</div>
 								</div>
-								<div class="tab-pane" id="op_cuotas" role="tabpanel">
+								<div class="tab-pane panelAccion" id="op_cuotas" role="tabpanel">
 									<div class="container">
 									    <div class="row">
                                             <button class="btn btn-primary btn-sm col-md-2 offset-10" title="Agregar Cuota">
@@ -476,7 +474,7 @@
 				<div class="row m-2">
 
 					<div class="col-md-2 p-3">
-						<button class="btn btn-danger btn-sm btn-block">SALIR</button>
+						<button type="button" class="btn btn-primary btn-sm btn-block" onclick="Salir();">SALIR</button>
 					</div>
 				</div>
 

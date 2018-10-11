@@ -35,14 +35,27 @@
              return '<div class="badge badge-primary">'.$reg->nombreEstado.'</div>';
         }
     }
+
     function BuscarAccion($reg){
         if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
             return '
+            <button type="button"  title="Ver Hijos Matriculados" class="btn btn-primary btn-sm m-1" onclick="VerAlumnosRegistrados('.$reg->idPersona.','.$reg->idApoderado.');"><i class="far fa-eye"></i></button>
             <button type="button" title="Editar" class="btn btn-warning btn-sm" onclick="EditarApoderado('.$reg->idPersona.','.$reg->idApoderado.');"><i class="fa fa-edit"></i></button>
                <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="EliminarApoderado('.$reg->idPersona.','.$reg->idApoderado.');"><i class="fa fa-trash"></i></button>
                ';
         }elseif($reg->Estado_idEstado==4){
             return '<button type="button"  title="Habilitar" class="btn btn-info btn-sm" onclick="HabilitarApoderado('.$reg->idPersona.','.$reg->idApoderado.');"><i class="fa fa-sync"></i></button>';
+        }
+    }
+
+     function BuscarAccion2($reg){
+        if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
+            return '
+
+               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="EliminarHijo('.$reg->idRelacionHijos.' );"><i class="fa fa-trash"></i></button>
+               ';
+        }elseif($reg->Estado_idEstado==4){
+            return '<button type="button"  title="Habilitar" class="btn btn-info btn-sm" onclick="HabilitarHijo('.$reg->idRelacionHijos.' );"><i class="fa fa-sync"></i></button>';
         }
     }
 
@@ -123,6 +136,27 @@
                "5"=>$reg->Detalle,
                "6"=>$reg->fechaRegistro,
                "7"=>BuscarAccion($reg)
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+     case 'Listar_Hijos':
+
+         $rspta=$mantenimiento->Listar_Hijos($idApoderado);
+         $data= array();
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>'',
+               "1"=>BuscarEstado($reg),
+               "2"=>$reg->NomAlumno,
+               "3"=>$reg->DNI,
+               "4"=>$reg->fechaRegistro,
+               "5"=>BuscarAccion2($reg)
             );
          }
          $results = array(

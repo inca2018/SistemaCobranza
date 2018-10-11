@@ -282,6 +282,10 @@ function VerPlanPago(idPersona,idAlumno){
     Mostrar_Informacion_Alumno(idPersona,idAlumno);
     iniciar_valores();
 }
+function Salir(){
+    LimpiarPlan();
+    $("#ModalPlanPago").modal("hide");
+}
 function Mostrar_Informacion_Alumno(idPersona,idAlumno){
     $.post("../../controlador/Mantenimiento/CAlumno.php?op=RecuperarInformacion_Alumno",{"idPersona":idPersona,"idAlumno":idAlumno}, function(data, status){
 		data = JSON.parse(data);
@@ -506,5 +510,22 @@ function AjaxRegistroMatricula(){
 			 }
 		});
 }
+function LimpiarPlan(){
 
+    $("#FormularioMatricula")[0].reset();
+
+$("#O_idPersona").val("");
+$("#O_idAlumno").val("");
+$("#O_PlanCreado").val("");
+$("#O_importe_matricula").val("");
+$("#O_importe_cuota").val("");
+$("#O_importe_adicional1").val("");
+$("#O_importe_adicional2").val("");
+$("#O_observaciones").val("");
+
+$(".panelAccion").removeClass("active");
+$("#op_datos").addClass("active");
+$(".panelBoton").removeClass("active");
+$("#menu1").addClass("active");
+}
 init();
