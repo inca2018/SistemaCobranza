@@ -45,10 +45,33 @@
             return '<div class="badge badge-success">'.$reg->nombreEstado.'</div>';
         }elseif($reg->Estado_idEstado=='2' || $reg->Estado_idEstado==2){
             return '<div class="badge badge-danger">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='3' || $reg->Estado_idEstado==3){
+            return '<div class="badge badge-success">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='4' || $reg->Estado_idEstado==4){
+            return '<div class="badge badge-danger">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='5' || $reg->Estado_idEstado==5){
+            return '<div class="badge badge-warning">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='6' || $reg->Estado_idEstado==6){
+            return '<div class="badge badge-purple">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='7' || $reg->Estado_idEstado==7){
+            return '<div class="badge badge-info">'.$reg->nombreEstado.'</div>';
         }else{
-             return '<div class="badge badge-primary">'.$reg->nombreEstado.'</div>';
+             return '<div class="badge badge-danger">'.$reg->nombreEstado.'</div>';
         }
     }
+    function BuscarAccion2($reg){
+        $rep="";
+        if($reg->Estado_idEstado==5){
+            $rep.='
+            <button type="button" title="Anular" class="btn btn-danger btn-sm m-1" onclick="AnularCuota('.$reg->idCuota.');"><i class="fa fa-remove"></i></button>
+               ';
+        }elseif($reg->Estado_idEstado==8){
+            $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarCuota('.$reg->idCuota.');"><i class="fa fa-sync"></i></button>';
+        }
+
+        return $rep;
+    }
+
     function BuscarAccion($reg){
         $rep="";
         if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
@@ -169,6 +192,30 @@
          echo json_encode($results);
       break;
 
+     case 'Listar_Cuotas':
+
+         $rspta=$mantenimiento->Listar_Cuotas_Disponibles($idAlumno);
+         $data= array();
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>'',
+               "1"=>BuscarEstado($reg),
+               "2"=>$reg->Importe,
+               "3"=>$reg->Diferencia,
+               "4"=>$reg->fechaRegistro,
+               "5"=>$reg->fechaVencimiento,
+               "6"=>BuscarAccion2($reg)
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+
+
       case 'Eliminar_Alumno':
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
@@ -199,6 +246,15 @@
          $rspta['Registro']=$mantenimiento->Matricular($O_idPersona,$O_idAlumno,$O_importe_matricula,$O_importe_cuota,$O_importe_adicional1,$O_importe_adicional2,$O_observaciones,$login_idLog);
 
          $rspta['Registro']?$rspta['Mensaje']="Alumno Matriculado.":$rspta['Mensaje']="Alumno no se pudo matricular comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
+        case 'AgregarCuotaNueva':
+         $rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Registro']=$mantenimiento->AgregarCuota($idAlumno,$login_idLog);
+
+         $rspta['Registro']?$rspta['Mensaje']="Cuota Agregada.":$rspta['Mensaje']="Cuota no se pudo Agregar comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
 

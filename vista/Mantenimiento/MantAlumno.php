@@ -433,7 +433,7 @@
 								<div class="tab-pane panelAccion" id="op_cuotas" role="tabpanel">
 									<div class="container">
 									    <div class="row">
-                                            <button class="btn btn-primary btn-sm col-md-2 offset-10" title="Agregar Cuota">
+                                            <button type="button" class="btn btn-primary btn-sm col-md-2 offset-10" title="Agregar Cuota" onclick="AgregarCuota();" id="button_nueva_cuota">
                                                 <i class="fa fa-plus fa-lg mr-2"></i>Agregar Cuota
                                             </button>
 				                        </div>
@@ -447,9 +447,8 @@
 													 <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaCuotas">
                                                         <thead class="thead-light text-center">
                                                             <tr>
-                                                                <th data-priority="1">#</th>
+                                                                <th data-priority="1">NUM. CUOTA</th>
                                                                 <th>ESTADO</th>
-                                                                <th>CUOTA</th>
                                                                 <th>IMPORTE</th>
                                                                 <th>DIFERENCIA</th>
                                                                 <th>FECHA REGISTRO</th>

@@ -17,10 +17,10 @@
     $ApoderadoDireccion=isset($_POST["ApoderadoDireccion"])?limpiarCadena($_POST["ApoderadoDireccion"]):"";
     $ApoderadoEstado=isset($_POST["ApoderadoEstado"])?limpiarCadena($_POST["ApoderadoEstado"]):"";
 
-
+    $idAlumno=isset($_POST["idAlumno"])?limpiarCadena($_POST["idAlumno"]):"";
     $ApoderadoTipoTarjeta=isset($_POST["ApoderadoTipoTarjeta"])?limpiarCadena($_POST["ApoderadoTipoTarjeta"]):"";
     $ApoderadoDetalle=isset($_POST["ApoderadoDetalle"])?limpiarCadena($_POST["ApoderadoDetalle"]):"";
-
+    $idRelacion=isset($_POST["idRelacion"])?limpiarCadena($_POST["idRelacion"]):"";
 	$login_idLog=$_SESSION['idUsuario'];
 
     $date = str_replace('/', '-', $ApoderadoFechaNacimiento);
@@ -49,12 +49,11 @@
     }
 
      function BuscarAccion2($reg){
-        if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
+        if($reg->Estado_idEstado==1){
             return '
-
                <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="EliminarHijo('.$reg->idRelacionHijos.' );"><i class="fa fa-trash"></i></button>
                ';
-        }elseif($reg->Estado_idEstado==4){
+        }elseif($reg->Estado_idEstado==2){
             return '<button type="button"  title="Habilitar" class="btn btn-info btn-sm" onclick="HabilitarHijo('.$reg->idRelacionHijos.' );"><i class="fa fa-sync"></i></button>';
         }
     }
@@ -111,6 +110,14 @@
       		$rpta = $general->Listar_Estados(1);
          	while ($reg = $rpta->fetch_object()){
 					echo '<option   value=' . $reg->idEstado . '>' . $reg->nombreEstado . '</option>';
+         	}
+       break;
+        case 'listar_alumnos_disponibles':
+
+      		$rpta = $mantenimiento->Listar_Alumnos_Disponibles($idApoderado);
+                  echo '<option value="0">-- SELECCIONE --</option>';
+         	while ($reg = $rpta->fetch_object()){
+					echo '<option   value=' . $reg->idAlumno . '>' . $reg->NombreAlumno.'  DNI: '.$reg->DNI . '</option>';
          	}
        break;
 
@@ -189,6 +196,31 @@
 			$rspta=$mantenimiento->Recuperar_Apoderado($idPersona,$idApoderado);
          echo json_encode($rspta);
       break;
+
+
+     case 'AgregarHijoNuevo':
+         $rspta = array("Mensaje"=>"","Agregar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Agregar']=$mantenimiento->AgregarHijoNuevo($idApoderado,$idAlumno,$login_idLog);
+         $rspta['Agregar']?$rspta['Mensaje']="Alumno Agregado.":$rspta['Mensaje']="Alumno no se pudo Agregar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+    case 'EliminarHijo':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->Quitar_hijo($idRelacion,$login_idLog);
+         $rspta['Eliminar']?$rspta['Mensaje']="Alumno Eliminado.":$rspta['Mensaje']="Alumno no se pudo Eliminado comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+   case 'RestaurarHijo':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->Recuperar_hijo($idRelacion,$login_idLog);
+         $rspta['Eliminar']?$rspta['Mensaje']="Alumno Restaurado.":$rspta['Mensaje']="Alumno no se pudo Restaurar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
+
 
 
    }

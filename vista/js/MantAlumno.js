@@ -1,4 +1,5 @@
 var tablaAlumno;
+var tablaCuotas;
 function init(){
     Iniciar_Componentes();
     Listar_Estado();
@@ -294,6 +295,7 @@ function Mostrar_Informacion_Alumno(idPersona,idAlumno){
     $("#O_idPersona").val(data.idPersona);
     $("#O_idAlumno").val(data.idAlumno);
     $("#O_PlanCreado").val(data.PlanP);
+
     $("#datos_dni").val(data.DNI);
     $("#datos_apellido").val(data.apellidoPaterno+" "+data.apellidoMaterno);
     $("#datos_nombres").val(data.nombrePersona);
@@ -303,9 +305,10 @@ function Mostrar_Informacion_Alumno(idPersona,idAlumno){
     $("#datos_grado").val(data.GradoNombre);
     $("#datos_seccion").val(data.SeccionNombre);
 
-
+    ListarCuotas(idAlumno);
 
     if(data.PlanP==0){
+        $("#button_nueva_cuota").attr("disabled","true");
         $("#importe_matricula").removeAttr("disabled");
         $("#importe_cuota").removeAttr("disabled");
         $("#importe_adicional1").removeAttr("disabled");
@@ -324,6 +327,8 @@ function Mostrar_Informacion_Alumno(idPersona,idAlumno){
         $("#fechaMatricula").empty();
 
     }else{
+
+        $("#button_nueva_cuota").removeAttr("disabled");
         $("#importe_matricula").attr("disabled","true");
         $("#importe_cuota").attr("disabled","true");
         $("#importe_adicional1").attr("disabled","true");
@@ -449,7 +454,6 @@ function iniciar_valores(){
 
 
 }
-
 function RegistroMatricula(event){
     event.preventDefault();
 
@@ -476,7 +480,6 @@ function RegistroMatricula(event){
 	}
 
 }
-
 function AjaxRegistroMatricula(){
      var formData = new FormData($("#FormularioMatricula")[0]);
 		console.log(formData);
@@ -528,4 +531,107 @@ $("#op_datos").addClass("active");
 $(".panelBoton").removeClass("active");
 $("#menu1").addClass("active");
 }
+
+function AgregarCuota(){
+    swal({
+      title: "Agregar?",
+      text: "Esta Seguro que desea Agregar 1 cuota Nueva!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Agregar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxAgregarCuota();
+   });
+}
+function ajaxAgregarCuota(){
+    var idAlumno=$("#O_idAlumno").val();
+
+   $.post("../../controlador/Mantenimiento/CAlumno.php?op=AgregarCuotaNueva", {idAlumno:idAlumno}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Registro;
+      var Mensaje = data.Mensaje;
+      if (!Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Agregado!", Mensaje, "success");
+         tablaCuotas.ajax.reload();
+      }
+   });
+}
+
+function ListarCuotas(idAlumno){
+
+   	tablaCuotas = $('#tablaCuotas').dataTable({
+		"aProcessing": true,
+		"aServerSide": true,
+		"processing": true,
+		"paging": true, // Paginacion en tabla
+		"ordering": true, // Ordenamiento en columna de tabla
+		"info": true, // Informacion de cabecera tabla
+		"responsive": true, // Accion de responsive
+          dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
+
+		"bDestroy": true
+        , "columnDefs": [
+            {
+               "className": "text-center"
+               , "targets": [0,1,2,3,4,5,6]
+            }
+            , {
+               "className": "text-left"
+               , "targets": [0]
+            }
+         , ]
+         , buttons: [
+            {
+               extend: 'copy'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'csv'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'excel'
+               , className: 'btn-info'
+               , title: 'Facturacion'
+            }
+            , {
+               extend: 'pdf'
+               , className: 'btn-info'
+               , title: $('title').text()
+            }
+            , {
+               extend: 'print'
+               , className: 'btn-info'
+            }
+            ],
+         "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Mantenimiento/CAlumno.php?op=Listar_Cuotas',
+			type: "POST",
+			dataType: "JSON",
+             data:{idAlumno:idAlumno},
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
+		// cambiar el lenguaje de datatable
+		oLanguage: español,
+	}).DataTable();
+	//Aplicar ordenamiento y autonumeracion , index
+	tablaCuotas.on('order.dt search.dt', function () {
+		tablaCuotas.column(0, {
+			search: 'applied',
+			order: 'applied'
+		}).nodes().each(function (cell, i) {
+			cell.innerHTML = i + 1;
+		});
+	}).draw();
+}
+
+
 init();

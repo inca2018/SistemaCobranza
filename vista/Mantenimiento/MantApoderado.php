@@ -217,14 +217,34 @@
 
 
 <div class="modal fade " id="ModalAsignacionHijos" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
-	<div class="modal-dialog modal-lg  ">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
+           <input type="hidden" id="idPadre" name="idPadre">
             <div class="row m-1 bb">
                 <div class="col-md-12">
                     <h4 class="text-center text-" >Asignación de Hijos del Apoderado</h4>
                 </div>
             </div>
 			<div class="modal-body " >
+                   <h5 class="mt-3 mb-3 titulo_area" ><em><b>Seleccione Alumno para agregar como Hijo al Apoderado:</b></em></h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="ApoderadoEstado" class="col-md-6 col-form-label">Alumnos<span class="red">*</span>:</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="AlumnosDisponibles" name="AlumnosDisponibles" >
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 offset-4">
+                              <button type="button" class="btn btn-success btn-block" onclick="AgregarHijo();">
+                                  AGREGAR
+                              </button>
+                        </div>
+                    </div>
 				    <div class="row">
                                    <div class="col-md-12">
                                         <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaHijosDisponibles">
@@ -242,6 +262,12 @@
                                             </tbody>
                                         </table>
                                    </div>
+                    </div>
+                    <hr>
+                    <div class="row mt-3 nb-3">
+                        <div class="col-md-2  ">
+                            <button type="button" class="btn btn-primary btn-block" onclick="cerrarLista();">CERRAR</button>
+                        </div>
                     </div>
 			</div>
 		</div>

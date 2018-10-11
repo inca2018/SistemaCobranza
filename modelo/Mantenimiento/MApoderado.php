@@ -66,14 +66,25 @@
             $sql="CALL `SP_RELACION_LISTAR`('$idApoderado');";
             return ejecutarConsulta($sql);
         }
-        public function Agregar_hijo($idApoderado,$idAlumno,$creador){
-            $sql="CALL `SP_RELACION_AGREGAR`('$idApoderado');";
+        public function AgregarHijoNuevo($idApoderado,$idAlumno,$creador){
+            $sql="CALL `SP_RELACION_AGREGAR`('$idApoderado','$idAlumno','$creador');";
             return ejecutarConsulta($sql);
         }
         public function Quitar_hijo($idRelacion,$creador){
-            $sql="CALL `SP_RELACION_ELIMINAR`('$idApoderado');";
+            $sql="CALL `SP_RELACION_ELIMINAR`('$idRelacion','$creador');";
             return ejecutarConsulta($sql);
         }
+
+        public function Recuperar_hijo($idRelacion,$creador){
+            $sql="CALL `SP_RELACION_RECUPERAR`('$idRelacion','$creador');";
+
+            return ejecutarConsulta($sql);
+        }
+
+       public function Listar_Alumnos_Disponibles($idApoderado){
+           $sql="CALL `SP_MOSTRAR_ALUMNOS_DISPONIBLES`('$idApoderado');";
+           return ejecutarConsulta($sql);
+       }
 
 
    }

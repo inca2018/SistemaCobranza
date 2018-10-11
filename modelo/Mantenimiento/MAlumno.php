@@ -64,6 +64,18 @@
 
 			return ejecutarConsulta($sql);
 		}
+
+       public function Listar_Cuotas_Disponibles($idAlumno){
+           $sql="CALL `SP_CUOTAS_LISTAR`('$idAlumno');";
+
+           return ejecutarConsulta($sql);
+       }
+
+       public function AgregarCuota($idAlumno,$creador){
+           $sql="CALL `SP_CUOTA_AGREGAR`('$idAlumno','$creador');";
+
+           return ejecutarConsulta($sql);
+       }
    }
 
 ?>

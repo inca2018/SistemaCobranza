@@ -264,12 +264,14 @@ function Volver(){
 }
 
 function VerAlumnosRegistrados(idPersona,idApoderado){
+     $("#idPadre").val(idApoderado);
      $("#ModalAsignacionHijos").modal({
       backdrop: 'static'
       , keyboard: false
     });
     $("#ModalAsignacionHijos").modal("show");
     RecuperarHijos(idApoderado);
+    Listar_Alumnos_Disponibles(idApoderado);
 }
 
 function RecuperarHijos(idApoderadoE){
@@ -341,6 +343,99 @@ function RecuperarHijos(idApoderadoE){
 			cell.innerHTML = i + 1;
 		});
 	}).draw();
+}
+
+function cerrarLista(){
+   $("#ModalAsignacionHijos").modal("hide");
+}
+
+function AgregarHijo(){
+    var idApoderado=$("#idPadre").val();
+    var idAlumno=$("#AlumnosDisponibles").val();
+    if(idAlumno==0 || idAlumno=='0'){
+        notificar_warning("Debe Seleccionar un Alumno par Agregar");
+       }else{
+           Agregar_Hijo_Nuevo(idApoderado,idAlumno);
+
+       }
+
+}
+function Agregar_Hijo_Nuevo(idApoderado,idAlumno){
+    $.post("../../controlador/Mantenimiento/CApoderado.php?op=AgregarHijoNuevo", {idApoderado:idApoderado,idAlumno: idAlumno}, function (data, e) {
+      data = JSON.parse(data);
+      var Agregar = data.Agregar;
+      var Mensaje = data.Mensaje;
+      if (!Agregar) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Agregado con Exito!", Mensaje, "success");
+         tablaHijos.ajax.reload();
+         Listar_Alumnos_Disponibles(idApoderado);
+      }
+   });
+}
+
+function  EliminarHijo(idRelacion){
+     swal({
+      title: "Eliminar?",
+      text: "Esta Seguro que desea Desvincular Alumno!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Eliminar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarAlumno(idRelacion);
+   });
+}
+function HabilitarHijo(idRelacion){
+     swal({
+      title: "Habilitar?",
+      text: "Esta Seguro que desea Vincular Alumno!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Vincular!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxVincularAlumno(idRelacion);
+   });
+}
+function ajaxVincularAlumno(idRelacion){
+    $.post("../../controlador/Mantenimiento/CApoderado.php?op=RestaurarHijo", {idRelacion:idRelacion}, function (data, e) {
+      data = JSON.parse(data);
+      var Eliminar = data.Eliminar;
+      var Mensaje = data.Mensaje;
+      if (!Eliminar) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Vinculado con Exito!", Mensaje, "success");
+         tablaHijos.ajax.reload();
+         var idApoderado=$("#idPadre").val();
+         Listar_Alumnos_Disponibles(idApoderado);
+      }
+   });
+}
+function ajaxEliminarAlumno(idRelacion){
+    $.post("../../controlador/Mantenimiento/CApoderado.php?op=EliminarHijo", {idRelacion:idRelacion}, function (data, e) {
+      data = JSON.parse(data);
+      var Eliminar = data.Eliminar;
+      var Mensaje = data.Mensaje;
+      if (!Eliminar) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Eliminado con Exito!", Mensaje, "success");
+         tablaHijos.ajax.reload();
+         var idApoderado=$("#idPadre").val();
+         Listar_Alumnos_Disponibles(idApoderado);
+      }
+   });
+}
+function Listar_Alumnos_Disponibles(idApoderadoU){
+	 $.post("../../controlador/Mantenimiento/CApoderado.php?op=listar_alumnos_disponibles",{idApoderado:idApoderadoU}, function (ts) {
+         $("#AlumnosDisponibles").empty();
+         $("#AlumnosDisponibles").append(ts);
+   });
 }
 
 init();
