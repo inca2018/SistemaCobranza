@@ -33,7 +33,8 @@
     $O_idPersona=isset($_POST["O_idPersona"])?limpiarCadena($_POST["O_idPersona"]):"";
     $O_idAlumno=isset($_POST["O_idAlumno"])?limpiarCadena($_POST["O_idAlumno"]):"";
 
-
+    $campo=isset($_POST["campo"])?limpiarCadena($_POST["campo"]):"";
+    $campoEdicion=isset($_POST["campoEdicion"])?limpiarCadena($_POST["campoEdicion"]):"";
 
 	$login_idLog=$_SESSION['idUsuario'];
 
@@ -63,10 +64,22 @@
         $rep="";
         if($reg->Estado_idEstado==5){
             $rep.='
-            <button type="button" title="Anular" class="btn btn-danger btn-sm m-1" onclick="AnularCuota('.$reg->idCuota.');"><i class="fa fa-remove"></i></button>
+            <button type="button" title="Anular" class="btn btn-danger btn-sm m-1" onclick="AnularCuota('.$reg->idCuota.');"><i class="fa fa-trash"></i></button>
                ';
         }elseif($reg->Estado_idEstado==8){
             $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarCuota('.$reg->idCuota.');"><i class="fa fa-sync"></i></button>';
+        }
+
+        return $rep;
+    }
+      function Matriculado($reg){
+        $rep="";
+        if($reg==1){
+            $rep.='
+            <div class="badge badge-purple">SI</div>
+               ';
+        }elseif($reg==0){
+            $rep.='<div class="badge badge-danger">NO</div>';
         }
 
         return $rep;
@@ -175,13 +188,14 @@
          $data[]=array(
                "0"=>'',
                "1"=>BuscarEstado($reg),
-               "2"=>$reg->NombrePersona,
-               "3"=>$reg->DNI,
-               "4"=>$reg->NivelNombre,
-               "5"=>$reg->GradoNombre,
-               "6"=>$reg->SeccionNombre,
-               "7"=>$reg->fechaRegistro,
-               "8"=>BuscarAccion($reg)
+               "2"=>Matriculado($reg->PlanP),
+               "3"=>$reg->NombrePersona,
+               "4"=>$reg->DNI,
+               "5"=>$reg->NivelNombre,
+               "6"=>$reg->GradoNombre,
+               "7"=>$reg->SeccionNombre,
+               "8"=>$reg->fechaRegistro,
+               "9"=>BuscarAccion($reg)
             );
          }
          $results = array(
@@ -252,9 +266,18 @@
         case 'AgregarCuotaNueva':
          $rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
-         $rspta['Registro']=$mantenimiento->AgregarCuota($idAlumno,$login_idLog);
+         $rspta['Registro']=$mantenimiento->AgregarCuota($O_idAlumno,$login_idLog);
 
          $rspta['Registro']?$rspta['Mensaje']="Cuota Agregada.":$rspta['Mensaje']="Cuota no se pudo Agregar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
+         case 'ActualizarCampo':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->ActualizarCampo($idAlumno,$campo,$campoEdicion);
+
+         $rspta['Eliminar']?$rspta['Mensaje']="Campo Actualizado.":$rspta['Mensaje']="Campo no se pudo Actualizar comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
 

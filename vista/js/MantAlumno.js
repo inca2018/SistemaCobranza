@@ -112,11 +112,11 @@ function Listar_Alumno(){
         , "columnDefs": [
             {
                "className": "text-center"
-               , "targets": [1,2,3,4,5,6,7,8]
+               , "targets": [1,2,4,5,6,7]
             }
             , {
                "className": "text-left"
-               , "targets": [0]
+               , "targets": [3]
             }
          , ]
          , buttons: [
@@ -305,6 +305,7 @@ function Mostrar_Informacion_Alumno(idPersona,idAlumno){
     $("#datos_grado").val(data.GradoNombre);
     $("#datos_seccion").val(data.SeccionNombre);
 
+    $("#Area_Edicion").hide();
     ListarCuotas(idAlumno);
 
     if(data.PlanP==0){
@@ -326,7 +327,18 @@ function Mostrar_Informacion_Alumno(idPersona,idAlumno){
         $("#mensajeMatricula").empty();
         $("#fechaMatricula").empty();
 
+        $("#edicion_importe").hide();
+        $("#edicion_cuota").hide();
+        $("#edicion_adicional1").hide();
+        $("#edicion_adicional2").hide();
+        $("#edicion_obser").hide();
+
     }else{
+        $("#O_importe_matricula").val(parseFloat(data.montoMatricula));
+        $("#O_importe_cuota").val(parseFloat(data.montoCuota));
+        $("#O_importe_adicional1").val(parseFloat(data.otroPago1));
+        $("#O_importe_adicional2").val(parseFloat(data.otroPago2));
+        $("#O_observaciones").val(data.Observaciones);
 
         $("#button_nueva_cuota").removeAttr("disabled");
         $("#importe_matricula").attr("disabled","true");
@@ -348,9 +360,62 @@ function Mostrar_Informacion_Alumno(idPersona,idAlumno){
 
         $("#mensajeMatricula").empty();
         $("#mensajeMatricula").html("ALUMNO MATRICULADO");
+
+        $("#edicion_importe").show();
+        $("#edicion_cuota").show();
+        $("#edicion_adicional1").show();
+        $("#edicion_adicional2").show();
+        $("#edicion_obser").show();
     }
 
+    EdicionCampos();
+
 	});
+}
+function EdicionCampos(){
+
+    $("#edicion_importe").click(function(){
+		 $("#Area_Edicion").show();
+         $("#campoEdicion").val($("#O_importe_matricula").val());
+         $("#EdicionAccion").val("montoMatricula");
+	});
+    $("#edicion_cuota").click(function(){
+		 $("#Area_Edicion").show();
+         $("#campoEdicion").val($("#O_importe_cuota").val());
+         $("#EdicionAccion").val("montoCuota");
+	});
+     $("#edicion_adicional1").click(function(){
+		 $("#Area_Edicion").show();
+         $("#campoEdicion").val($("#O_importe_adicional1").val());
+         $("#EdicionAccion").val("otroPago1");
+	});
+    $("#edicion_adicional2").click(function(){
+		 $("#Area_Edicion").show();
+         $("#campoEdicion").val($("#O_importe_adicional2").val());
+         $("#EdicionAccion").val("otroPago2");
+	});
+
+    $("#edicion_obser").click(function(){
+		 $("#Area_Edicion").show();
+         $("#campoEdicion").val($("#O_observaciones").val());
+        $("#EdicionAccion").val("Observaciones");
+	});
+}
+function ActualizarEdicion(){
+    debugger;
+    var campoEdicion=$("#campoEdicion").val();
+    var campo=$("#EdicionAccion").val();
+    var idAlumno=$("#O_idAlumno").val();
+     $.post("../../controlador/Mantenimiento/CAlumno.php?op=ActualizarCampo", {idAlumno:idAlumno,campoEdicion:campoEdicion,campo:campo}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+          notificar_danger(Mensaje);
+      }else{
+         notificar_success(Mensaje);
+      }
+   });
 }
 function iniciar_valores(){
 
@@ -545,10 +610,11 @@ function AgregarCuota(){
       ajaxAgregarCuota();
    });
 }
+
 function ajaxAgregarCuota(){
     var idAlumno=$("#O_idAlumno").val();
 
-   $.post("../../controlador/Mantenimiento/CAlumno.php?op=AgregarCuotaNueva", {idAlumno:idAlumno}, function (data, e) {
+   $.post("../../controlador/Mantenimiento/CAlumno.php?op=AgregarCuotaNueva", {O_idAlumno:idAlumno}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Registro;
       var Mensaje = data.Mensaje;
@@ -557,6 +623,7 @@ function ajaxAgregarCuota(){
       } else {
          swal("Agregado!", Mensaje, "success");
          tablaCuotas.ajax.reload();
+
       }
    });
 }

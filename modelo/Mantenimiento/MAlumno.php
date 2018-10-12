@@ -76,6 +76,11 @@
 
            return ejecutarConsulta($sql);
        }
+
+    public function ActualizarCampo($idAlumno,$campo,$campoEdicion){
+           $sql="UPDATE `planpago` SET  `$campo`='$campoEdicion'  WHERE `Alumno_idAlumno`='$idAlumno'";
+           return ejecutarConsulta($sql);
+       }
    }
 
 ?>
