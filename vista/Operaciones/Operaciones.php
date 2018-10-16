@@ -73,7 +73,6 @@
                                       </div>
                                       <!-- END card-->
                                    </div>
-
                                    <div class="col-xl-3 col-lg-6">
                                       <!-- START card-->
                                       <div class="card bg-green-dark border-0 sombra1" >
@@ -100,7 +99,7 @@
                                       </div>
                                       <!-- END card-->
                                    </div>
-                                     <div class="col-xl-3 col-lg-6">
+                                   <div class="col-xl-3 col-lg-6">
                                       <!-- START card-->
                                       <div class="card bg-danger-dark border-0 sombra1">
                                          <div class="card-header">
@@ -115,7 +114,7 @@
                                                </div>
                                             </div>
                                          </div>
-                                         <a class="card-footer p-2 bg-danger  bt0 clearfix btn-block d-flex"  href="#" onclick="MostrarInformacionAsignado();">
+                                         <a class="card-footer p-2 bg-danger-light  bt0 clearfix btn-block d-flex"  href="#" onclick="MostrarInformacionAsignado();">
                                             <span>Detalles</span>
                                             <span class="ml-auto">
                                                <em class="fa fa-chevron-circle-right"></em>
@@ -127,9 +126,38 @@
                                    </div>
                                 </div>
                            </div>
-                            <!-- <h5 class="mt-3 mb-3 titulo_area" ><em><b>Información General:</b></em></h5> -->
 
                         </div>
+
+                        <h5 class="mt-3 mb-3 titulo_area" ><em><b>Información General:</b></em></h5>
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="row">
+                                   <div class="col-md-12">
+                                        <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaOperaciones" style="font-size:13px">
+                                            <thead class="thead-light text-center">
+
+                                                <tr>
+                                                    <th data-priority="1">#</th>
+                                                    <th>ALUMNOS</th>
+                                                    <th>DNI</th>
+                                                    <th>APODERADO</th>
+                                                    <th>DNI</th>
+                                                    <th>N° CUOTAS</th>
+                                                    <th>C. PENDIENTES</th>
+                                                    <th>C. PAGADAS</th>
+                                                    <th>C. VENCIDAS</th>
+                                                    <th>ACCION</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                   </div>
+
+                                </div>
+                            </div>
+                      </div>
                </div>
            </div>
          </div>

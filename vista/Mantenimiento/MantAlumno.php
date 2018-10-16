@@ -387,7 +387,7 @@
 															<label for="importe_matricula" class="col-md-7 col-form-label texto-x12" ><b>Importe Matricula:</b></label>
 															<button type="button" class="btn btn-warning btn-sm col-md-1" id="edicion_importe"><i class="fa fa-edit"></i></button>
 															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_matricula" id="importe_matricula"    value="S/. 0.00" >
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_matricula" id="importe_matricula"    value="S/. 0.00" onkeypress="return SoloNumerosModificado(event,8,this.id);">
 															</div>
 
 														</div>
@@ -397,7 +397,7 @@
 															<label for="importe_cuota" class="col-md-7 col-form-label texto-x12" ><b>Importe Cuota:</b></label>
 															<button type="button" class="btn btn-warning btn-sm col-md-1" id="edicion_cuota"><i class="fa fa-edit"></i></button>
 															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_cuota" id="importe_cuota"    value="S/. 0.00"  >
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_cuota" id="importe_cuota"    value="S/. 0.00"  onkeypress="return SoloNumerosModificado(event,8,this.id);">
 															</div>
 														</div>
 													</div>
@@ -412,7 +412,7 @@
 															<label for="importe_adicional1" class="col-md-7 col-form-label texto-x12" ><b>Importe Adicional Ingles:</b></label>
 															<button type="button" class="btn btn-warning btn-sm col-md-1" id="edicion_adicional1"><i class="fa fa-edit"></i></button>
 															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_adicional1" id="importe_adicional1"   value="S/. 0.00"  >
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_adicional1" id="importe_adicional1"   value="S/. 0.00"  onkeypress="return SoloNumerosModificado(event,8,this.id);">
 															</div>
 														</div>
 													</div>
@@ -421,7 +421,7 @@
 															<label for="importe_adicional2" class="col-md-7 col-form-label texto-x12" ><b>Importe Adicional Otros:</b></label>
 															<button type="button" class="btn btn-warning btn-sm col-md-1" id="edicion_adicional2"><i class="fa fa-edit"></i></button>
 															<div class="col-md-4">
-																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_adicional2" id="importe_adicional2"   value="S/. 0.00"  >
+																<input type="text" class="form-control texto-x12 text-center" placeholder="" name="importe_adicional2" id="importe_adicional2"   value="S/. 0.00"  onkeypress="return SoloNumerosModificado(event,8,this.id);">
 															</div>
 														</div>
 													</div>
@@ -431,7 +431,7 @@
                                                 <div class="form-group ">
                                                     <label for="datos_observaciones" class=" col-form-label texto-x12"><b>Observaciones:</b> </label>
                                                     <button type="button" class="btn btn-warning btn-sm mt-2 mb-2" id="edicion_obser"><i class="fa fa-edit"></i></button>
-                                                    <textarea id="datos_observaciones" name="datos_observaciones" rows="2" class="form-control" >
+                                                    <textarea id="datos_observaciones" name="datos_observaciones" rows="2" class="form-control" onkeypress="return SoloLetras(event,150,this.id);">
                                                     </textarea>
                                                 </div>
                                             </div>

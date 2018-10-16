@@ -44,6 +44,10 @@
            $sql="CALL `SP_TIPO_TARJETA_LISTAR`();";
            return  ejecutarConsulta($sql);
        }
+         public function Listar_TipoPago(){
+           $sql="SELECT * FROM tipopago";
+           return  ejecutarConsulta($sql);
+       }
 
 
 

@@ -60,7 +60,7 @@
 
 
 		public function Matricular($idPersona,$idAlumno,$O_importe_matricula,$O_importe_cuota,$O_importe_adicional1,$O_importe_adicional2,$O_observaciones,$login_idLog){
-			$sql="INSERT INTO `planpago`(`Alumno_idAlumno`, `fechaRegistro`, `montoCuota`, `montoMatricula`, `otroPago1`, `otroPago2`, `Observaciones`, `Estado_idEstado`) VALUES ('$idAlumno',NOW(),'$O_importe_cuota','$O_importe_matricula','$O_importe_adicional1','$O_importe_adicional2','$O_observaciones',1);";
+			$sql="INSERT INTO `planpago`(`Alumno_idAlumno`, `fechaRegistro`, `montoCuota`, `montoMatricula`,`pagoM`, `otroPago1`, `pagoOtro1`,`otroPago2`,`pagoOtro2`, `Observaciones`, `Estado_idEstado`) VALUES ('$idAlumno',NOW(),'$O_importe_cuota','$O_importe_matricula',0,'$O_importe_adicional1',0,'$O_importe_adicional2',0,'$O_observaciones',1);";
 
 			return ejecutarConsulta($sql);
 		}
@@ -81,6 +81,14 @@
            $sql="UPDATE `planpago` SET  `$campo`='$campoEdicion'  WHERE `Alumno_idAlumno`='$idAlumno'";
            return ejecutarConsulta($sql);
        }
+
+
+     public function AnularCuota($idCuota,$codigo,$creador){
+           $sql="CALL `SP_CUOTA_ANULAR`('$idCuota','$codigo','$creador');";
+           return ejecutarConsulta($sql);
+       }
+
+
    }
 
 ?>

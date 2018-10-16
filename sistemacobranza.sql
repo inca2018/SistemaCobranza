@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 11-10-2018 a las 12:21:30
+-- Tiempo de generación: 12-10-2018 a las 12:47:26
 -- Versión del servidor: 5.7.21
--- Versión de PHP: 5.6.35
+-- Versión de PHP: 5.6.35    ykgykgkygkgkgk
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,57 +28,58 @@ DELIMITER $$
 --
 DROP PROCEDURE IF EXISTS `SP_ALUMNO_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ALUMNO_ACTUALIZAR` (IN `nombre` VARCHAR(100), IN `apellidoP` VARCHAR(100), IN `apellidoM` VARCHAR(100), IN `DNI` INT(10), IN `fechaNacimiento` DATE, IN `correo` VARCHAR(100), IN `telefono` INT(10), IN `Direccion` TEXT, IN `estado` INT(11), IN `nivel` INT(11), IN `grado` INT(11), IN `seccion` INT(11), IN `imagenU` INT(11), IN `idPersonaU` INT(11), IN `idAlumnoU` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
- 
-if(correo='0')then 
+
+if(correo='0')then
 SET correo=null;
 end if;
-if(telefono='0')then 
+if(telefono='0')then
 SET telefono=null;
 end if;
-if(Direccion='0')then 
+if(Direccion='0')then
 SET Direccion=null;
-end if; 
-if(imagenU='0')then 
+end if;
+if(imagenU='0')then
 SET imagenU=null;
-end if; 
-   
+end if;
+
 UPDATE `persona` SET `nombrePersona`=UPPER(nombre),`apellidoPaterno`=UPPER(apellidoP),`apellidoMaterno`=UPPER(apellidoM),`DNI`=DNI,`fechaNacimiento`=fechaNacimiento,`correo`=UPPER(correo),`telefono`=telefono,`direccion`=UPPER(Direccion),`Estado_idEstado`=estado WHERE `idPersona`=idPersonaU;
 
 UPDATE `alumno` SET `imagen`=imagenU,`Nivel_idNivel`=nivel,`Grado_idGrado`=grado,`Seccion_idSeccion`=seccion WHERE `idAlumno`=idAlumnoU;
 
 /* ------ REGISTRO DE BITACORA ------ */
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
- 
+
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','Alumno',CONCAT('SE ACTUALIZO Alumno:',nombre,' ',apellidoP,' ',apellidoM),NOW());
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_ALUMNO_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ALUMNO_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
-SELECT 
-(SELECT COUNT(*) FROM planpago pa WHERE pa.Alumno_idAlumno=al.idAlumno) as PlanP,p.idPersona,al.idAlumno,CONCAT(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombrePersona,p.DNI,p.fechaRegistro,e.idEstado as Estado_idEstado,e.nombreEstado,n.idNivel,n.Descripcion as NivelNombre,g.idGrado,g.Descripcion as GradoNombre,s.idSeccion,s.Descripcion as SeccionNombre FROM persona p INNER JOIN alumno al ON al.Persona_idPersona=p.idPersona INNER JOIN estado e ON e.idEstado=p.Estado_idEstado INNER JOIN nivel n ON n.idNivel=al.Nivel_idNivel INNER JOIN grado g ON g.idGrado=al.Grado_idGrado INNER JOIN seccion s ON s.idSeccion=al.Seccion_idSeccion;
+SELECT
+(SELECT COUNT(*) FROM planpago pa WHERE pa.Alumno_idAlumno=al.idAlumno) as PlanP,p.idPersona,al.idAlumno,CONCAT(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombrePersona,p.DNI,p.fechaRegistro,e.idEstado as Estado_idEstado,e.nombreEstado,n.idNivel,n.Descripcion as NivelNombre,g.idGrado,g.Descripcion as GradoNombre,s.idSeccion,s.Descripcion as SeccionNombre
+FROM persona p INNER JOIN alumno al ON al.Persona_idPersona=p.idPersona INNER JOIN estado e ON e.idEstado=p.Estado_idEstado INNER JOIN nivel n ON n.idNivel=al.Nivel_idNivel INNER JOIN grado g ON g.idGrado=al.Grado_idGrado INNER JOIN seccion s ON s.idSeccion=al.Seccion_idSeccion;
 
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_ALUMNO_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ALUMNO_RECUPERAR` (IN `idPersonaE` INT(11), IN `idAlumnoE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SELECT
 (SELECT COUNT(*) FROM planpago pa WHERE pa.Alumno_idAlumno=al.idAlumno) as PlanP,p.idPersona,al.idAlumno,p.nombrePersona,p.apellidoPaterno,p.apellidoMaterno,p.DNI,p.fechaRegistro,p.fechaNacimiento,p.correo,p.telefono,p.direccion,e.idEstado as Estado_idEstado,e.nombreEstado,n.idNivel,n.Descripcion as NivelNombre,g.idGrado,g.Descripcion as GradoNombre,s.idSeccion,s.Descripcion as SeccionNombre,pla.fechaRegistro as fechaMatricula,pla.montoCuota,pla.montoMatricula,pla.otroPago1,pla.otroPago2,pla.Observaciones FROM persona p INNER JOIN alumno al ON al.Persona_idPersona=p.idPersona INNER JOIN estado e ON e.idEstado=p.Estado_idEstado INNER JOIN nivel n ON n.idNivel=al.Nivel_idNivel INNER JOIN grado g ON g.idGrado=al.Grado_idGrado INNER JOIN seccion s ON s.idSeccion=al.Seccion_idSeccion
-LEFT JOIN planpago pla ON pla.Alumno_idAlumno=al.idAlumno 
-WHERE p.idPersona=idPersonaE and al.idAlumno=idAlumnoE;  
-  
+LEFT JOIN planpago pla ON pla.Alumno_idAlumno=al.idAlumno
+WHERE p.idPersona=idPersonaE and al.idAlumno=idAlumnoE;
+
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_ALUMNO_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ALUMNO_REGISTRO` (IN `nombre` VARCHAR(100), IN `apellidoP` VARCHAR(100), IN `apellidoM` VARCHAR(100), IN `DNI` INT(11), IN `fechaNacimiento` DATE, IN `correo` VARCHAR(100), IN `telefono` INT, IN `Direccion` TEXT, IN `estado` INT(11), IN `imagen` VARCHAR(100), IN `nivel` INT(11), IN `grado` INT(11), IN `seccion` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 DECLARE idPersonaNew INT(11);
 
@@ -97,16 +98,16 @@ end if;
 
 INSERT INTO `persona`(`idPersona`, `nombrePersona`, `apellidoPaterno`, `apellidoMaterno`, `DNI`, `fechaNacimiento`, `correo`, `telefono`, `direccion`, `Estado_idEstado`, `fechaRegistro`) VALUES (NULL,UPPER(nombre),UPPER(apellidoP),UPPER(apellidoM),DNI,fechaNacimiento,UPPER(correo),telefono,UPPER(Direccion),estado,NOW());
 
- 
+
 SET idPersonaNew=(SELECT LAST_INSERT_ID());
 
 
 INSERT INTO `alumno`(`idAlumno`, `imagen`, `Persona_idPersona`, `Nivel_idNivel`, `Grado_idGrado`, `Seccion_idSeccion`, `fechaRegistro`) VALUES (NULL,imagen,idPersonaNew,nivel,grado,seccion,NOW());
 
 /* ------ REGISTRO DE BITACORA ------ */
-SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);  
+SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
- 
+
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'REGISTRO','Alumno',CONCAT('SE REGISTRO PERSONA:',nombre,' ',apellidoP,' ',apellidoM," COMO ALUMNO NUEVO"),NOW());
 
 
@@ -114,60 +115,60 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_APODERADO_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_APODERADO_ACTUALIZAR` (IN `nombre` VARCHAR(100), IN `apellidoP` VARCHAR(100), IN `apellidoM` VARCHAR(100), IN `DNI` INT(10), IN `fechaNacimiento` DATE, IN `correo` VARCHAR(100), IN `telefono` INT(10), IN `Direccion` TEXT, IN `estado` INT(11), IN `TipoTarjetaU` INT(11), IN `DetalleU` VARCHAR(150), IN `idPersonau` INT(11), IN `IdApoderadoU` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN  
-if(correo='0')then 
+BEGIN
+if(correo='0')then
 SET correo=null;
 end if;
-if(telefono='0')then 
+if(telefono='0')then
 SET telefono=null;
 end if;
-if(Direccion='0')then 
+if(Direccion='0')then
 SET Direccion=null;
-end if; 
-if(TipoTarjetaU='0')then 
+end if;
+if(TipoTarjetaU='0')then
 SET TipoTarjetaU=null;
-end if; 
-if(DetalleU='0')then 
+end if;
+if(DetalleU='0')then
 SET DetalleU=null;
-end if; 
+end if;
 
-   
+
 UPDATE `persona` SET `nombrePersona`=UPPER(nombre),`apellidoPaterno`=UPPER(apellidoP),`apellidoMaterno`=UPPER(apellidoM),`DNI`=DNI,`fechaNacimiento`=fechaNacimiento,`correo`=UPPER(correo),`telefono`=telefono,`direccion`=UPPER(Direccion),`Estado_idEstado`=estado WHERE `idPersona`=idPersonaU;
 
 UPDATE `apoderado` SET  `TipoTarjeta_idTipoTarjeta`=TipoTarjetaU,`Detalle`=DetalleU WHERE `idApoderado`=IdApoderadoU;
 
 /* ------ REGISTRO DE BITACORA ------ */
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
- 
+
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','Apoderado',CONCAT('SE ACTUALIZO Apoderado:',nombre,' ',apellidoP,' ',apellidoM),NOW());
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_APODERADO_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_APODERADO_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT p.idPersona,apo.idApoderado,concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombrePersona,p.DNI,p.Estado_idEstado,e.nombreEstado,p.fechaRegistro,IFNULL(tip.Descripcion,'-') AS TipoTarjeta,IFNULL(apo.Detalle,'-') AS Detalle FROM persona p
 INNER JOIN apoderado apo ON apo.Persona_idPersona=p.idPersona
-INNER JOIN estado e ON e.idEstado=p.Estado_idEstado  
-LEFT JOIN tipotarjeta tip ON tip.idTipoTarjeta=apo.TipoTarjeta_idTipoTarjeta; 
+INNER JOIN estado e ON e.idEstado=p.Estado_idEstado
+LEFT JOIN tipotarjeta tip ON tip.idTipoTarjeta=apo.TipoTarjeta_idTipoTarjeta;
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_APODERADO_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_APODERADO_RECUPERAR` (IN `idPersonaU` INT(11), IN `idApoderadoU` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 
 
 SELECT p.idPersona,apo.idApoderado, P.nombrePersona,P.apellidoPaterno,P.apellidoMaterno,P.fechaNacimiento,p.correo,p.telefono,p.direccion,tip.idTipoTarjeta,p.DNI,p.Estado_idEstado,e.nombreEstado,p.fechaRegistro,IFNULL(tip.Descripcion,'-') AS TipoTarjeta,apo.Detalle FROM persona p
 INNER JOIN apoderado apo ON apo.Persona_idPersona=p.idPersona
-INNER JOIN estado e ON e.idEstado=p.Estado_idEstado  
+INNER JOIN estado e ON e.idEstado=p.Estado_idEstado
 LEFT JOIN tipotarjeta tip ON tip.idTipoTarjeta=apo.TipoTarjeta_idTipoTarjeta where p.idPersona=idPersonaU and apo.idApoderado=idApoderadoU;
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_APODERADO_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_APODERADO_REGISTRO` (IN `nombre` VARCHAR(100), IN `apellidoP` VARCHAR(100), IN `apellidoM` VARCHAR(100), IN `DNI` INT(10), IN `fechaNacimiento` DATE, IN `correo` VARCHAR(100), IN `telefono` INT(10), IN `Direccion` TEXT, IN `estado` INT(11), IN `TipoTarjetaE` INT(11), IN `DetalleE` VARCHAR(150), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 DECLARE idPersonaNew INT(11);
 
@@ -186,21 +187,21 @@ end if;
 if(DetalleE='0')THEN
 SET DetalleE=null;
 end if;
- 
+
 INSERT INTO `persona`(`idPersona`, `nombrePersona`, `apellidoPaterno`, `apellidoMaterno`, `DNI`, `fechaNacimiento`, `correo`, `telefono`, `direccion`, `Estado_idEstado`, `fechaRegistro`) VALUES (NULL,UPPER(nombre),UPPER(apellidoP),UPPER(apellidoM),DNI,fechaNacimiento,UPPER(correo),telefono,UPPER(Direccion),estado,NOW());
 
- 
+
 SET idPersonaNew=(SELECT LAST_INSERT_ID());
 
 
 INSERT INTO `apoderado`(`idApoderado`, `Persona_idPersona`, `TipoTarjeta_idTipoTarjeta`, `Detalle`, `fechaRegistro`) VALUES (NULL,idPersonaNew,TipoTarjetaE,DetalleE,NOW());
 
 /* ------ REGISTRO DE BITACORA ------ */
-SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);  
+SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'REGISTRO','Persona',CONCAT('SE REGISTRO APODERADO:',nombre,' ',apellidoP,' ',apellidoM),NOW());
 
- 
+
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_CUOTAS_LISTAR`$$
@@ -215,26 +216,26 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_CUOTA_AGREGAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_CUOTA_AGREGAR` (IN `idALumnoU` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 DECLARE montoCuotaV DECIMAL(7,2);
 DECLARE idPlanV INT (4);
- 
- 
+
+
  DECLARE c1 CURSOR FOR
-SELECT pla.montoCuota,pla.idPlanPago FROM planpago pla INNER JOIN alumno al ON al.idAlumno=pla.Alumno_idAlumno;
+SELECT pla.montoCuota,pla.idPlanPago FROM planpago pla INNER JOIN alumno al ON al.idAlumno=pla.Alumno_idAlumno where al.idAlumno=idALumnoU;
 
 open c1;
 fetch c1 into montoCuotaV,idPlanV;
- 
-INSERT INTO `cuota`(`idCuota`, `PlanPago_idPlanPago`, `Importe`, `Diferencia`, `fechaRegistro`, `fechaVencimiento`, `Estado_idEstado`) VALUES (NULL,idPlanV,montoCuotaV,montoCuotaV,NOW(),DATE(DATE_ADD(now(), INTERVAL 1 MONTH)),5);  
+
+INSERT INTO `cuota`(`idCuota`, `PlanPago_idPlanPago`, `Importe`, `Diferencia`, `fechaRegistro`, `fechaVencimiento`, `Estado_idEstado`) VALUES (NULL,idPlanV,montoCuotaV,montoCuotaV,NOW(),DATE(DATE_ADD(now(), INTERVAL 1 MONTH)),5);
 
 
 /* ------ REGISTRO DE BITACORA ------ */
-SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);  
+SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
- 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'REGISTRO','Cuota',CONCAT('SE REGISTRO Cuota Nueva:',idALumnoU),NOW());  
+
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'REGISTRO','Cuota',CONCAT('SE REGISTRO Cuota Nueva:',idALumnoU),NOW());
 
 CLOSE c1;
 
@@ -242,7 +243,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_CUOTA_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_CUOTA_LISTAR` (IN `idPlanPagoU` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM cuota c WHERE c.PlanPago_idPlanPago=idPlanPagoU;
 
@@ -251,7 +252,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_ESTADO_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_ESTADO_LISTAR` (IN `Tipo` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 Select * FROM estado e WHERE e.tipoEstado=Tipo;
 
@@ -259,27 +260,27 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_GRADO_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GRADO_ACTUALIZAR` (IN `descri` VARCHAR(100), IN `estado` INT(11), IN `idGradoE` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-UPDATE `grado` SET `Descripcion`=UPPER(descri), `Estado_idEstado`=estado WHERE `idGrado`=idGradoE; 
+UPDATE `grado` SET `Descripcion`=UPPER(descri), `Estado_idEstado`=estado WHERE `idGrado`=idGradoE;
 
 /* ------ REGISTRO DE BITACORA ------ */
 SET @NombreUsuario=(SELECT u.usuario FROM usuario u WHERE u.idUsuario=creador);
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','GRADO',CONCAt("SE ACTUALIZO GRADO:",descri),NOW());    
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','GRADO',CONCAt("SE ACTUALIZO GRADO:",descri),NOW());
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_GRADO_HABILITACION`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GRADO_HABILITACION` (IN `idGradoE` INT(11), IN `codigo` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-if (codigo=1) then 
-  
+if (codigo=1) then
+
     UPDATE `grado` SET `Estado_idEstado`=4  WHERE `idGrado`=idGradoE;
   SET @Mensaje=("GRADO DESHABILITADO");
-else 
-   UPDATE `grado` SET `Estado_idEstado`=1  WHERE `idGrado`=idGradoE;    
- SET  @Mensaje=("GRADO HABILITADO");   
+else
+   UPDATE `grado` SET `Estado_idEstado`=1  WHERE `idGrado`=idGradoE;
+ SET  @Mensaje=("GRADO HABILITADO");
 end if;
 
  /* ------ REGISTRO DE BITACORA ------ */
@@ -288,8 +289,8 @@ set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=creador);
 
 set @tipotar=(SELECT g.Descripcion FROM grado g WHERE g.idGrado=idGradoE);
 
-INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'GRADO',CONCAT(@Mensaje," :", @tipotar),NOW());     
- 
+INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'GRADO',CONCAT(@Mensaje," :", @tipotar),NOW());
+
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_GRADO_LISTAR`$$
@@ -301,7 +302,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_GRADO_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GRADO_RECUPERAR` (IN `idGradoE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM grado g WHERE g.idGrado=idGradoE;
 
@@ -309,30 +310,30 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_GRADO_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GRADO_REGISTRO` (IN `descri` VARCHAR(100), IN `estado` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 -- REGISTRAR TIPO DE TARJETA --
 INSERT INTO `grado`(`idGrado`, `Descripcion`, `fechaRegistro`, `Estado_idEstado`) VALUES (NULL,UPPER(descri),NOW(),estado);
- 
+
 
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO GRADO','GRADO',NOW()); 
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO GRADO','GRADO',NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_LISTAR_GRADOS`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_LISTAR_GRADOS` ()  NO SQL
-BEGIN 
+BEGIN
 
-SELECT * from grado g WHERE g.Estado_idEstado=1 OR g.Estado_idEstado=3; 
+SELECT * from grado g WHERE g.Estado_idEstado=1 OR g.Estado_idEstado=3;
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_LISTAR_NIVELES`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_LISTAR_NIVELES` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM nivel n WHERE n.Estado_idEstado=1 or n.Estado_idEstado=3;
 
@@ -340,7 +341,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_LISTAR_PERFILES`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_LISTAR_PERFILES` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM perfil p WHERE p.Estado_idEstado=1 or p.Estado_idEstado=3;
 
@@ -348,7 +349,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_LISTAR_SECCIONES`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_LISTAR_SECCIONES` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM seccion s WHERE s.Estado_idEstado=1 or s.Estado_idEstado=3;
 
@@ -366,7 +367,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_MOSTRAR_ALUMNOS_DISPONIBLES`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_MOSTRAR_ALUMNOS_DISPONIBLES` (IN `idApoderadoU` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SELECT al.idAlumno,CONCAT(per.nombrePersona,' ',per.apellidoPaterno,' ',per.apellidoMaterno) as NombreAlumno,per.DNI FROM alumno al INNER JOIN persona per ON per.idPersona=al.Persona_idPersona
  WHERE NOT EXISTS(SELECT * FROM relacionhijos rel INNER JOIN apoderado apo ON apo.idApoderado=rel.Apoderado_idApoderado WHERE rel.Alumno_idAlumno=al.idAlumno and  rel.Apoderado_idApoderado=1);
@@ -375,27 +376,27 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_NIVEL_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_NIVEL_ACTUALIZAR` (IN `Descri` VARCHAR(100), IN `estado` INT(11), IN `idNivelE` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-UPDATE `nivel` SET  `Descripcion`=UPPER(Descri),`Estado_idEstado`=estado WHERE `idNivel`=idNivelE;  
+UPDATE `nivel` SET  `Descripcion`=UPPER(Descri),`Estado_idEstado`=estado WHERE `idNivel`=idNivelE;
 
 /* ------ REGISTRO DE BITACORA ------ */
 SET @NombreUsuario=(SELECT u.usuario FROM usuario u WHERE u.idUsuario=creador);
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','Nivel',CONCAt("SE ACTUALIZO NIVEL:",Descri),NOW());    
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','Nivel',CONCAt("SE ACTUALIZO NIVEL:",Descri),NOW());
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_NIVEL_HABILITACION`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_NIVEL_HABILITACION` (IN `idNivelE` INT(11), IN `codigo` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-if (codigo=1) then 
-  
+if (codigo=1) then
+
     UPDATE `nivel` SET `Estado_idEstado`=4  WHERE `idNivel`=idNivelE;
   SET @Mensaje=("NIVEL DESHABILITADO");
-else 
-   UPDATE `nivel` SET `Estado_idEstado`=1  WHERE `idNivel`=idNivelE;    
- SET  @Mensaje=("NIVEL HABILITADO");   
+else
+   UPDATE `nivel` SET `Estado_idEstado`=1  WHERE `idNivel`=idNivelE;
+ SET  @Mensaje=("NIVEL HABILITADO");
 end if;
 
  /* ------ REGISTRO DE BITACORA ------ */
@@ -404,13 +405,13 @@ set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=creador);
 
 set @tipotar=(SELECT ni.Descripcion FROM nivel ni WHERE ni.idNivel=idNivelE);
 
-INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'NIVEL',CONCAT(@Mensaje," :", @tipotar),NOW());     
- 
+INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'NIVEL',CONCAT(@Mensaje," :", @tipotar),NOW());
+
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_NIVEL_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_NIVEL_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM nivel n INNER JOIN estado e ON e.idEstado=n.Estado_idEstado;
 
@@ -418,36 +419,36 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_NIVEL_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_NIVEL_RECUPERAR` (IN `idNivelE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-SELECT * FROM nivel ni WHERE ni.idNivel=idNivelE; 
+SELECT * FROM nivel ni WHERE ni.idNivel=idNivelE;
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_NIVEL_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_NIVEL_REGISTRO` (IN `nom` VARCHAR(100), IN `estado` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 -- REGISTRAR TIPO DE TARJETA --
 INSERT INTO `nivel`(`idNivel`, `Descripcion`, `fechaRegistro`, `Estado_idEstado`) VALUES (NULL,UPPER(nom),NOW(),estado);
- 
- 
- 
+
+
+
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO NIVEL','NIVEL',NOW()); 
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO NIVEL','NIVEL',NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERFIL_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERFIL_ACTUALIZAR` (IN `nombre` VARCHAR(50), IN `descripcion` TEXT, IN `estado` INT(11), IN `idperfilE` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-if(descripcion=-1)then 
+if(descripcion=-1)then
 SET descripcion=null;
 end if;
- 
-UPDATE `perfil` SET `nombrePerfil`=UPPER(nombre),`descripcionPerfil`=UPPER(descripcion),`Estado_idEstado`=estado WHERE `idPerfil`=idperfilE; 
+
+UPDATE `perfil` SET `nombrePerfil`=UPPER(nombre),`descripcionPerfil`=UPPER(descripcion),`Estado_idEstado`=estado WHERE `idPerfil`=idperfilE;
 
 /* ------ REGISTRO DE BITACORA ------ */
 SET @NombreUsuario=(SELECT u.usuario FROM usuario u WHERE u.idUsuario=creador);
@@ -457,16 +458,16 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERFIL_ELIMINAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERFIL_ELIMINAR` (IN `idPerfilEnviado` INT(11), IN `idUsuario` INT(11), OUT `Mensaje` TEXT)  NO SQL
-BEGIN 
+BEGIN
 DECLARE CantidadPerfil INT(11);
 
 SET CantidadPerfil=(SELECT COUNT(*) FROM usuario u WHERE u.Perfil_idPerfil=idPerfilEnviado);
 
 SELECT CantidadPerfil;
 
-if(CantidadPerfil>0) then  
+if(CantidadPerfil>0) then
     SET Mensaje="No se Puede Eliminar,Existen Usuarios usando el Perfil Seleccionado.";
-else 
+else
  	DELETE FROM `perfil`  WHERE `idPerfil`=idPerfilEnviado;
     SET Mensaje="Perfil Elimino Correctamente.";
 end if;
@@ -481,15 +482,15 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERFIL_HABILITACION`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERFIL_HABILITACION` (IN `idPerfilE` INT(11), IN `codigo` INT(11), IN `idUsuarioE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SET @NombrePerfil=(SELECT pe.nombrePerfil FROM perfil pe WHERE pe.idPerfil=idPerfilE);
 
 
-if (codigo=1) then 
+if (codigo=1) then
  	UPDATE `perfil` SET  `Estado_idEstado`=4 WHERE `idPerfil`=idPerfilE;
   SET @Mensaje=("PERFIL DESHABILITADO");
-else 
+else
     UPDATE `perfil` SET  `Estado_idEstado`=1  WHERE `idPerfil`=idPerfilE;
  SET  @Mensaje=("PERFIL HABILITADO");
 end if;
@@ -498,13 +499,13 @@ end if;
 
 set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=idUsuarioE);
 
-INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'PERFIL',CONCAT("SE",@Mensaje," :", @NombrePerfil),NOW());     
- 
+INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'PERFIL',CONCAT("SE",@Mensaje," :", @NombrePerfil),NOW());
+
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERFIL_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERFIL_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM perfil;
 
@@ -512,7 +513,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERFIL_LISTAR_TODOS`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERFIL_LISTAR_TODOS` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM perfil p INNER JOIN estado e on e.idEstado=p.Estado_idEstado;
 END$$
@@ -526,7 +527,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERFIL_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERFIL_REGISTRO` (IN `nombrePerfil` VARCHAR(50), IN `descripcion` TEXT, IN `estado` INT(11), IN `idUsuarioE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 DECLARE idPerfil INT(11);
 
@@ -545,13 +546,13 @@ SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.ap
 
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO PERFIL','Perfil',NOW());
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO PERMISOS DE PERFIL','Permisos',NOW()); 
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO PERMISOS DE PERFIL','Permisos',NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERMISOS_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERMISOS_ACTUALIZAR` (IN `idPermisosE` INT(11), IN `perm1` INT(11), IN `perm2` INT(11), IN `perm3` INT(11), IN `idPerfilE` INT(11), IN `idUsuarioE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 UPDATE `permisos` SET `Permiso1`=perm1,`Permiso2`=perm2,`Permiso3`=perm3 WHERE `idPermisos`=idPermisosE;
 
@@ -561,13 +562,13 @@ set @perfil=(SELECT perfil.nombrePerfil FROM perfil WHERE perfil.idPerfil=idPerf
 
 set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=idUsuarioE);
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@usuario,'SE ACTUALIZO PERMISOS','PERMISOS',CONCAT("SE ACTUALIZO PERMISOS DE PERFIL:",@perfil),NOW()); 
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@usuario,'SE ACTUALIZO PERMISOS','PERMISOS',CONCAT("SE ACTUALIZO PERMISOS DE PERFIL:",@perfil),NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERMISOS_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERMISOS_RECUPERAR` (IN `idPerfilE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SELECT per.idPermisos,per.Permiso1,per.Permiso2,per.Permiso3,perf.nombrePerfil FROM permisos per INNER JOIN perfil perf ON perf.idPerfil=per.Perfil_idPerfil WHERE perf.idPerfil=idPerfilE;
 
@@ -575,7 +576,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERSONAS_LISTAR_SIN_USUARIOS`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERSONAS_LISTAR_SIN_USUARIOS` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM persona p WHERE NOT EXISTS (SELECT * FROM usuario u WHERE u.Persona_idPersona=p.idPersona);
 
@@ -584,19 +585,19 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERSONA_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERSONA_ACTUALIZAR` (IN `nombre` VARCHAR(50), IN `apellidoP` VARCHAR(50), IN `apellidoM` VARCHAR(50), IN `DNI` CHAR(10), IN `fechaNacimiento` DATE, IN `correo` VARCHAR(100), IN `telefono` CHAR(10), IN `Direccion` TEXT, IN `estado` INT(11), IN `idPersonaU` INT(11), IN `idUsuario` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
- 
-if(correo='0')then 
+
+if(correo='0')then
 SET correo=null;
 end if;
-if(telefono='0')then 
+if(telefono='0')then
 SET telefono=null;
 end if;
-if(Direccion='0')then 
+if(Direccion='0')then
 SET Direccion=null;
-end if; 
-   
+end if;
+
 UPDATE `persona` SET `nombrePersona`=UPPER(nombre),`apellidoPaterno`=UPPER(apellidoP),`apellidoMaterno`=UPPER(apellidoM),`DNI`=DNI,`fechaNacimiento`=fechaNacimiento,`correo`=UPPER(correo),`telefono`=telefono,`direccion`=UPPER(Direccion),`Estado_idEstado`=estado WHERE `idPersona`=idPersonaU;
 
 /* ------ REGISTRO DE BITACORA ------ */
@@ -607,30 +608,30 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERSONA_HABILITACION`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERSONA_HABILITACION` (IN `idPersonaE` INT(11), IN `codigo` INT(11), IN `idUsuarioE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SET @NombrePersona=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM persona p WHERE p.idPersona=idPersonaE);
 
 
-if (codigo=1) then 
+if (codigo=1) then
  	UPDATE `persona` SET  `Estado_idEstado`=4 WHERE `idPersona`=idPersonaE;
   SET @Mensaje=("PERSONA DESHBILITADO");
-else 
+else
     UPDATE `persona` SET  `Estado_idEstado`=1  WHERE `idPersona`=idPersonaE;
  SET  @Mensaje=("PERSONA HABILITADO");
 end if;
 
  /* ------ REGISTRO DE BITACORA ------ */
 
-set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=idUsuarioE); 
+set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=idUsuarioE);
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@usuario,@Mensaje,'USUARIO',CONCAT("SE",@Mensaje," :", @NombrePersona),NOW());    
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@usuario,@Mensaje,'USUARIO',CONCAT("SE",@Mensaje," :", @NombrePersona),NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERSONA_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERSONA_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
 
 SELECT * FROM persona p INNER JOIN estado e ON e.idEstado=p.Estado_idEstado;
@@ -640,7 +641,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERSONA_LISTAR_TODO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERSONA_LISTAR_TODO` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM persona;
 
@@ -648,7 +649,7 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_PERSONA_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERSONA_RECUPERAR` (IN `idPersonaU` INT)  NO SQL
-begin 
+begin
 
 SELECT * FROM persona p WHERE p.idPersona=idPersonaU;
 
@@ -656,7 +657,7 @@ end$$
 
 DROP PROCEDURE IF EXISTS `SP_PERSONA_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_PERSONA_REGISTRO` (IN `nombre` VARCHAR(50), IN `apellidoP` VARCHAR(50), IN `apellidoM` VARCHAR(50), IN `DNI` CHAR(10), IN `fechaNacimiento` DATE, IN `correo` VARCHAR(100), IN `telefono` CHAR(10), IN `Direccion` TEXT, IN `estado` INT(11), IN `idUsuario` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 if(correo='0')THEN
 SET correo=null;
@@ -668,7 +669,7 @@ if(Direccion='0')THEN
 SET Direccion=null;
 end if;
 
-INSERT INTO `persona`(`idPersona`, `nombrePersona`, `apellidoPaterno`, `apellidoMaterno`, `DNI`, `fechaNacimiento`, `correo`, `telefono`, `direccion`, `Estado_idEstado`, `fechaRegistro`) VALUES (NULL,UPPER(nombre),UPPER(apellidoP),UPPER(apellidoM),DNI,fechaNacimiento,UPPER(correo),telefono,UPPER(Direccion),estado,NOW());  
+INSERT INTO `persona`(`idPersona`, `nombrePersona`, `apellidoPaterno`, `apellidoMaterno`, `DNI`, `fechaNacimiento`, `correo`, `telefono`, `direccion`, `Estado_idEstado`, `fechaRegistro`) VALUES (NULL,UPPER(nombre),UPPER(apellidoP),UPPER(apellidoM),DNI,fechaNacimiento,UPPER(correo),telefono,UPPER(Direccion),estado,NOW());
 
 
 /* ------ REGISTRO DE BITACORA ------ */
@@ -681,48 +682,48 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_RELACION_AGREGAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_RELACION_AGREGAR` (IN `idApoderadoE` INT(11), IN `idAlumnoE` INT(11), IN `creador` INT)  NO SQL
-BEGIN 
+BEGIN
 
 INSERT INTO `relacionhijos`(`idRelacionHijos`, `Apoderado_idApoderado`, `Alumno_idAlumno`, `Estado_idEstado`, `fechaRegistro`) VALUES (NULL,idApoderadoE,idAlumnoE,1,NOW());
 
 
 /* ------ REGISTRO DE BITACORA ------ */
-SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);  
+SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
- 
+
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'REGISTRO','Relacion',CONCAT('SE AGREGO ALUMNO:',idAlumnoE,' A APODERADO:',idApoderadoE),NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_RELACION_ELIMINAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_RELACION_ELIMINAR` (IN `idRelacion` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 UPDATE `relacionhijos` SET  `Estado_idEstado`=2 WHERE `idRelacionHijos`=idRelacion;
 
 /* ------ REGISTRO DE BITACORA ------ */
-SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);  
+SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
- 
+
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ELIMINAR','Relacion','SE QUITO RELACION',NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_RELACION_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_RELACION_LISTAR` (IN `idApoderadoE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
- 
+
 SELECT rel.idRelacionHijos,
 concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NomAlumno,
 p.DNI ,
 rel.Estado_idEstado,e.nombreEstado,rel.fechaRegistro
 FROM relacionhijos rel
-INNER JOIN alumno al 
-ON al.idAlumno=rel.Alumno_idAlumno 
-INNER JOIN persona p 
+INNER JOIN alumno al
+ON al.idAlumno=rel.Alumno_idAlumno
+INNER JOIN persona p
 ON p.idPersona=al.Persona_idPersona
-INNER JOIN estado e 
+INNER JOIN estado e
 ON e.idEstado=rel.Estado_idEstado
 WHERE rel.Apoderado_idApoderado=idApoderadoE;
 
@@ -731,21 +732,21 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_RELACION_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_RELACION_RECUPERAR` (IN `idRelacionU` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 UPDATE `relacionhijos` SET  `Estado_idEstado`=1 WHERE `idRelacionHijos`=idRelacionU;
 
 /* ------ REGISTRO DE BITACORA ------ */
-SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);  
+SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
- 
+
 INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ELIMINAR','Relacion','SE QUITO RELACION',NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_SECCION_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SECCION_ACTUALIZAR` (IN `Descri` VARCHAR(100), IN `estado` INT(11), IN `idSeccionE` INT(11), IN `creador` INT)  NO SQL
-BEGIN 
+BEGIN
 
 
 UPDATE `seccion` SET `Descripcion`=UPPER(Descri),`Estado_idEstado`=estado WHERE `idSeccion`=idSeccionE;
@@ -753,20 +754,20 @@ UPDATE `seccion` SET `Descripcion`=UPPER(Descri),`Estado_idEstado`=estado WHERE 
 /* ------ REGISTRO DE BITACORA ------ */
 SET @NombreUsuario=(SELECT u.usuario FROM usuario u WHERE u.idUsuario=creador);
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','SECCION',CONCAt("SE ACTUALIZO SECCION:",Descri),NOW());    
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','SECCION',CONCAt("SE ACTUALIZO SECCION:",Descri),NOW());
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_SECCION_HABILITACION`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SECCION_HABILITACION` (IN `idSeccionE` INT(11), IN `codigo` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-if (codigo=1) then 
-  
+if (codigo=1) then
+
     UPDATE `seccion` SET `Estado_idEstado`=4  WHERE `idSeccion`=idSeccionE;
   SET @Mensaje=("SECCION DESHABILITADO");
-else 
-   UPDATE `seccion` SET `Estado_idEstado`=1  WHERE `idSeccion`=idSeccionE;    
- SET  @Mensaje=("SECCION HABILITADO");   
+else
+   UPDATE `seccion` SET `Estado_idEstado`=1  WHERE `idSeccion`=idSeccionE;
+ SET  @Mensaje=("SECCION HABILITADO");
 end if;
 
  /* ------ REGISTRO DE BITACORA ------ */
@@ -775,20 +776,20 @@ set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=creador);
 
 set @tipotar=(SELECT s.Descripcion FROM seccion s WHERE s.idSeccion=idSeccionE);
 
-INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'SECCION',CONCAT(@Mensaje," :", @tipotar),NOW());     
- 
+INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'SECCION',CONCAT(@Mensaje," :", @tipotar),NOW());
+
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_SECCION_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SECCION_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM seccion s INNER JOIN estado e ON e.idEstado=s.Estado_idEstado;
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_SECCION_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SECCION_RECUPERAR` (IN `idSeccionE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SELECT * FROM seccion s WHERE s.idSeccion=idSeccionE;
 
@@ -796,22 +797,22 @@ END$$
 
 DROP PROCEDURE IF EXISTS `SP_SECCION_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SECCION_REGISTRO` (IN `Descri` VARCHAR(100), IN `estado` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 -- REGISTRAR TIPO DE TARJETA --
 INSERT INTO `seccion`(`idSeccion`, `Descripcion`, `fechaRegistro`, `Estado_idEstado`) VALUES (NULL,Descri,NOW(),estado);
- 
+
 
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=creador);
 
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO SECCION','SECCION',NOW());  
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO SECCION','SECCION',NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_TARJETA_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TARJETA_ACTUALIZAR` (IN `descri` VARCHAR(100), IN `estado` INT(11), IN `idTarjeta` INT(11), IN `creador` INT)  NO SQL
-BEGIN 
+BEGIN
 
 
 UPDATE `tipotarjeta` SET  `Descripcion`=UPPER(descri),`Estado_idEstado`=estado WHERE `idTipoTarjeta`=idTarjeta;
@@ -819,19 +820,19 @@ UPDATE `tipotarjeta` SET  `Descripcion`=UPPER(descri),`Estado_idEstado`=estado W
 /* ------ REGISTRO DE BITACORA ------ */
 SET @NombreUsuario=(SELECT u.usuario FROM usuario u WHERE u.idUsuario=creador);
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','TipoTarjeta',CONCAt("SE ACTUALIZO TIPO TARJETA:",descri),NOW());  
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','TipoTarjeta',CONCAt("SE ACTUALIZO TIPO TARJETA:",descri),NOW());
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_TARJETA_HABILITACION`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TARJETA_HABILITACION` (IN `idTarjeta` INT(11), IN `codigo` INT(11), IN `creador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-if (codigo=1) then 
-  
+if (codigo=1) then
+
     UPDATE `tipotarjeta` SET `Estado_idEstado`=4  WHERE `idTipoTarjeta`=idTarjeta;
   SET @Mensaje=("TIPO DE TARJETA DESHABILITADO");
-else 
-   UPDATE `tipotarjeta` SET `Estado_idEstado`=1  WHERE `idTipoTarjeta`=idTarjeta;    
+else
+   UPDATE `tipotarjeta` SET `Estado_idEstado`=1  WHERE `idTipoTarjeta`=idTarjeta;
  SET  @Mensaje=("TIPO DE TARJETA HABILITADO");
 end if;
 
@@ -840,61 +841,61 @@ end if;
 set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=creador);
 set @tipotar=(SELECT tip.Descripcion FROM tipotarjeta tip WHERE tip.idTipoTarjeta=idTarjeta);
 
-INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'PERFIL',CONCAT(@Mensaje," :", @tipotar),NOW());     
- 
+INSERT INTO `bitacora`(`usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (@usuario,@Mensaje,'PERFIL',CONCAT(@Mensaje," :", @tipotar),NOW());
+
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_TARJETA_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TARJETA_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
-SELECT * FROM tipotarjeta tar INNER JOIN estado e ON e.idEstado=tar.Estado_idEstado; 
+SELECT * FROM tipotarjeta tar INNER JOIN estado e ON e.idEstado=tar.Estado_idEstado;
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_TARJETA_RECUPERAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TARJETA_RECUPERAR` (IN `idTarjeta` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
-SELECT * FROM tipotarjeta tip WHERE tip.idTipoTarjeta=idTarjeta; 
+SELECT * FROM tipotarjeta tip WHERE tip.idTipoTarjeta=idTarjeta;
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_TARJETA_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TARJETA_REGISTRO` (IN `nombreTarjeta` VARCHAR(100), IN `estado` INT(11), IN `idUsuarioE` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 -- REGISTRAR TIPO DE TARJETA --
 INSERT INTO `tipotarjeta`(`idTipoTarjeta`, `Descripcion`, `Estado_idEstado`, `fechaRegistro`) VALUES (NULL,UPPER(nombreTarjeta),estado,NOW());
- 
+
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=idUsuarioE);
 
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO TIPO DE TARJETA DE PAGO','TipoTarjeta',NOW()); 
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'INSERTAR','SE REGISTRO TIPO DE TARJETA DE PAGO','TipoTarjeta',NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_TIPO_TARJETA_LISTAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_TIPO_TARJETA_LISTAR` ()  NO SQL
-BEGIN 
+BEGIN
 
 
-SELECT * FROM tipotarjeta t where t.Estado_idEstado=1 or t.Estado_idEstado=3;  
+SELECT * FROM tipotarjeta t where t.Estado_idEstado=1 or t.Estado_idEstado=3;
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_USUARIO_ACTUALIZAR`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_USUARIO_ACTUALIZAR` (IN `usuarioE` VARCHAR(50), IN `passE` TEXT, IN `idPerfil` INT(11), IN `idEstado` INT(11), IN `idUsuarioU` INT(11), IN `idCreador` INT(11))  NO SQL
 BEGIN
- 
+
 DECLARE Mensaje VARCHAR(100);
 
 -- ACTUALIZAR USUARIO
-if(pass='-1')then  
+if(pass='-1')then
 
 UPDATE `usuario` SET 		`usuario`=usuarioE,`Perfil_idPerfil`=idPerfil,`Estado_idEstado`=idEstado WHERE  `idUsuario`= idUsuarioU;
 set Mensaje="SE ACTUALIZO EL USUARIO:";
-        
-else 
+
+else
 
 UPDATE `usuario` SET 		`usuario`=usuarioE,`pass`=passE,`Perfil_idPerfil`=idPerfil,`Estado_idEstado`=idEstado WHERE  `idUsuario`= idUsuarioU;
 set Mensaje="SE ACTUALIZO EL USUARIO:";
@@ -904,24 +905,24 @@ end if;
 
 -- REGISTRAR BITACORA
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=idCreador);
- 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','USUARIO',CONCAT(Mensaje,usuarioE),NOW());  
- 
- 
+
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'ACTUALIZACION','USUARIO',CONCAT(Mensaje,usuarioE),NOW());
+
+
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_USUARIO_HABILITACION`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_USUARIO_HABILITACION` (IN `idUsuarioE` INT(11), IN `codigo` INT(11), IN `idUsuarioM` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=idUsuarioM);
 
 
-if (codigo=1) then 
+if (codigo=1) then
  	UPDATE `usuario` SET  `Estado_idEstado`=4 WHERE `idUsuario`=idUsuarioE;
   SET @Mensaje=("USUARIO DESHBILITADO");
-else 
+else
     UPDATE `usuario` SET  `Estado_idEstado`=1  WHERE `idUsuario`=idUsuarioE;
  SET  @Mensaje=("USAURIO HABILITADO");
 end if;
@@ -930,22 +931,22 @@ end if;
 
 set @usuario=(SELECT u.usuario FROM usuario u  WHERE u.idUsuario=idUsuarioE);
 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@usuario,@Mensaje,'USUARIO',CONCAT("SE",@Mensaje," :", @NombreUsuario),NOW());    
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@usuario,@Mensaje,'USUARIO',CONCAT("SE",@Mensaje," :", @NombreUsuario),NOW());
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_USUARIO_LISTAR_TODO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_USUARIO_LISTAR_TODO` ()  NO SQL
-BEGIN 
+BEGIN
 
-SELECT 
+SELECT
 u.idUsuario,
 u.usuario,
 DATE_FORMAT(u.fechaRegistro,'%d/%m/%Y') as fechaRegistro,
 CONCAT(pes.nombrePersona,' ',pes.apellidoPaterno,' ',pes.apellidoMaterno) as NombrePersona,
-e.nombreEstado,  
-e.idEstado as Estado_idEstado, 
-per.nombrePerfil 
+e.nombreEstado,
+e.idEstado as Estado_idEstado,
+per.nombrePerfil
 FROM usuario u INNER JOIN estado e ON e.idEstado=u.Estado_idEstado INNER JOIN perfil per ON per.idPerfil=u.Perfil_idPerfil INNER JOIN persona pes ON pes.idPersona=u.Persona_idPersona;
 
 END$$
@@ -955,28 +956,28 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_USUARIO_RECUPERAR` (IN `idUsuari
 BEGIN
 
 
-SELECT * FROM usuario u WHERE u.idUsuario=idUsuarioE; 
+SELECT * FROM usuario u WHERE u.idUsuario=idUsuarioE;
 
 
 END$$
 
 DROP PROCEDURE IF EXISTS `SP_USUARIO_REGISTRO`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_USUARIO_REGISTRO` (IN `usuarioE` VARCHAR(50), IN `passE` TEXT, IN `idPerfil` INT(11), IN `idPersona` INT(11), IN `idEstado` INT(11), IN `idCreador` INT(11))  NO SQL
-BEGIN 
+BEGIN
 
 DECLARE Mensaje VARCHAR(100);
 
 -- REGISTRO USUARIO --
 INSERT INTO `usuario`(`usuario`, `pass`, `Perfil_idPerfil`, `Persona_idPersona`, `Estado_idEstado`, `fechaRegistro`) VALUES (usuarioE,passE,idPerfil,idPersona,idEstado,NOW());
- 
+
 set Mensaje="SE REGISTRO EL USUARIO:";
- 
- 
+
+
 -- REGISTRAR BITACORA
 SET @NombreUsuario=(SELECT concat(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresPersona FROM usuario u inner join persona p ON p.idPersona=u.Persona_idPersona WHERE u.idUsuario=idCreador);
- 
-INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'REGISTRO','USUARIO',CONCAT(Mensaje,usuarioE),NOW());  
- 
+
+INSERT INTO `bitacora`(`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`,`Detalle`, `fechaRegistro`) VALUES (null,@NombreUsuario,'REGISTRO','USUARIO',CONCAT(Mensaje,usuarioE),NOW());
+
 END$$
 
 DELIMITER ;
@@ -1052,7 +1053,7 @@ CREATE TABLE IF NOT EXISTS `bitacora` (
   `Detalle` text NOT NULL,
   `fechaRegistro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idBitacora`)
-) ENGINE=InnoDB AUTO_INCREMENT=298 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=310 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `bitacora`
@@ -1355,7 +1356,19 @@ INSERT INTO `bitacora` (`idBitacora`, `usuarioAccion`, `Accion`, `tablaAccion`, 
 (294, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 00:46:06'),
 (295, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 00:54:21'),
 (296, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 00:54:51'),
-(297, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 00:56:56');
+(297, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 00:56:56'),
+(298, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:10:34'),
+(299, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:10:37'),
+(300, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:10:45'),
+(301, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:11:09'),
+(302, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:4', '2018-10-11 21:31:48'),
+(303, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:4', '2018-10-11 21:31:53'),
+(304, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:32:04'),
+(305, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:4', '2018-10-11 21:36:03'),
+(306, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:36:13'),
+(307, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:36:39'),
+(308, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:5', '2018-10-11 21:39:11'),
+(309, 'ADMINISTRADOR GENERAL DEL SISTEMA', 'REGISTRO', 'Cuota', 'SE REGISTRO Cuota Nueva:4', '2018-10-11 23:29:05');
 
 -- --------------------------------------------------------
 
@@ -1375,16 +1388,14 @@ CREATE TABLE IF NOT EXISTS `cuota` (
   PRIMARY KEY (`idCuota`),
   KEY `FK_PlanPago_idPlanPago` (`PlanPago_idPlanPago`),
   KEY `FK_Estado_idEstadoCuota` (`Estado_idEstado`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `cuota`
 --
 
 INSERT INTO `cuota` (`idCuota`, `PlanPago_idPlanPago`, `Importe`, `Diferencia`, `fechaRegistro`, `fechaVencimiento`, `Estado_idEstado`) VALUES
-(3, 1, '500.00', '500.00', '2018-10-11 00:54:21', '2018-11-11', 5),
-(4, 1, '500.00', '500.00', '2018-10-11 00:54:51', '2018-11-11', 5),
-(5, 1, '500.00', '500.00', '2018-10-11 00:56:56', '2018-11-11', 5);
+(17, 1, '500.00', '500.00', '2018-10-11 23:29:05', '2018-11-11', 5);
 
 -- --------------------------------------------------------
 
@@ -1631,7 +1642,7 @@ CREATE TABLE IF NOT EXISTS `planpago` (
 --
 
 INSERT INTO `planpago` (`idPlanPago`, `Alumno_idAlumno`, `fechaRegistro`, `montoCuota`, `montoMatricula`, `otroPago1`, `otroPago2`, `Observaciones`, `Estado_idEstado`) VALUES
-(1, 4, '2018-10-09 03:29:16', '500.00', '300.00', '0.00', '0.00', '', 1),
+(1, 4, '2018-10-09 03:29:16', '500.00', '400.00', '0.00', '0.00', '', 1),
 (2, 5, '2018-10-10 20:25:19', '350.00', '400.00', '0.00', '0.00', 'MATRICULA', 1);
 
 -- --------------------------------------------------------

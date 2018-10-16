@@ -36,6 +36,8 @@
     $campo=isset($_POST["campo"])?limpiarCadena($_POST["campo"]):"";
     $campoEdicion=isset($_POST["campoEdicion"])?limpiarCadena($_POST["campoEdicion"]):"";
 
+    $idCuota=isset($_POST["idCuota"])?limpiarCadena($_POST["idCuota"]):"";
+
 	$login_idLog=$_SESSION['idUsuario'];
 
     $date = str_replace('/', '-', $AlumnoFechaNacimiento);
@@ -64,10 +66,10 @@
         $rep="";
         if($reg->Estado_idEstado==5){
             $rep.='
-            <button type="button" title="Anular" class="btn btn-danger btn-sm m-1" onclick="AnularCuota('.$reg->idCuota.');"><i class="fa fa-trash"></i></button>
+            <button type="button" title="Anular" class="btn btn-danger btn-sm m-1" onclick="AnularCuota('.$reg->idCuota.','.$reg->Estado_idEstado.');"><i class="fa fa-trash"></i></button>
                ';
         }elseif($reg->Estado_idEstado==8){
-            $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarCuota('.$reg->idCuota.');"><i class="fa fa-sync"></i></button>';
+            $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarCuota('.$reg->idCuota.','.$reg->Estado_idEstado.');"><i class="fa fa-sync"></i></button>';
         }
 
         return $rep;
@@ -278,6 +280,23 @@
          $rspta['Eliminar']=$mantenimiento->ActualizarCampo($idAlumno,$campo,$campoEdicion);
 
          $rspta['Eliminar']?$rspta['Mensaje']="Campo Actualizado.":$rspta['Mensaje']="Campo no se pudo Actualizar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
+      case 'AnularCuota':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->AnularCuota($idCuota,1,$login_idLog);
+
+         $rspta['Eliminar']?$rspta['Mensaje']="Cuota Anulada.":$rspta['Mensaje']="Cuota no se pudo Anular comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
+     case 'RecuperarCuota':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->AnularCuota($idCuota,2,$login_idLog);
+         $rspta['Eliminar']?$rspta['Mensaje']="Cuota Recuperada.":$rspta['Mensaje']="Cuota no se pudo Recuperar comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
 

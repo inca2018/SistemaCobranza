@@ -378,27 +378,39 @@ function EdicionCampos(){
 		 $("#Area_Edicion").show();
          $("#campoEdicion").val($("#O_importe_matricula").val());
          $("#EdicionAccion").val("montoMatricula");
+        $("#campoEdicion").removeAttr("onkeypress");
+         $("#campoEdicion").attr("onkeypress","return SoloNumerosModificado(event,8,this.id);");
 	});
     $("#edicion_cuota").click(function(){
 		 $("#Area_Edicion").show();
          $("#campoEdicion").val($("#O_importe_cuota").val());
          $("#EdicionAccion").val("montoCuota");
+        $("#campoEdicion").removeAttr("onkeypress");
+         $("#campoEdicion").attr("onkeypress","return SoloNumerosModificado(event,8,this.id);");
 	});
      $("#edicion_adicional1").click(function(){
 		 $("#Area_Edicion").show();
          $("#campoEdicion").val($("#O_importe_adicional1").val());
          $("#EdicionAccion").val("otroPago1");
+         $("#campoEdicion").removeAttr("onkeypress");
+         $("#campoEdicion").attr("onkeypress","return SoloNumerosModificado(event,8,this.id);");
 	});
     $("#edicion_adicional2").click(function(){
 		 $("#Area_Edicion").show();
          $("#campoEdicion").val($("#O_importe_adicional2").val());
          $("#EdicionAccion").val("otroPago2");
+         $("#campoEdicion").removeAttr("onkeypress");
+         $("#campoEdicion").attr("onkeypress","return SoloNumerosModificado(event,8,this.id);");
+
 	});
 
     $("#edicion_obser").click(function(){
 		 $("#Area_Edicion").show();
          $("#campoEdicion").val($("#O_observaciones").val());
-        $("#EdicionAccion").val("Observaciones");
+         $("#EdicionAccion").val("Observaciones");
+         $("#campoEdicion").removeAttr("onkeypress");
+         $("#campoEdicion").attr("onkeypress","return SoloLetras(event,150,this.id);");
+
 	});
 }
 function ActualizarEdicion(){
@@ -413,7 +425,10 @@ function ActualizarEdicion(){
       if (Error) {
           notificar_danger(Mensaje);
       }else{
-         notificar_success(Mensaje);
+          notificar_success(Mensaje);
+          var persona_id=$("#O_idPersona").val();
+          var alumno_id=$("#O_idAlumno").val();
+          Mostrar_Informacion_Alumno(persona_id,alumno_id);
       }
    });
 }
@@ -574,6 +589,7 @@ function AjaxRegistroMatricula(){
                         var idPersona=$("#O_idPersona").val();
                         var idAlumno=$("#O_idAlumno").val();
                         Mostrar_Informacion_Alumno(idPersona,idAlumno);
+                        tablaAlumno.ajax.reload();
 					}
 			 }
 		});
@@ -700,5 +716,63 @@ function ListarCuotas(idAlumno){
 	}).draw();
 }
 
+function AnularCuota(idCuota,estado){
+     swal({
+      title: "Anular?",
+      text: "Esta Seguro que desea Anular Cuota!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Eliminar!",
+      closeOnConfirm: false
+   }, function () {
+         if(estado==6 || estado==7){
+             swal("Error","No puede Anular Cuota,porque se encuentra Pagada.", "error");
+         }else{
+              ajaxAnularCuota(idCuota);
+         }
+
+   });
+}
+function ajaxAnularCuota(idCuota){
+     $.post("../../controlador/Mantenimiento/CAlumno.php?op=AnularCuota", {idCuota:idCuota}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Anulado!", Mensaje, "success");
+         tablaCuotas.ajax.reload();
+      }
+   });
+}
+
+function HabilitarCuota(idCuota,estado){
+      swal({
+      title: "Recuperar?",
+      text: "Esta Seguro que desea Recuperar Cuota!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Recuperar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxRecuperarCuota(idCuota);
+   });
+}
+function ajaxRecuperarCuota(idCuota){
+     $.post("../../controlador/Mantenimiento/CAlumno.php?op=RecuperarCuota", {idCuota:idCuota}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Recuperado!", Mensaje, "success");
+         tablaCuotas.ajax.reload();
+      }
+   });
+}
 
 init();
