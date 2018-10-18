@@ -8,6 +8,7 @@ function init(){
     RecuperarInformacionMatricula(idPlan,idAlumno);
     RecuperarCuotas(idPlan,idAlumno);
 
+
      $("#FormularioPago").on("submit",function(e)
         {
               RegistroPago(e);
@@ -15,6 +16,7 @@ function init(){
 
     iniciar_Valores();
     }
+
 function RecuperarCuotas(idPlan,idAlumno){
 	tablaCuotas = $('#tablaCuotas').dataTable({
 		"aProcessing": true,
@@ -52,12 +54,14 @@ function RecuperarCuotas(idPlan,idAlumno){
                extend: 'excel'
                , className: 'btn-info'
                , title: 'Facturacion'
+            },
+            {
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Cuotas"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
-            /*, {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
-            }*/
             , {
                extend: 'print'
                , className: 'btn-info'
@@ -301,6 +305,10 @@ function RegistroPago(){
     var importeIngreso=$("#MontoIngreso").val();
     var MontoPagarMora=$("#importeMora").val();
 
+	if(MontoPagarMora==''){
+		MontoPagarMora=0;
+	}
+
 
     var importeBase=$("#importeBase").val();
 
@@ -312,12 +320,16 @@ function RegistroPago(){
 			}
     });
 
+	debugger;
     if(parseFloat(pagoPagar)<parseFloat(importeIngreso)){
         error=error+"Importe Ingresado no puede ser Mayor al Importe a Pagar.<br>";
     }
-    if(parseFloat(moraPagar)!=parseFloat(MontoPagarMora)){
+	 if(MontoPagarMora!=0){
+		 if(parseFloat(moraPagar)!=parseFloat(MontoPagarMora)){
         error=error+"Importe de Mora Ingresado debe ser cancelado en su totalidad.<br>";
-    }
+    		}
+	 }
+
     if(importeIngreso==0 || importeIngreso=='0'){
          error=error+"Ingrese Importe a Pagar.<br>";
     }

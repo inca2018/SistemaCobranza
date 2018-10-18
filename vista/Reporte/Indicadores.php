@@ -9,13 +9,110 @@
    <section class="section-container">
       <!-- Page content-->
       	<div class="content-wrapper">
-            <div class="content-heading">
-              <div>Indicadores</div>
-            </div>
+
             <!-- START card-->
             <div class="card card-default">
-               <div class="card-body">
 
+               <div class="card-body">
+                		<div class="row ">
+                            <div class="col-md-12 w-100 text-center ">
+                                <h3>Panel de Indicadores:</h3>
+                            </div>
+							</div>
+							<div class="row mt-2">
+									<div class="col-md-3 col-12">
+										<div class="form-group">
+										<label>Seleccione Alumno:</label>
+										<select class="form-control" id="alumnosSelect">
+											<option value="">-- SELECCIONAR --</option>
+										</select>
+										</div>
+									</div>
+									<div class="col-md-3 col-12 mt-4">
+											<button class=" btn btn-success sombra3   btn-block" type="button"  onclick="buscar_reporte1()"><i class="fa fa-search fa-lg mr-2"></i>BUSCAR</button>
+									</div>
+							</div>
+							<hr>
+							<div class="row">
+										<div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0 sombra3">
+												<div class="row row-flush">
+													<div class="col-4 bg-info-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-file-invoice-dollar fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-info" id="ind_cuota_total"><b>0</b></h4>
+															<p class="mb-0 text-muted">Numero de Cuotas</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+              						 <div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0  sombra3">
+												<div class="row row-flush">
+													<div class="col-4 bg-warning-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-file-powerpoint fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-warning" id="ind_cuota_pendiente"><b>0</b></h4>
+															<p class="mb-0 text-muted">Cuota Pendiente</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+              						  <div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0 sombra3 ">
+												<div class="row row-flush">
+													<div class="col-4 bg-success-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-check-square fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-success" id="ind_cuota_pagada"><b>0</b></h4>
+															<p class="mb-0 text-muted">Cuota Pagada</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+              						 <div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0 sombra3 ">
+												<div class="row row-flush">
+													<div class="col-4 bg-danger-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-times fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-danger" id="ind_cuota_vencida"><b>0</b></h4>
+															<p class="mb-0 text-muted">Cuota Vencida</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+
+ 								</div>
+                      <hr>
+                       <div class="row" >
+                      	<div class="col-md-6 col-12 br"  id="reporteClienteEstadoCu">
+                      		<canvas id="chart1" class="mb-3"></canvas>
+                      </div>
+                      	<div class="col-md-6 col-12 br" id="reporteGeneralEstadoCu">
+                      		<canvas id="chart2" class="mb-3"></canvas>
+                      </div>
+                    </div>
 
                </div>
            </div>

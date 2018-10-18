@@ -48,7 +48,10 @@
            $sql="SELECT * FROM tipopago";
            return  ejecutarConsulta($sql);
        }
-
+       public function Listar_Alumnos(){
+           $sql="SELECT al.idAlumno,concat(per.nombrePersona,' ',per.apellidoPaterno,' ',per.apellidoMaterno) as personaNombre FROM alumno al inner join persona per ON per.idPersona=al.Persona_idPersona";
+           return  ejecutarConsulta($sql);
+       }
 
 
 

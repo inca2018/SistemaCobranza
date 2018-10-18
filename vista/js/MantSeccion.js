@@ -111,9 +111,11 @@ function Listar_Seccion(){
                , title: 'Facturacion'
             }
             , {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Secciones"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
             , {
                extend: 'print'

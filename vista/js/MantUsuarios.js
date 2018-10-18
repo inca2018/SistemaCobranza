@@ -124,9 +124,11 @@ function Listar_Usuario(){
                , title: 'Facturacion'
             }
             , {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Usuarios"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
             , {
                extend: 'print'

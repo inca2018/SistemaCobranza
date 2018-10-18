@@ -33,8 +33,13 @@
     $importeBase=isset($_POST["importeBase"])?limpiarCadena($_POST["importeBase"]):"";
     $importeMora=isset($_POST["importeMora"])?limpiarCadena($_POST["importeMora"]):"";
 
+    $fechaInicio=isset($_POST["fechaInicio"])?limpiarCadena($_POST["fechaInicio"]):"";
+    $fechaFin=isset($_POST["fechaFin"])?limpiarCadena($_POST["fechaFin"]):"";
 
-
+    $date = str_replace('/', '-', $fechaInicio);
+    $fechaInicio = date("Y-m-d", strtotime($date));
+ 	 $date = str_replace('/', '-', $fechaFin);
+    $fechaFin = date("Y-m-d", strtotime($date));
 
    function BuscarEstado($reg){
         if($reg->Estado_idEstado=='1' || $reg->Estado_idEstado==1 ){
@@ -96,6 +101,19 @@
 			$rspta=$gestion->RecuperarCuotaPagar($idPlan,$idCuota);
          echo json_encode($rspta);
       break;
+   case 'RecuperarParametros':
+			$rspta=$gestion->RecuperarParametros();
+         echo json_encode($rspta);
+      break;
+
+     case 'RecuperarReporte':
+			$rspta=$gestion->RecuperarReporte($idAlumno);
+         echo json_encode($rspta);
+      break;
+	 case 'RecuperarReporteFechas':
+			$rspta=$gestion->RecuperarReporteFechas($fechaInicio,$fechaFin);
+         echo json_encode($rspta);
+      break;
 
 
       case 'listar_tipoTarjeta':
@@ -110,6 +128,14 @@
       		$rpta = $general->Listar_TipoPago();
          	while ($reg = $rpta->fetch_object()){
 					echo '<option   value=' . $reg->idTipoPago . '>' . $reg->Descripcion . '</option>';
+         	}
+       break;
+
+		case 'listar_alumnos_filtro':
+
+      		$rpta = $general->Listar_Alumnos();
+         	while ($reg = $rpta->fetch_object()){
+					echo '<option   value=' . $reg->idAlumno . '>' . $reg->personaNombre . '</option>';
          	}
        break;
 
@@ -186,7 +212,38 @@
       break;
 
 
+   case 'Recuperar_Detalle_Indicadores':
+            $response=Array();
 
+            $fechaaamostar = $fechaInicio;
+            while(strtotime($fechaFin) >= strtotime($fechaInicio)){
+            if(strtotime($fechaFin) != strtotime($fechaaamostar)){
+                $resu=$gestion->RecuperarReporteFechas($fechaaamostar,$fechaaamostar);
+
+                $dia=array();
+                $dia["dia"]=$fechaaamostar;
+                $dia["Total"]=$resu["numCuotas"];
+                $dia["Pendiente"]=$resu["cuotaPend"];
+					 $dia["Pagada"]=$resu["cuotaPagada"];
+					 $dia["Vencida"]=$resu["cuotaVencida"];
+
+                $response[]=$dia;
+                $fechaaamostar = date("Y-m-d", strtotime($fechaaamostar . " + 1 day"));
+            }else{
+                $resu=$gestion->RecuperarReporteFechas($fechaaamostar,$fechaaamostar);
+                $dia=array();
+                $dia["dia"]=$fechaaamostar;
+                $dia["Total"]=$resu["numCuotas"];
+                $dia["Pendiente"]=$resu["cuotaPend"];
+					 $dia["Pagada"]=$resu["cuotaPagada"];
+					 $dia["Vencida"]=$resu["cuotaVencida"];
+
+                $response[]=$dia;
+            break;
+            }
+        }
+            echo json_encode($response);
+    break;
 
    }
 

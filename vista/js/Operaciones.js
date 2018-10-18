@@ -3,8 +3,28 @@ var tablaOperacion;
 function init(){
 
 Listar_Operacion();
-}
+RecuperarParametros();
 
+}
+function
+RecuperarParametros(){
+		$.post("../../controlador/Gestion/CGestion.php?op=RecuperarParametros", function(data, status){
+			data = JSON.parse(data);
+
+$("#total_alumnos").append();
+$("#total_apoderados").append();
+$("#ind_empleados_operaciones").append();
+$("#ind_asignado").append();
+
+
+$("#total_alumnos").html("<b>"+data.NumAlumnos+"</b>");
+$("#total_apoderados").html("<b>"+data.NumApoderados+"</b>");
+$("#ind_empleados_operaciones").html("<b>"+data.PagoHoy+"</b>");
+$("#ind_asignado").html("<b>"+data.VencidoHoy+"</b>");
+
+		});
+
+}
 
 function Listar_Operacion(){
 	tablaOperacion = $('#tablaOperaciones').dataTable({
@@ -43,12 +63,14 @@ function Listar_Operacion(){
                extend: 'excel'
                , className: 'btn-info'
                , title: 'Facturacion'
+            },
+            {
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Operaciones"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
-            /*, {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
-            }*/
             , {
                extend: 'print'
                , className: 'btn-info'

@@ -18,7 +18,7 @@
 
       	<!-- Page footer-->
       <footer class="footer-container">
-         <span>&copy; 2018 - Angle</span>
+         <span>&copy; 2018 - Sistema de Cobranza</span>
       </footer>
    </div>
 </body>
@@ -73,6 +73,9 @@
    <script src="<?php echo $conexionConfig->ruta(); ?>vendor/datatables.net-buttons-bs/js/buttons.bootstrap.js"></script>
    <script src="<?php echo $conexionConfig->ruta(); ?>vendor/datatables.net-buttons/js/buttons.colVis.js"></script>
    <script src="<?php echo $conexionConfig->ruta(); ?>vendor/datatables.net-buttons/js/buttons.flash.js"></script>
+
+   <script src="<?php echo $conexionConfig->ruta(); ?>vendor/datatables.net-buttons/js/pdfmake.min.js"></script>
+   <script src="<?php echo $conexionConfig->ruta(); ?>vendor/datatables.net-buttons/js/vfs_fonts.js"></script>
 
    <script src="<?php echo $conexionConfig->ruta(); ?>vendor/datatables.net-buttons/js/buttons.html5.js"></script>
    <script src="<?php echo $conexionConfig->ruta(); ?>vendor/datatable/JSZip-2.5.0/jszip.min.js"></script>

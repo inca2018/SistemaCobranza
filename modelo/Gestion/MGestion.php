@@ -42,6 +42,10 @@
 			  $pago_detalle='0';
 		  }
 
+			  if($importeMora=='' || $importeMora==null || empty($importeMora)){
+			  $importeMora='0';
+		  }
+
            $sql="CALL `SP_OPERACION_PAGO_CUOTA`('$idPlan','$idAlumno','$idCuota','$PagoTipoPago','$PagoTipoTarjeta','$importePago','$importeBase','$importeMora','$pago_detalle','$login_idLog');";
 
 			return ejecutarConsulta($sql);
@@ -56,6 +60,26 @@
            $sql="CALL `SP_OPERACION_RECUPERAR_CUOTA_PAGAR`('$idPlan','$idCuota');";
 			return ejecutarConsultaSimpleFila($sql);
        }
+
+		  public function RecuperarParametros(){
+			  $sql1=ejecutarConsulta("CALL `SP_RECUPARAR_PARAMETROS`(@p0, @p1, @p2, @p3);");
+           $sql="SELECT @p0 AS `NumAlumnos`, @p1 AS `NumApoderados`, @p2 AS `PagoHoy`, @p3 AS `VencidoHoy`;";
+			return ejecutarConsultaSimpleFila($sql);
+       }
+
+		public function RecuperarReporte($idAlumno){
+          $sql1=ejecutarConsulta(" CALL `SP_INDICADORES_ALUMNO`(@p0, @p1, @p2, @p3,'$idAlumno');");
+          $sql="SELECT @p0 AS `numCuotas`, @p1 AS `cuotaPend`, @p2 AS `cuotaPagada`, @p3 AS `cuotaVencida`;";
+			return ejecutarConsultaSimpleFila($sql);
+       }
+
+		public function RecuperarReporteFechas($fechaInicio,$fechaFin){
+          $sql1=ejecutarConsulta(" CALL `SP_INDICADORES_FECHAS`(@p0, @p1, @p2, @p3,'$fechaInicio','$fechaFin');");
+          $sql="SELECT @p0 AS `numCuotas`, @p1 AS `cuotaPend`, @p2 AS `cuotaPagada`, @p3 AS `cuotaVencida`;";
+			return ejecutarConsultaSimpleFila($sql);
+       }
+
+
 
    }
 

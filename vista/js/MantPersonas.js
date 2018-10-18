@@ -5,9 +5,8 @@ function init(){
     Listar_Persona();
 }
 function Iniciar_Componentes(){
-   //var fecha=hoyFecha();
 
-	//$('#date_fecha_comprobante').datepicker('setDate',fecha);
+
 
     $("#FormularioPersona").on("submit",function(e)
 	{
@@ -116,9 +115,11 @@ function Listar_Persona(){
                , title: 'Facturacion'
             }
             , {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Personas"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
             , {
                extend: 'print'

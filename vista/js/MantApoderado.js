@@ -123,9 +123,11 @@ function Listar_Apoderado(){
                , title: 'Facturacion'
             }
             , {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Apoderados"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
             , {
                extend: 'print'
@@ -311,12 +313,14 @@ function RecuperarHijos(idApoderadoE){
                extend: 'excel'
                , className: 'btn-info'
                , title: 'Facturacion'
+            },
+            {
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Hijos"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
-            /*, {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
-            }*/
             , {
                extend: 'print'
                , className: 'btn-info'

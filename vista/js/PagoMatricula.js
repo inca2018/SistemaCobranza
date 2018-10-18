@@ -173,6 +173,7 @@ function RegistroPago(){
 	}
 }
 function AjaxRegistroPago(){
+	debugger;
     var idPlan=$("#idPlan").val();
     var idAlumno=$("#idAlumno").val();
      var formData = new FormData($("#FormularioPago")[0]);

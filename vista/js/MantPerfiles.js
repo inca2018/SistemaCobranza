@@ -111,9 +111,11 @@ function Listar_Perfil(){
                , title: 'Facturacion'
             }
             , {
-               extend: 'pdf'
-               , className: 'btn-info'
-               , title: $('title').text()
+               extend: 'pdfHtml5'
+               , className: 'btn-info sombra3'
+               , title: "Reporte de Perfiles"
+               ,orientation: 'landscape'
+               ,pageSize: 'LEGAL'
             }
             , {
                extend: 'print'
