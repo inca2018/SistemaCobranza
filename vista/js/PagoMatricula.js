@@ -3,9 +3,8 @@ function init(){
  Listar_TipoDeTarjeta();
  Listar_TipoPago();
 
-var idPlan=$("#idPlan").val();
 var idAlumno=$("#idAlumno").val();
-RecuperarInformacionMatricula(idPlan,idAlumno);
+RecuperarInformacionMatricula(idAlumno);
 
     iniciar_Valores();
 }
@@ -22,65 +21,28 @@ function Listar_TipoPago(){
    });
 }
 
-function RecuperarInformacionMatricula(idPlan,idAlumno){
+function RecuperarInformacionMatricula(idAlumno){
     //solicitud de recuperar Proveedor
-	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarInformacionMatricula",{"idPlan":idPlan,"idAlumno":idAlumno}, function(data, status){
+	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarInformacionMatricula",{"idAlumno":idAlumno}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
 
-$("#cab_nombre_alumno").append();
-$("#cab_dni_alumno").append();
-$("#cab_nombre_apoderado").append();
-$("#cab_dni_apoderado").append();
-$("#pago_matricula").append();
-$("#pago_adicional1").append();
-$("#pago_adicional2").append();
+$("info_alu_dni").append();
+$("info_alu_nombres").append();
+$("info_alu_nivel").append();
+$("info_alu_grado").append();
+$("info_apo_dni").append();
+$("info_apo_nombres").append();
+$("info_apo_telefono").append();
 
+$("info_alu_dni").html("<strong>"+data.ALumnoDNI+"</strong>");
+$("info_alu_nombres").html("<strong>"+data.AlumnoNombres+"</strong>");
+$("info_alu_nivel").html("<strong>"+data.AlumnoNivel+"</strong>");
+$("info_alu_grado").html("<strong>"+data.AlumnoGradoSeccion+"</strong>");
+$("info_apo_dni").html("<strong>"+data.ApoderadoDNI+"</strong>");
+$("info_apo_nombres").html("<strong>"+data.ApoderadoNombre+"</strong>");
+$("info_apo_telefono").html("<strong>"+data.ApoderadoTelefono+"</strong>");
 
-$("#cab_nombre_alumno").html("<b>"+data.AlumnoNombre+"</b>");
-$("#cab_dni_alumno").html("<b>"+data.ApoderadoDNI+"</b>");
-$("#cab_nombre_apoderado").html("<b>"+data.ApoderadoNombre+"</b>");
-$("#cab_dni_apoderado").html("<b>"+data.DNI+"</b>");
-$("#pago_matricula").html("<b>S/. "+data.montoMatricula+"</b>");
-$("#pago_adicional1").html("<b>S/. "+data.otroPago1+"</b>");
-$("#pago_adicional2") .html("<b>S/. "+data.otroPago2+"</b>");
-
-var NoPagado='<button type="button" class="btn btn-success" onclick="PagarDeuda(1)">PAGAR</button>';
-var Pagado='<div class="badge badge-success">PAGADO</div>';
-var pagoActual=0;
-if(data.Estado1==0){
-    pagoActual=data.montoMatricula;
-    $("#accionPago1").append();
-    $("#accionPago1").html('<button type="button" class="btn btn-success" onclick="PagarDeuda('+1+','+pagoActual+')">PAGAR</button>');
-
-}else{
-    $("#accionPago1").append();
-    $("#accionPago1").html(Pagado);
-}
-
-if(data.Estado2==0){
-     pagoActual=data.otroPago1;
-    $("#accionPago2").append();
-    $("#accionPago2").html('<button type="button" class="btn btn-success" onclick="PagarDeuda('+2+','+pagoActual+')">PAGAR</button>');
-
-}else{
-    $("#accionPago2").append();
-    $("#accionPago2").html(Pagado);
-}
-
-if(data.Estado3==0){
-     pagoActual=data.otroPago2;
-    $("#accionPago3").append();
-    $("#accionPago3").html('<button type="button" class="btn btn-success" onclick="PagarDeuda('+3+','+pagoActual+')">PAGAR</button>');
-
-}else{
-    $("#accionPago3").append();
-    $("#accionPago3").html(Pagado);
-}
-
-$("#idTarjeta").val(data.idTipoTarjetaApoderado);
-$("#modulo_pago").hide();
-$("#modulo_Mensaje").hide();
 
 
 	});

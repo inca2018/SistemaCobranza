@@ -106,11 +106,10 @@ function MostrarGestionApoderados(){
     $.redirect('../Mantenimiento/MantApoderado.php');
 }
 
-function PagoMatricula(idPlan,idAlumno){
-    $.redirect('../Operaciones/PagoMatricula.php',{'idPlan':idPlan,'idAlumno':idAlumno});
-
+function PagoMatricula(idAlumno){
+    $.redirect('../Operaciones/PagoMatricula.php',{'idAlumno':idAlumno});
 }
-function PagoCuota(idPlan,idAlumno){
-    $.redirect('../Operaciones/PagoCuota.php',{'idPlan':idPlan,'idAlumno':idAlumno});
+function PagoCuota(idAlumno){
+    $.redirect('../Operaciones/PagoCuota.php',{'idAlumno':idAlumno});
 }
 init();

@@ -16,8 +16,8 @@
 			$sql="CALL `SP_OPERACIONES_LISTAR`();";
 			return ejecutarConsulta($sql);
 		}
-       public function RecuperarInformacionMatricula($idPlan,$idAlumno){
-           $sql="CALL `SP_OPERACION_RECUPERAR_INFO`('$idPlan','$idAlumno');";
+       public function RecuperarInformacionMatricula($idAlumno){
+           $sql="CALL `SP_OPERACION_RECUPERAR_INFO`('$idAlumno');";
 			return ejecutarConsultaSimpleFila($sql);
        }
        public function RegistrarPago($idPlan,$idAlumno,$numPago,$PagoTipoPago,$PagoTipoTarjeta,$importePago,$pago_detalle,$login_idLog){
@@ -62,7 +62,7 @@
        }
 
 		  public function RecuperarParametros(){
-			  $sql1=ejecutarConsulta("CALL `SP_RECUPARAR_PARAMETROS`(@p0, @p1, @p2, @p3);");
+			  $sql1=ejecutarConsulta("CALL `SP_RECUPERAR_PARAMETROS`(@p0, @p1, @p2, @p3);");
            $sql="SELECT @p0 AS `NumAlumnos`, @p1 AS `NumApoderados`, @p2 AS `PagoHoy`, @p3 AS `VencidoHoy`;";
 			return ejecutarConsultaSimpleFila($sql);
        }

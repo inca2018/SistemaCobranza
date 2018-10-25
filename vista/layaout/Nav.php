@@ -159,6 +159,11 @@
                            </a>
                         </li>
                         <li id="" class="">
+                           <a href="<?php echo  $conexionConfig->rutaOP().'vista/Mantenimiento/MantTipoPago.php';?>" title="Tipo de Pago">
+                              <span> Tipo de Pagos </span>
+                           </a>
+                        </li>
+                        <li id="" class="">
                            <a href="<?php echo  $conexionConfig->rutaOP().'vista/Mantenimiento/MantTarjeta.php';?>" title="Tipo de Tarjeta">
                               <span> Tipo de Tarjeta </span>
                            </a>

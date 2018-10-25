@@ -70,9 +70,14 @@
 
            return ejecutarConsulta($sql);
        }
+         public function Listar_Pagos_Disponibles(){
+           $sql="SELECT * FROM generalimportes";
 
-       public function AgregarCuota($idAlumno,$creador){
-           $sql="CALL `SP_CUOTA_AGREGAR`('$idAlumno','$creador');";
+           return ejecutarConsulta($sql);
+       }
+
+       public function AgregarCuota($idAlumno,$Cantidad,$creador){
+           $sql="CALL `SP_CUOTA_AGREGAR`('$idAlumno','$Cantidad','$creador');";
 
            return ejecutarConsulta($sql);
        }
@@ -88,6 +93,24 @@
            return ejecutarConsulta($sql);
        }
 
+    public function RecuperarPagoAlumno($idAlumno){
+           $sql="SELECT * FROM alumnopagos WHERE Alumno_idAlumno=$idAlumno;";
+           return ejecutarConsulta($sql);
+       }
+    public function ActualizarListadoPago($idPago,$idAlumno){
+           $sql="CALL `SP_AGREGAR_TIPOPAGO_ALUMNO`('$idPago','$idAlumno');";
+           return ejecutarConsulta($sql);
+    }
+    public function LimpiarPagos($idAlumno){
+        $sql="DELETE FROM `alumnopagos` WHERE `Alumno_idAlumno`=$idAlumno";
+           return ejecutarConsulta($sql);
+    }
+
+    public function ActualizarFechas($O_idAlumno,$idCuota,$inicio,$fin){
+        $sql="CALL `SP_ACTUALIZAR_CUOTAS_FECHAS`('$O_idAlumno','$idCuota','$inicio','$fin');";
+
+        return ejecutarConsulta($sql);
+    }
 
    }
 

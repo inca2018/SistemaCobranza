@@ -37,11 +37,24 @@
     $campoEdicion=isset($_POST["campoEdicion"])?limpiarCadena($_POST["campoEdicion"]):"";
 
     $idCuota=isset($_POST["idCuota"])?limpiarCadena($_POST["idCuota"]):"";
+    $Cantidad=isset($_POST["Cantidad"])?limpiarCadena($_POST["Cantidad"]):"";
+
+
+    $Pagos=isset($_POST["Pagos"])?limpiarCadena($_POST["Pagos"]):"";
+
+    $inicio=isset($_POST["inicio"])?limpiarCadena($_POST["inicio"]):"";
+    $fin=isset($_POST["fin"])?limpiarCadena($_POST["fin"]):"";
 
 	$login_idLog=$_SESSION['idUsuario'];
 
     $date = str_replace('/', '-', $AlumnoFechaNacimiento);
    $AlumnoFechaNacimiento = date("Y-m-d", strtotime($date));
+
+ $date = str_replace('/', '-', $inicio);
+   $inicio = date("Y-m-d", strtotime($date));
+
+ $date = str_replace('/', '-', $fin);
+   $fin = date("Y-m-d", strtotime($date));
 
     function BuscarEstado($reg){
         if($reg->Estado_idEstado=='1' || $reg->Estado_idEstado==1 ){
@@ -71,7 +84,9 @@
         }elseif($reg->Estado_idEstado==8){
             $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarCuota('.$reg->idCuota.','.$reg->Estado_idEstado.');"><i class="fa fa-sync"></i></button>';
         }
-
+        elseif($reg->Estado_idEstado==2){
+            $rep.='<button type="button"  title="Edición de Fechas" class="btn btn-warning btn-sm m-1" onclick="EditarFechas('.$reg->idCuota.');"><i class="fa fa-pen"></i></button>';
+        }
         return $rep;
     }
       function Matriculado($reg){
@@ -98,8 +113,6 @@
             $rep.='<button type="button"  title="Habilitar" class="btn btn-info btn-sm m-1" onclick="HabilitarAlumno('.$reg->idPersona.','.$reg->idAlumno.');"><i class="fa fa-sync"></i></button>';
         }
 
-
-        $rep.='<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>';
 
 
         return $rep;
@@ -189,15 +202,16 @@
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>'',
-               "1"=>BuscarEstado($reg),
-               "2"=>Matriculado($reg->PlanP),
-               "3"=>$reg->NombrePersona,
-               "4"=>$reg->DNI,
-               "5"=>$reg->NivelNombre,
-               "6"=>$reg->GradoNombre,
-               "7"=>$reg->SeccionNombre,
-               "8"=>$reg->fechaRegistro,
-               "9"=>BuscarAccion($reg)
+               "1"=>'<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>',
+               "2"=>BuscarEstado($reg),
+               "3"=>$reg->CantidadCuotas,
+               "4"=>$reg->NombrePersona,
+               "5"=>$reg->DNI,
+               "6"=>$reg->NivelNombre,
+               "7"=>$reg->GradoNombre,
+               "8"=>$reg->SeccionNombre,
+               "9"=>$reg->fechaRegistro,
+               "10"=>BuscarAccion($reg)
             );
          }
          $results = array(
@@ -218,7 +232,7 @@
                "1"=>BuscarEstado($reg),
                "2"=>$reg->Importe,
                "3"=>$reg->Diferencia,
-               "4"=>$reg->fechaRegistro,
+               "4"=>$reg->fechaEmision,
                "5"=>$reg->fechaVencimiento,
                "6"=>BuscarAccion2($reg)
             );
@@ -230,7 +244,43 @@
             "aaData"=>$data);
          echo json_encode($results);
       break;
+       case 'Listar_Tipo_Pagos':
 
+         $rspta=$mantenimiento->Listar_Pagos_Disponibles();
+         $data= array();
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>'',
+               "1"=>$reg->NombrePago,
+               "2"=>"S/. ".number_format($reg->Monto,2),
+               "3"=>$reg->Cuotas,
+               "4"=>'<div  title="Seleccione">
+                           <label>
+                           <input type="checkbox" class="seleccion_pagos" id="'.$reg->idGeneral.'" data-pago="'.$reg->Monto.'" data-cuota="'.$reg->Cuotas.'">
+                             </label>
+                     </div>'
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+       case 'RecuperarPagoAlumno':
+         $Pagos="";
+         $count=0;
+         $rspta=array("Pagos"=>"","Cantidad"=>0);
+         $recuperado=$mantenimiento->RecuperarPagoAlumno($idAlumno);
+         while ($reg=$recuperado->fetch_object()){
+             $Pagos=$Pagos.$reg->TipoPago_idTipoPago."-";
+             $count=$count+1;
+         }
+         $rspta["Pagos"]=$Pagos;
+         $rspta["Cantidad"]=$count;
+         echo json_encode($rspta);
+      break;
 
       case 'Eliminar_Alumno':
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
@@ -255,6 +305,33 @@
          echo json_encode($rspta);
       break;
 
+      case 'ActualizarPagos':
+         $data= array();
+         $Pagos = explode(',', $Pagos);
+         $respuesta="";
+         $contador=count($Pagos);
+         $limpieza=$mantenimiento->LimpiarPagos($idAlumno);
+          if($limpieza){
+             for($i=0;$i<$contador;$i++){
+            $rpta = $mantenimiento->ActualizarListadoPago($Pagos[$i],$idAlumno);
+             }
+
+               if($rpta){
+                    $data["Accion"]=true;
+                    $data["Mensaje"]="Listado de Pagos Actualizados.";
+                 }else{
+                    $data["Accion"]=false;
+                    $data["Mensaje"]="Listado de Pagos No se pudieron Actualizar";
+                 }
+          }else{
+              $data["Accion"]=false;
+              $data["Mensaje"]="Listado de Pagos No se pudieron Actualizar";
+          }
+
+         echo json_encode($data);
+
+      break;
+
 
       case 'AccionMatricula':
          $rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
@@ -268,7 +345,7 @@
         case 'AgregarCuotaNueva':
          $rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
-         $rspta['Registro']=$mantenimiento->AgregarCuota($O_idAlumno,$login_idLog);
+         $rspta['Registro']=$mantenimiento->AgregarCuota($O_idAlumno,$Cantidad,$login_idLog);
 
          $rspta['Registro']?$rspta['Mensaje']="Cuota Agregada.":$rspta['Mensaje']="Cuota no se pudo Agregar comuniquese con el area de soporte";
          echo json_encode($rspta);
@@ -301,6 +378,14 @@
       break;
 
 
+  case 'ActualizarFechas':
+         $rspta = array("Mensaje"=>"","Actualizar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Actualizar']=$mantenimiento->ActualizarFechas($O_idAlumno,$idCuota,$inicio,$fin);
+
+         $rspta['Actualizar']?$rspta['Mensaje']="Fechas Actualizadas.":$rspta['Mensaje']="Campo no se pudo Actualizar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
 
    }
 

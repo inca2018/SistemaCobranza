@@ -80,21 +80,25 @@
     }
 
    function AccionesOperacion($reg){
-       if($reg->idPlanPago==null || $reg->idPlanPago==''){
-            return '<div class="badge badge-primary">DEBE MATRICULAR A ALUMNO</div>';
+       $respuesta="";
+       if($reg->PagosDisponibles==0 || $reg->PagosDisponibles=='0'){
+            $respuesta.='<div class="badge badge-primary">DEBE HBAILITAR PAGOS DEL ALUMNO</div>';
        }else{
-          return'
-            <button type="button"  title="Pago de Matricula" class="btn btn-info btn-sm m-1" onclick="PagoMatricula('.$reg->idPlanPago.','.$reg->idAlumno.')"><i class="fas fa-money-bill-alt fa-lg"></i>
-            </button>
-            <button type="button"   title="Pago de Cuota" class="btn btn-success btn-sm m-1" onclick="PagoCuota('.$reg->idPlanPago.','.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button>
+           if($reg->PagosDisponibles>0){
+               $respuesta.='<button type="button"  title="Pago de Matricula" class="btn btn-info btn-sm m-1" onclick="PagoMatricula('.$reg->idAlumno.')"><i class="fas fa-money-bill-alt fa-lg"></i>
+            </button>';
+           }
+           if($reg->CuotaPendiente>0){
+             $respuesta.='<button type="button"   title="Pago de Cuota" class="btn btn-success btn-sm m-1" onclick="PagoCuota('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button>
             ';
+           }
        }
-
+     return $respuesta;
    }
 
    switch($_GET['op']){
      case 'RecuperarInformacionMatricula':
-			$rspta=$gestion->RecuperarInformacionMatricula($idPlan,$idAlumno);
+			$rspta=$gestion->RecuperarInformacionMatricula($idAlumno);
          echo json_encode($rspta);
       break;
     case 'RecuperarCuotaPagar':
@@ -150,7 +154,7 @@
                "2"=>$reg->DNI,
                "3"=>$reg->ApoderadoNombre,
                "4"=>$reg->ApoderadoDNI,
-               "5"=>$reg->NumCuota,
+               "5"=>$reg->NumCuotas,
                "6"=>$reg->CuotaPendiente,
                "7"=>$reg->CuotasPagadas,
                "8"=>$reg->CuotasVencidas,

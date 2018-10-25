@@ -14,7 +14,7 @@
             </div> -->
 		<!-- START card-->
 		<div class="card sombra2 ">
-			<div class="card-body " style="display:none" >
+			<div class="card-body "   >
 				<div class="row ">
 					<div class="col-md-12 w-100 text-center ">
 						<h3>Panel de Control:</h3>
