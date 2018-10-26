@@ -26,22 +26,22 @@ function RecuperarInformacionMatricula(idAlumno){
 	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarInformacionMatricula",{"idAlumno":idAlumno}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
+debugger;
+$("#info_alu_dni").empty();
+$("#info_alu_nombres").empty();
+$("#info_alu_nivel").empty();
+$("#info_alu_grado").empty();
+$("#info_apo_dni").empty();
+$("#info_apo_nombres").empty();
+$("#info_apo_telefono").empty();
 
-$("info_alu_dni").append();
-$("info_alu_nombres").append();
-$("info_alu_nivel").append();
-$("info_alu_grado").append();
-$("info_apo_dni").append();
-$("info_apo_nombres").append();
-$("info_apo_telefono").append();
-
-$("info_alu_dni").html("<strong>"+data.ALumnoDNI+"</strong>");
-$("info_alu_nombres").html("<strong>"+data.AlumnoNombres+"</strong>");
-$("info_alu_nivel").html("<strong>"+data.AlumnoNivel+"</strong>");
-$("info_alu_grado").html("<strong>"+data.AlumnoGradoSeccion+"</strong>");
-$("info_apo_dni").html("<strong>"+data.ApoderadoDNI+"</strong>");
-$("info_apo_nombres").html("<strong>"+data.ApoderadoNombre+"</strong>");
-$("info_apo_telefono").html("<strong>"+data.ApoderadoTelefono+"</strong>");
+$("#info_alu_dni").html("<strong>"+data.ALumnoDNI+"</strong>");
+$("#info_alu_nombres").html("<strong>"+data.AlumnoNombres+"</strong>");
+$("#info_alu_nivel").html("<strong>"+data.AlumnoNivel+"</strong>");
+$("#info_alu_grado").html("<strong>"+data.AlumnoGradoSeccion+"</strong>");
+$("#info_apo_dni").html("<strong>"+data.ApoderadoDNI+"</strong>");
+$("#info_apo_nombres").html("<strong>"+data.ApoderadoNombre+"</strong>");
+$("#info_apo_telefono").html("<strong>"+data.ApoderadoTelefono+"</strong>");
 
 
 

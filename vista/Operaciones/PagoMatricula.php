@@ -90,7 +90,30 @@ if(isset($_POST["idAlumno"])){
                 <hr>
                 <div class="row">
                     <div class="col-md-6">
+                        <div class="row">
+							<div class="col-md-12">
+								<table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaDeudas" style="font-size:13px">
+									<thead class="thead-light text-center">
 
+										<tr>
+											<th data-priority="1">#</th>
+											<th>ALUMNOS</th>
+											<th>DNI</th>
+											<th>APODERADO</th>
+											<th>DNI</th>
+											<th>N° CUOTAS</th>
+											<th>C. PENDIENTES</th>
+											<th>C. PAGADAS</th>
+											<th>C. VENCIDAS</th>
+											<th>ACCION</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
                     </div>
                     <div class="col-md-6">
 
