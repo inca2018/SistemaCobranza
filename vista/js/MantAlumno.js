@@ -390,7 +390,7 @@ function Mostrar_Informacion_Alumno(idPersona, idAlumno) {
 
 function ActualizarPagos() {
     ArregloPagos = [];
-    var coincidencia = false;
+
     $('.seleccion_pagos:checked').each(function () {
         var idPago = $(this).attr("id");
         ArregloPagos.push(idPago);

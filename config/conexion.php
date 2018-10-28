@@ -57,23 +57,46 @@ class Conexion {
 		}
 		 return $valor;
 	}
-   public function upload_documento($cliente_IdeCli,$OrdenInterno) {
+   public function upload_documento($tipo,$dni,$nombre) {
       // ubicar el de recurso
-      $linkDocumento='../../views/PreFactura/documento/';
+      $linkDocumento='../../vista/FotosAlumno/';
       if(!file_exists($linkDocumento)){
          mkdir("$linkDocumento",0777);
       }
-      $linkRecurso='../../views/PreFactura/documento/'.$cliente_IdeCli."/";
+      $linkRecurso='../../vista/FotosAlumno/'.$dni."/";
       if(!file_exists($linkRecurso)){
          mkdir("$linkRecurso",0777);
       }
-      // subida de documento
-      if(isset($_FILES["adjuntar_documento"])){
-         $extension = explode('.', $_FILES['adjuntar_documento']['name']);
-         $destination ='../../views/PreFactura/documento/'.$cliente_IdeCli.'/'.$OrdenInterno.'.pdf';
-         $subida = move_uploaded_file($_FILES['adjuntar_documento']['tmp_name'], $destination);
-         return $subida;
-      }
+       if($tipo==2){
+           //editar
+
+           $linkRecurso2='../../vista/FotosAlumno/'.$dni.'/'.$nombre.'.jpg';
+            if(file_exists($linkRecurso2)){
+                 unlink($linkRecurso2);
+              }
+               if(isset($_FILES["adjuntar_documento"])){
+
+                 $extension = explode('.', $_FILES['adjuntar_documento']['name']);
+                 $destination ='../../vista/FotosAlumno/'.$dni.'/'.$nombre.'.jpg';
+                 $subida = move_uploaded_file($_FILES['adjuntar_documento']['tmp_name'], $destination);
+                 return $subida;
+
+            }
+
+
+       }else{
+           //registrar
+            if(isset($_FILES["adjuntar_documento"])){
+
+                 $extension = explode('.', $_FILES['adjuntar_documento']['name']);
+                 $destination ='../../vista/FotosAlumno/'.$dni.'/'.$nombre.'.jpg';
+                 $subida = move_uploaded_file($_FILES['adjuntar_documento']['tmp_name'], $destination);
+                 return $subida;
+              }
+       }
+
+
+
    }
 
    public function upload_finContrato($idColaborador,$idContrato) {
@@ -96,8 +119,50 @@ class Conexion {
       }
       return $upload;
    }
-}
 
+    public function upload_Alumno($dni,$nombre) {
+      // ubicar el de recurso
+      $linkDocumento='../../vista/FotosAlumno';
+      if(!file_exists($linkDocumento)){
+         mkdir("$linkDocumento",0777);
+      }
+      $linkRecurso='../../vista/FotosAlumno/'.$dni."/";
+      if(!file_exists($linkRecurso)){
+         mkdir("$linkRecurso",0777);
+      }
+      if(isset($_FILES["fotoAlumno"])){
+         $extension = explode('.', $_FILES['fotoAlumno']['name']);
+         $destination ='../../vista/FotosAlumno/'.$dni.'/'.$nombre.'.jpg';
+         $upload = move_uploaded_file($_FILES['fotoAlumno']['tmp_name'],$nombre);
+
+      }else{
+         $upload=false;
+      }
+      return $upload;
+   }
+
+
+
+function BuscarEstado($reg){
+        if($reg->Estado_idEstado=='1' || $reg->Estado_idEstado==1 ){
+            return '<div class="badge badge-success">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='2' || $reg->Estado_idEstado==2){
+            return '<div class="badge badge-danger">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='3' || $reg->Estado_idEstado==3){
+            return '<div class="badge badge-success">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='4' || $reg->Estado_idEstado==4){
+            return '<div class="badge badge-danger">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='5' || $reg->Estado_idEstado==5){
+            return '<div class="badge badge-warning">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='6' || $reg->Estado_idEstado==6){
+            return '<div class="badge badge-purple">'.$reg->nombreEstado.'</div>';
+        }elseif($reg->Estado_idEstado=='7' || $reg->Estado_idEstado==7){
+            return '<div class="badge badge-info">'.$reg->nombreEstado.'</div>';
+        }else{
+             return '<div class="badge badge-danger">'.$reg->nombreEstado.'</div>';
+        }
+    }
+}
 
 
 ?>

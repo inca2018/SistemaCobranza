@@ -97,14 +97,11 @@ if(isset($_POST["idAlumno"])){
 
 										<tr>
 											<th data-priority="1">#</th>
-											<th>ALUMNOS</th>
+											<th>PAGO</th>
 											<th>DNI</th>
 											<th>APODERADO</th>
 											<th>DNI</th>
 											<th>N° CUOTAS</th>
-											<th>C. PENDIENTES</th>
-											<th>C. PAGADAS</th>
-											<th>C. VENCIDAS</th>
 											<th>ACCION</th>
 										</tr>
 									</thead>

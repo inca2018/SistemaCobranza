@@ -2,8 +2,10 @@
    session_start();
    require_once "../../modelo/Mantenimiento/MAlumno.php";
    require_once "../../modelo/General/MGeneral.php";
+   require_once "../../config/conexion.php";
    $mantenimiento = new MAlumno();
    $general = new MGeneral();
+   $recursos = new Conexion();
 
     $idPersona=isset($_POST["idPersona"])?limpiarCadena($_POST["idPersona"]):"";
     $idAlumno=isset($_POST["idAlumno"])?limpiarCadena($_POST["idAlumno"]):"";
@@ -118,6 +120,20 @@
         return $rep;
     }
 
+
+ function verificarFoto($reg){
+    if($reg->fotoAlumno==NULL){
+        return "";
+    }else{
+        return '<div class="col-5 text-center">
+                              <img class="imgRedonda" src="../../vista/FotosAlumno/'.$reg->fotoAlumno.'"  >
+                           </div>';
+    }
+
+}
+
+
+
    switch($_GET['op']){
         case 'AccionAlumno':
 		 	$rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
@@ -129,10 +145,34 @@
                     $rspta["Mensaje"].="La Persona ya se encuentra Registrado ";
                     $rspta["Error"]=true;
                 }
+
+                $Documento = "";
+                if ($_FILES["adjuntar_documento"]["name"] != '') {
+                    $tipoFile = $_FILES['adjuntar_documento']['type'];
+                    if ($tipoFile == "image/jpeg") {
+                        $Documento = $AlumnoDNI."/".$AlumnoNombre.".jpg";
+                    } else {
+                        $Documento      = null;
+                        $rspta["Error"] = true;
+                        $rspta["Mensaje"] .= " Documento Adjunto no es un Archivo JPG valido.";
+                    }
+                } else {
+                    $Documento = null;
+                }
+
+
+
+
                 if($rspta["Error"]){
                     $rspta["Mensaje"].="Por estas razones no se puede Registrar el Alumno.";
                 }else{
-                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idPersona,$idAlumno,$AlumnoNombre,$AlumnoApellidoP,$AlumnoApellidoM,$AlumnoDNI,$AlumnoFechaNacimiento,$AlumnoCorreo,$AlumnoTelefono,$AlumnoDireccion,$AlumnoEstado,$AlumnoImagen,$AlumnoNivel,$AlumnoGrado,$AlumnoSeccion,$login_idLog);
+                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idPersona,$idAlumno,$AlumnoNombre,$AlumnoApellidoP,$AlumnoApellidoM,$AlumnoDNI,$AlumnoFechaNacimiento,$AlumnoCorreo,$AlumnoTelefono,$AlumnoDireccion,$AlumnoEstado,$Documento,$AlumnoNivel,$AlumnoGrado,$AlumnoSeccion,$login_idLog);
+
+                     if($Documento!=null || $Documento!='')
+					 {
+						$Subida= $recursos->upload_documento(1,$AlumnoDNI,$AlumnoNombre);
+					 }
+
                     if($RespuestaRegistro){
                         $rspta["Registro"]=true;
                         $rspta["Mensaje"]="Alumno se registro Correctamente.";
@@ -148,11 +188,35 @@
                     $rspta["Mensaje"].="La Persona ya se encuentra Registrado ";
                     $rspta["Error"]=true;
                 }
+
+                  $Documento ="";
+                if ($_FILES["adjuntar_documento"]["name"] != '') {
+                    $tipoFile = $_FILES['adjuntar_documento']['type'];
+                    if ($tipoFile == "image/jpeg") {
+                       $Documento = $AlumnoDNI."/".$AlumnoNombre.".jpg";
+                    } else {
+                        $Documento      = null;
+                        $rspta["Error"] = true;
+                        $rspta["Mensaje"] .= " Documento Adjunto no es un Archivo JPG valido.";
+                    }
+                } else {
+                    $Documento = null;
+                }
+
+
+
                 if($rspta["Error"]){
                     $rspta["Mensaje"].="Por estas razones no se puede Registrar el Alumno.";
                 }else{
 
-                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idPersona,$idAlumno,$AlumnoNombre,$AlumnoApellidoP,$AlumnoApellidoM,$AlumnoDNI,$AlumnoFechaNacimiento,$AlumnoCorreo,$AlumnoTelefono,$AlumnoDireccion,$AlumnoEstado,$AlumnoImagen,$AlumnoNivel,$AlumnoGrado,$AlumnoSeccion,$login_idLog);
+                    $RespuestaRegistro=$mantenimiento->RegistroAlumno($idPersona,$idAlumno,$AlumnoNombre,$AlumnoApellidoP,$AlumnoApellidoM,$AlumnoDNI,$AlumnoFechaNacimiento,$AlumnoCorreo,$AlumnoTelefono,$AlumnoDireccion,$AlumnoEstado,$Documento,$AlumnoNivel,$AlumnoGrado,$AlumnoSeccion,$login_idLog);
+
+
+                    if($Documento!=null || $Documento!='')
+					 {
+
+						$Subida= $recursos->upload_documento(2,$AlumnoDNI,$AlumnoNombre);
+					 }
                     if($RespuestaRegistro){
                         $rspta["Registro"]=true;
                         $rspta["Mensaje"]="Alumno se Actualizo Correctamente.";
@@ -202,16 +266,15 @@
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>'',
-               "1"=>'<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>',
-               "2"=>BuscarEstado($reg),
-               "3"=>$reg->CantidadCuotas,
-               "4"=>$reg->NombrePersona,
-               "5"=>$reg->DNI,
-               "6"=>$reg->NivelNombre,
-               "7"=>$reg->GradoNombre,
-               "8"=>$reg->SeccionNombre,
-               "9"=>$reg->fechaRegistro,
-               "10"=>BuscarAccion($reg)
+
+               "1"=>BuscarEstado($reg),
+               "2"=>verificarFoto($reg),
+               "3"=>$reg->NombrePersona,
+               "4"=>$reg->DNI,
+               "5"=>$reg->FechaNacimiento,
+               "6"=>$reg->fechaRegistro,
+               "7"=>'<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>',
+               "8"=>BuscarAccion($reg)
             );
          }
          $results = array(

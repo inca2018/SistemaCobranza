@@ -39,16 +39,13 @@
                                     <thead class="thead-light text-center">
                                         <tr>
                                             <th data-priority="1">#</th>
-
-                                            <th>PLAN DE PAGO</th>
                                             <th>ESTADO</th>
-                                            <th>CUOTAS</th>
+                                            <th>FOTO</th>
                                             <th>NOMBRE DE ALUMNO</th>
                                             <th>DNI</th>
-                                            <th>NIVEL</th>
-                                            <th>GRADO</th>
-                                            <th>SECCION</th>
+                                            <th>FECHA NACIMIENTO</th>
                                             <th>FECHA REGISTRO</th>
+                                            <th>INFORMACIÓN MATRICULAS</th>
                                             <th>ACCION</th>
                                         </tr>
                                     </thead>
@@ -79,7 +76,7 @@
                 </div>
             </div>
             <div class="modal-body ">
-                <form id="FormularioAlumno" method="POST" autocomplete="off">
+                <form id="FormularioAlumno" method="POST" autocomplete="off"  >
                     <input type="hidden" name="idPersona" id="idPersona">
                     <input type="hidden" name="idAlumno" id="idAlumno">
 
@@ -175,31 +172,32 @@
 
                                         <textarea id="AlumnoDireccion" name="AlumnoDireccion" rows="2" class="form-control">
 
-
-
-
-
-
-
                                                  </textarea>
 
                                     </div>
                                 </div>
                                 <div class="col-md-6 br">
-                                    <div class="form-group row">
-                                        <label for="AlumnoEstado" class="col-md-5 col-form-label"><i class="fa fa-sun fa-lg mr-3"></i>Estado<span class="red">*</span>:</label>
-                                        <div class="col-md-7">
+
+                                        <label for="AlumnoEstado" class=" col-form-label"><i class="fa fa-sun fa-lg mr-3"></i>Estado<span class="red">*</span>:</label>
+
                                             <select class="form-control validarPanel" id="AlumnoEstado" name="AlumnoEstado" data-message="- Estado">
 
                                             </select>
-                                        </div>
-                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6 br">
+
+                                        <label for="AlumnoEstado" class="col-md-5 col-form-label"><i class="fa fa-image fa-lg mr-3"></i>Foto :</label>
+
+                                        <input class="form-control filestyle" type="file" name="adjuntar_documento" id="adjuntar_documento" data-classbutton="btn btn-secondary sombra3" data-classinput="form-control inline" data-icon="&lt;span class='fa fa-upload mr-2 '&gt;&lt;/span&gt;" accept="image/jpeg">
+
                                 </div>
 
                             </div>
 
                             <hr>
-                            <h5 class="mt-3 mb-3 titulo_area"><em><b>Información Acádemica:</b></em></h5>
+                           <!-- <h5 class="mt-3 mb-3 titulo_area"><em><b>Información Acádemica:</b></em></h5>
                             <div class="row">
                                 <div class="col-md-4 br">
                                     <div class="form-group row">
@@ -233,7 +231,7 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> -->
                             <hr>
                             <div class="row mr-1 ml-1">
                                 <button type="submit" class="col-md-2 btn btn-success btn-sm" title="Guardar">

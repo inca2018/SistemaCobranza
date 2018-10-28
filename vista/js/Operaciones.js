@@ -112,4 +112,7 @@ function PagoMatricula(idAlumno){
 function PagoCuota(idAlumno){
     $.redirect('../Operaciones/PagoCuota.php',{'idAlumno':idAlumno});
 }
+function MatricularAlumnos(){
+   $.redirect('../Operaciones/Matricula.php',{});
+}
 init();

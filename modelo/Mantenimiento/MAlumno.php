@@ -44,10 +44,10 @@
 		  }
 
         if($idAlumno=="" || $idAlumno==null || empty($idAlumno)){
-             $sql="CALL `SP_ALUMNO_REGISTRO`('$AlumnoNombre','$AlumnoApellidoP','$AlumnoApellidoM','$AlumnoDNI','$AlumnoFechaNacimiento','$AlumnoCorreo','$AlumnoTelefono','$AlumnoDireccion','$AlumnoEstado','$AlumnoImagen','$AlumnoNivel','$AlumnoGrado','$AlumnoSeccion','$login_idLog');";
+             $sql="CALL `SP_ALUMNO_REGISTRO`('$AlumnoNombre','$AlumnoApellidoP','$AlumnoApellidoM','$AlumnoDNI','$AlumnoFechaNacimiento','$AlumnoCorreo','$AlumnoTelefono','$AlumnoDireccion','$AlumnoEstado','$AlumnoImagen','$login_idLog');";
 
         }else{
-             $sql="CALL `SP_ALUMNO_ACTUALIZAR`('$AlumnoNombre','$AlumnoApellidoP','$AlumnoApellidoM','$AlumnoDNI','$AlumnoFechaNacimiento','$AlumnoCorreo','$AlumnoTelefono','$AlumnoDireccion','$AlumnoEstado','$AlumnoNivel','$AlumnoGrado','$AlumnoSeccion','$AlumnoImagen','$idPersona','$idAlumno','$login_idLog');";
+             $sql="CALL `SP_ALUMNO_ACTUALIZAR`('$AlumnoNombre','$AlumnoApellidoP','$AlumnoApellidoM','$AlumnoDNI','$AlumnoFechaNacimiento','$AlumnoCorreo','$AlumnoTelefono','$AlumnoDireccion','$AlumnoEstado','$AlumnoImagen','$idPersona','$idAlumno','$login_idLog');";
         }
 
          return ejecutarConsulta($sql);

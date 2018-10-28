@@ -137,6 +137,12 @@
 
 				</div>
 
+				<div class="row">
+				    <div class="col-md-2 offset-10">
+				    <button class="btn btn-info btn-block" type="button" onclick="MatricularAlumnos();"><i class="fab fa-monero mr-2"></i>MATRICULAR</button>
+				    </div>
+				</div>
+
 				<h5 class="mt-3 mb-3 titulo_area"><em><b>Información General:</b></em></h5>
 				<div class="row ">
 					<div class="col-md-12">
