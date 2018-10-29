@@ -161,7 +161,7 @@
 											<th>C. PENDIENTES</th>
 											<th>C. PAGADAS</th>
 											<th>C. VENCIDAS</th>
-											<th>ACCION</th>
+											<th>PAGOS</th>
 										</tr>
 									</thead>
 									<tbody>

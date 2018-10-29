@@ -36,6 +36,20 @@
     $fechaInicio=isset($_POST["fechaInicio"])?limpiarCadena($_POST["fechaInicio"]):"";
     $fechaFin=isset($_POST["fechaFin"])?limpiarCadena($_POST["fechaFin"]):"";
 
+    $year=isset($_POST["year"])?limpiarCadena($_POST["year"]):"";
+
+
+$idAlumnoP=isset($_POST["idAlumnoP"])?limpiarCadena($_POST["idAlumnoP"]):"";
+$yearP=isset($_POST["yearP"])?limpiarCadena($_POST["yearP"]):"";
+$importePago=isset($_POST["importePago"])?limpiarCadena($_POST["importePago"]):"";
+$importeMora=isset($_POST["importeMora"])?limpiarCadena($_POST["importeMora"]):"";
+$codigoPago=isset($_POST["codigoPago"])?limpiarCadena($_POST["codigoPago"]):"";
+$TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
+$pagar_importe=isset($_POST["pagar_importe"])?limpiarCadena($_POST["pagar_importe"]):"";
+$pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pagar_importe_mora"]):"";
+
+
+
     $date = str_replace('/', '-', $fechaInicio);
     $fechaInicio = date("Y-m-d", strtotime($date));
  	 $date = str_replace('/', '-', $fechaFin);
@@ -82,16 +96,12 @@
    function AccionesOperacion($reg){
        $respuesta="";
        if($reg->PagosDisponibles==0 || $reg->PagosDisponibles=='0'){
-            $respuesta.='<div class="badge badge-primary">DEBE HBAILITAR PAGOS DEL ALUMNO</div>';
+            $respuesta.='<div class="badge badge-primary">DEBE HABILITAR PAGOS DEL ALUMNO</div>';
        }else{
-           if($reg->PagosDisponibles>0){
-               $respuesta.='<button type="button"  title="Pago de Matricula" class="btn btn-info btn-sm m-1" onclick="PagoMatricula('.$reg->idAlumno.')"><i class="fas fa-money-bill-alt fa-lg"></i>
-            </button>';
-           }
-           if($reg->CuotaPendiente>0){
-             $respuesta.='<button type="button"   title="Pago de Cuota" class="btn btn-success btn-sm m-1" onclick="PagoCuota('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button>
+
+         $respuesta.='<button type="button"   title="Pago de Cuota" class="btn btn-success btn-sm m-1" onclick="Pagos('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button>
             ';
-           }
+
        }
      return $respuesta;
    }
@@ -196,6 +206,79 @@
          echo json_encode($results);
       break;
 
+    case 'ListarDeuda1':
+         $rspta=$gestion->ListarDeudas($idAlumno,$year);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>'<div  title="Seleccione">
+                           <label>
+                           <input type="checkbox" class="pagos_matricula" id="" data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idPago.'"  data-year="'.$reg->year.'" ">
+                             </label>
+                     </div>',
+               "2"=>BuscarEstado($reg),
+               "3"=>$reg->NombrePago,
+               "4"=>"S/. ".number_format($reg->Diferencia,2),
+               "5"=>'<button class="btn btn-purple btn-sm " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idPago.','.$reg->year.','.$reg->Diferencia.',0,1)"><i class="fas fa-angle-double-right"></i></button>'
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+    case 'ListarDeuda2':
+         $rspta=$gestion->ListarDeudasPensiones($idAlumno,$year);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>'<div  title="Seleccione">
+                           <label>
+                           <input type="checkbox" class="pagos_pensiones" id="" data-mora="'.(($reg->DiasMora*1)-$reg->Mora).'"  data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idCuota.'"  data-year="'.$reg->year.'" ">
+                             </label>
+                     </div>',
+               "2"=>BuscarEstado($reg),
+               "3"=>"PENSIÓN ".($count++),
+               "4"=>"S/. ".number_format($reg->Diferencia,2),
+               "5"=>$reg->DiasMora,
+               "6"=>"S/. ".number_format((($reg->DiasMora*1)-$reg->Mora),2),
+               "7"=>$reg->fechaVencimiento,
+               "8"=>'<button class="btn btn-purple btn-sm" title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idCuota.','.$reg->year.','.$reg->Diferencia.','.(($reg->DiasMora*1)-$reg->Mora).',2)"><i class="fas fa-angle-double-right"></i></button>'
+
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+
+ case 'ListarPagar':
+         $rspta=$gestion->ListarPagar($idAlumno,$year);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>$reg->NombrePago,
+               "2"=>"S/. ".number_format($reg->ImportePago,2)
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
 
       case 'RegistrarPago':
          $rspta = array("Mensaje"=>"","Registro"=>false,"Error"=>false);
@@ -212,6 +295,13 @@
             $rspta['Registro']=$gestion->RegistrarCuota($idPlan,$idAlumno,$idCuota,$PagoTipoPago,$PagoTipoTarjeta,$importePago,$importeBase,$importeMora,$pago_detalle,$login_idLog);
             $rspta['Registro']?$rspta['Mensaje']="Pago Registrado.":$rspta['Mensaje']="Pago no se pudo Registrar comuniquese con el area de soporte";
 
+         echo json_encode($rspta);
+      break;
+     case 'RegistrarPagoP':
+         $rspta = array("Mensaje"=>"","Registro"=>false,"Error"=>false);
+
+         $rspta['Registro']=$gestion->RegistrarPago( );
+         $rspta['Registro']?$rspta['Mensaje']="Pago Registrado.":$rspta['Mensaje']="Pago no se pudo Registrar comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
 

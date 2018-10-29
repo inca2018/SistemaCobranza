@@ -1,32 +1,198 @@
+var tablaDeuda1;
+var tablaDeuda2;
+var tablaPagar;
 function init(){
 
- Listar_TipoDeTarjeta();
- Listar_TipoPago();
+Listar_TipoDeTarjeta();
+Listar_TipoPago();
 
 var idAlumno=$("#idAlumno").val();
 RecuperarInformacionMatricula(idAlumno);
 
-    iniciar_Valores();
+iniciar_Valores();
+ListarYear();
+
+$("#yearSelect").change(function () {
+    var year = $("#yearSelect").val();
+    var idAlumno=$("#idAlumno").val();
+    $("#year_Actual").val(year);
+    Listar_Deudas1(idAlumno,year);
+    Listar_Deudas2(idAlumno,year);
+});
+
+Iniciar_Acciones();
+
+}
+function Iniciar_Acciones(){
+
+
+$('#Selector_matricula').change(function(){
+		 if(this.checked == true){
+			 $('.pagos_matricula').each(function () {
+                    $(this).attr('checked','checked');
+            });
+		 }else{
+			$('.pagos_matricula').each(function () {
+                    $(this).removeAttr('checked');
+            });
+		 }
+   });
+$('#Selector_pensiones').change(function(){
+		 if(this.checked == true){
+		    $('.pagos_pensiones').each(function () {
+                    $(this).attr('checked','checked');
+            });
+		 }else{
+			$('.pagos_pensiones').each(function () {
+                    $(this).removeAttr('checked');
+            });
+		 }
+   });
+
+
+$("#m_importe_pagar").change(function () {
+		var importe = $("#m_importe_pagar").val();
+        var total=$("#pagar_importe").val();
+		if (importe != '') {
+            if(importe<=total){
+                $("#pagar_importe").val(parseFloat(importe));
+			    $("#m_importe_pagar").val("S/. " + Formato_Moneda(parseFloat(importe), 2));
+            }else{
+                notificar_warning("Ingrese un Monto Menor al Importe a Pagar.");
+                $("#pagar_importe").val(parseFloat(total));
+			    $("#m_importe_pagar").val("S/. " + Formato_Moneda(parseFloat(total), 2));
+            }
+
+
+		}
+		else {
+			$("#pagar_importe").val(0);
+			$("#m_importe_pagar").val("S/. 0.00");
+
+		}
+	});
+	$("#m_importe_pagar").click(function () {
+		$("#m_importe_pagar").val($("#pagar_importe").val());
+	});
+	$("#m_importe_pagar").blur(function () {
+		$("#m_importe_pagar").val("S/. " + Formato_Moneda($("#pagar_importe").val(), 2));
+	});
+
+
+$("#m_importe_mora_pagar").change(function () {
+		var importe = $("#m_importe_mora_pagar").val();
+        var total=$("#pagar_importe_mora").val();
+		if (importe != '') {
+            if(importe<=total){
+                 $("#pagar_importe_mora").val(parseFloat(importe));
+			     $("#m_importe_mora_pagar").val("S/. " + Formato_Moneda(parseFloat(importe), 2));
+               }else{
+                   notificar_warning("Ingrese un Monto Menor al Importe a Pagar");
+                    $("#pagar_importe_mora").val(parseFloat(total));
+			     $("#m_importe_mora_pagar").val("S/. " + Formato_Moneda(parseFloat(total), 2));
+               }
+
+
+		}
+		else {
+			$("#pagar_importe_mora").val(0);
+			$("#m_importe_mora_pagar").val("S/. 0.00");
+
+		}
+	});
+
+	$("#m_importe_mora_pagar").click(function () {
+		$("#m_importe_mora_pagar").val($("#pagar_importe_mora").val());
+	});
+	$("#m_importe_mora_pagar").blur(function () {
+		$("#m_importe_mora_pagar").val("S/. " + Formato_Moneda($("#pagar_importe_mora").val(), 2));
+	});
+
+
+      $("#FormularioPago").on("submit", function (e) {
+        RegistrarPago(e);
+    });
+
+}
+function RegistrarPago(event) {
+    //cargar(true);
+    event.preventDefault(); //No se activará la acción predeterminada del evento
+    var error = "";
+
+
+
+    if (error == "") {
+        $("#ModuloPago").addClass("whirl");
+        $("#ModuloPago").addClass("ringed");
+        setTimeout('AjaxRegistroPago()', 2000);
+    } else {
+        notificar_warning("Complete :<br>" + error);
+    }
 }
 
+function AjaxRegistroPago() {
+    var formData = new FormData($("#FormularioPago")[0]);
+    console.log(formData);
+    $.ajax({
+        url: "../../controlador/Gestion/CGestion.php?op=RegistrarPagoP",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data, status) {
+            data = JSON.parse(data);
+            console.log(data);
+            var Mensaje = data.Mensaje;
+            var Error = data.Registro;
+            if (!Error) {
+                $("#ModuloPago").removeClass("whirl");
+                $("#ModuloPago").removeClass("ringed");
+                $("#ModalAlumno").modal("hide");
+                swal("Error:", Mensaje);
+
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+            } else {
+                $("#ModuloPago").removeClass("whirl");
+                $("#ModuloPago").removeClass("ringed");
+                swal("Acción:", Mensaje);
+
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+            }
+        }
+    });
+}
+function ListarYear() {
+    $.post("../../controlador/Gestion/CMatricula.php?op=ListarYear", function (ts) {
+        $("#yearSelect").append(ts);
+
+        var year = $("#yearSelect").val();
+        var idAlumno=$("#idAlumno").val();
+        $("#year_Actual").val(year);
+        Listar_Deudas1(idAlumno,year);
+        Listar_Deudas2(idAlumno,year);
+        Listar_Pagar(idAlumno,year);
+    });
+}
 function Listar_TipoDeTarjeta(){
      $.post("../../controlador/Gestion/CGestion.php?op=listar_tipoTarjeta", function (ts) {
       $("#PagoTipoTarjeta").append(ts);
    });
 }
-
 function Listar_TipoPago(){
     $.post("../../controlador/Gestion/CGestion.php?op=listar_tipoPago", function (ts) {
       $("#PagoTipoPago").append(ts);
    });
 }
-
 function RecuperarInformacionMatricula(idAlumno){
     //solicitud de recuperar Proveedor
 	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarInformacionMatricula",{"idAlumno":idAlumno}, function(data, status){
 		data = JSON.parse(data);
 		console.log(data);
-debugger;
+
 $("#info_alu_dni").empty();
 $("#info_alu_nombres").empty();
 $("#info_alu_nivel").empty();
@@ -108,7 +274,6 @@ function iniciar_Valores(){
 	});
 
 }
-
 function RegistroPago(){
       //cargar(true);
 	event.preventDefault(); //No se activará la acción predeterminada del evento
@@ -178,6 +343,357 @@ function AjaxRegistroPago(){
 }
 function Volver(){
       $.redirect('../Operaciones/Operaciones.php');
+}
+function Listar_Deudas1(idAlumno,year) {
+    if(tablaDeuda1==null){
+         tablaDeuda1 = $('#tablaDeudas1').dataTable({
+        "aProcessing": true,
+        "aServerSide": true,
+        "processing": true,
+        "paging": false, // Paginacion en tabla
+        "ordering": false, // Ordenamiento en columna de tabla
+        "info": true, // Informacion de cabecera tabla
+        "responsive": true, // Accion de responsive
+        "searching": false,
+
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[0, "asc"]],
+
+        "bDestroy": true,
+        "columnDefs": [
+            {
+                "className": "text-center",
+                "targets": [0,1,2,5]
+            }
+            , {
+                "className": "text-left",
+                "targets": [3]
+            },{
+                "className": "text-right",
+                "targets": [4]
+            }
+         , ],
+        "ajax": { //Solicitud Ajax Servidor
+            url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda1',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                year: year,
+                idAlumno: idAlumno
+            },
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        },
+        // cambiar el lenguaje de datatable
+        oLanguage: español,
+    }).DataTable();
+    //Aplicar ordenamiento y autonumeracion , index
+    tablaDeuda1.on('order.dt search.dt', function () {
+        tablaDeuda1.column(0, {
+            search: 'applied',
+            order: 'applied'
+        }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+    }else{
+        tablaDeuda1.destroy();
+         tablaDeuda1 = $('#tablaDeudas1').dataTable({
+        "aProcessing": true,
+        "aServerSide": true,
+        "processing": true,
+        "paging": false, // Paginacion en tabla
+        "ordering": false, // Ordenamiento en columna de tabla
+        "info": true, // Informacion de cabecera tabla
+        "responsive": true, // Accion de responsive
+        "searching": false,
+
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[0, "asc"]],
+
+        "bDestroy": true,
+        "columnDefs": [
+            {
+                "className": "text-center",
+                "targets": [0,1,2,5]
+            }
+            , {
+                "className": "text-left",
+                "targets": [3]
+            },{
+                "className": "text-right",
+                "targets": [4]
+            }
+         , ],
+        "ajax": { //Solicitud Ajax Servidor
+            url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda1',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                year: year,
+                idAlumno: idAlumno
+            },
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        },
+        // cambiar el lenguaje de datatable
+        oLanguage: español,
+    }).DataTable();
+    //Aplicar ordenamiento y autonumeracion , index
+    tablaDeuda1.on('order.dt search.dt', function () {
+        tablaDeuda1.column(0, {
+            search: 'applied',
+            order: 'applied'
+        }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+    }
+
+
+}
+function Listar_Deudas2(idAlumno,year) {
+    if(tablaDeuda2==null){
+        tablaDeuda2 = $('#tablaDeudas2').dataTable({
+        "aProcessing": true,
+        "aServerSide": true,
+        "processing": true,
+        "paging": false, // Paginacion en tabla
+        "ordering": false, // Ordenamiento en columna de tabla
+        "info": true, // Informacion de cabecera tabla
+        "responsive": true, // Accion de responsive
+        "searching": false,
+
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[0, "asc"]],
+        "columnDefs": [
+            {
+                "className": "text-center",
+                "targets": [1, 2, 3,4,5,6,7 ,8]
+            }
+            , {
+                "className": "text-left",
+                "targets": [0]
+            }, {
+                "className": "text-right",
+                "targets": [4]
+            }
+         , ],
+        "ajax": { //Solicitud Ajax Servidor
+            url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda2',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                year: year,
+                idAlumno: idAlumno
+            },
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        },
+        // cambiar el lenguaje de datatable
+        oLanguage: español,
+    }).DataTable();
+    //Aplicar ordenamiento y autonumeracion , index
+    tablaDeuda2.on('order.dt search.dt', function () {
+        tablaDeuda2.column(0, {
+            search: 'applied',
+            order: 'applied'
+        }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+    }else{
+        tablaDeuda2.destroy();
+
+        tablaDeuda2 = $('#tablaDeudas2').dataTable({
+        "aProcessing": true,
+        "aServerSide": true,
+        "processing": true,
+        "paging": false, // Paginacion en tabla
+        "ordering": false, // Ordenamiento en columna de tabla
+        "info": true, // Informacion de cabecera tabla
+        "responsive": true, // Accion de responsive
+        "searching": false,
+
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[0, "asc"]],
+        "columnDefs": [
+            {
+                "className": "text-center",
+                "targets": [1, 2, 3,4,5,6,7 ,8]
+            }
+            , {
+                "className": "text-left",
+                "targets": [0]
+            }, {
+                "className": "text-right",
+                "targets": [4]
+            }
+         , ],
+        "ajax": { //Solicitud Ajax Servidor
+            url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda2',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                year: year,
+                idAlumno: idAlumno
+            },
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        },
+        // cambiar el lenguaje de datatable
+        oLanguage: español,
+    }).DataTable();
+    //Aplicar ordenamiento y autonumeracion , index
+    tablaDeuda2.on('order.dt search.dt', function () {
+        tablaDeuda2.column(0, {
+            search: 'applied',
+            order: 'applied'
+        }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+         }
+
+}
+function Listar_Pagar(idAlumno,year) {
+    if(tablaPagar==null){
+        tablaPagar = $('#tablaPagar').dataTable({
+        "aProcessing": true,
+        "aServerSide": true,
+        "processing": true,
+        "paging": false, // Paginacion en tabla
+        "ordering": false, // Ordenamiento en columna de tabla
+        "info": true, // Informacion de cabecera tabla
+        "responsive": true, // Accion de responsive
+        "searching": false,
+
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[0, "asc"]],
+        "columnDefs": [
+            {
+                "className": "text-center",
+                "targets": [1,2,3]
+            }
+            , {
+                "className": "text-left",
+                "targets": [0]
+            }, {
+                "className": "text-right",
+                "targets": [0]
+            }
+         , ],
+        "ajax": { //Solicitud Ajax Servidor
+            url: '../../controlador/Gestion/CGestion.php?op=ListarPagar',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                year: year,
+                idAlumno: idAlumno
+            },
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        },
+        // cambiar el lenguaje de datatable
+        oLanguage: español,
+    }).DataTable();
+    //Aplicar ordenamiento y autonumeracion , index
+    tablaPagar.on('order.dt search.dt', function () {
+        tablaPagar.column(0, {
+            search: 'applied',
+            order: 'applied'
+        }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+    }else{
+        tablaPagar.destroy();
+
+        tablaPagar = $('#tablaDeudas2').dataTable({
+        "aProcessing": true,
+        "aServerSide": true,
+        "processing": true,
+        "paging": false, // Paginacion en tabla
+        "ordering": false, // Ordenamiento en columna de tabla
+        "info": true, // Informacion de cabecera tabla
+        "responsive": true, // Accion de responsive
+        "searching": false,
+
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[0, "asc"]],
+        "columnDefs": [
+            {
+                "className": "text-center",
+                "targets": [1,2,3]
+            }
+            , {
+                "className": "text-left",
+                "targets": [0]
+            }, {
+                "className": "text-right",
+                "targets": []
+            }
+         , ],
+        "ajax": { //Solicitud Ajax Servidor
+            url: '../../controlador/Gestion/CGestion.php?op=ListarPagar',
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                year: year,
+                idAlumno: idAlumno
+            },
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        },
+        // cambiar el lenguaje de datatable
+        oLanguage: español,
+    }).DataTable();
+    //Aplicar ordenamiento y autonumeracion , index
+    tablaPagar.on('order.dt search.dt', function () {
+        tablaPagar.column(0, {
+            search: 'applied',
+            order: 'applied'
+        }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+         }
+
+}
+function EnviarPago (idAlumno,idPago,year,importe,mora,TipoPago){
+    //Tipo pago M=MATRICULA, P=PENSION
+
+$("#idAlumnoP").val(idAlumno);
+$("#yearP").val(year);
+$("#importePago").val(importe);
+$("#importeMora").val(mora);
+$("#TipoPago").val(TipoPago);
+$("#codigoPago").val(idPago);
+
+
+$("#pagar_importe").val(parseFloat(importe));
+$("#pagar_importe_mora").val(parseFloat(mora));
+
+$("#m_importe_pagar").val("S/. "+Formato_Moneda(parseFloat(importe),2));
+$("#m_importe_mora_pagar").val("S/. "+Formato_Moneda(parseFloat(mora),2));
+
+
+$("#m_importe").val("S/. "+Formato_Moneda(parseFloat(importe),2));
+$("#m_importe_mora").val("S/. "+Formato_Moneda(parseFloat(mora),2));
+if(parseFloat(mora)>0){
+   $("#modulo_mora").show();
+   }else{
+   $("#modulo_mora").hide();
+   }
+
+ $("#ModalPago").modal("show");
+
 }
 
 init();

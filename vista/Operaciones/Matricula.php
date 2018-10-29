@@ -79,6 +79,10 @@
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="row m-2">
+                    <button class="btn btn-info " onclick="volver();">VOLVER</button>
+                </div>
             </div>
 
         </div>

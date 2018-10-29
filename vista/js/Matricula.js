@@ -624,5 +624,7 @@ function Pagado(check,mensaje){
        notificar_warning("No se puede deshabilitar porque tiene un pago realizado.");
    }
 }
-
+function volver(){
+     $.redirect('../Operaciones/Operaciones.php',{});
+}
 init();

@@ -16,6 +16,19 @@
 			$sql="CALL `SP_OPERACIONES_LISTAR`();";
 			return ejecutarConsulta($sql);
 		}
+       public function ListarDeudas($idAlumno,$year){
+			$sql="CALL `SP_OPERACIONES_RECUPERAR_DEUDA`('$idAlumno','$year');";
+			return ejecutarConsulta($sql);
+		}
+       public function ListarDeudasPensiones($idAlumno,$year){
+			$sql="CALL `SP_OPERACIONES_RECUPERAR_PENSIONES`('$idAlumno','$year');";
+			return ejecutarConsulta($sql);
+		}
+         public function ListarPagar($idAlumno,$year){
+            $sql="CALL `SP_OPERACIONES_RECUPERAR_PAGAR`('$idAlumno','$year');";
+			return ejecutarConsulta($sql);
+         }
+
        public function RecuperarInformacionMatricula($idAlumno){
            $sql="CALL `SP_OPERACION_RECUPERAR_INFO`('$idAlumno');";
 			return ejecutarConsultaSimpleFila($sql);

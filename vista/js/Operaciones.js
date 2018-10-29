@@ -106,11 +106,8 @@ function MostrarGestionApoderados(){
     $.redirect('../Mantenimiento/MantApoderado.php');
 }
 
-function PagoMatricula(idAlumno){
-    $.redirect('../Operaciones/PagoMatricula.php',{'idAlumno':idAlumno});
-}
-function PagoCuota(idAlumno){
-    $.redirect('../Operaciones/PagoCuota.php',{'idAlumno':idAlumno});
+function Pagos(idAlumno){
+   $.redirect('../Operaciones/PagoMatricula.php',{'idAlumno':idAlumno});
 }
 function MatricularAlumnos(){
    $.redirect('../Operaciones/Matricula.php',{});
