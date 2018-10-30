@@ -110,11 +110,11 @@ $("#m_importe_mora_pagar").change(function () {
 
 
       $("#FormularioPago").on("submit", function (e) {
-        RegistrarPago(e);
+        RegistrarPagoP(e);
     });
 
 }
-function RegistrarPago(event) {
+function RegistrarPagoP(event) {
     //cargar(true);
     event.preventDefault(); //No se activará la acción predeterminada del evento
     var error = "";
@@ -124,13 +124,13 @@ function RegistrarPago(event) {
     if (error == "") {
         $("#ModuloPago").addClass("whirl");
         $("#ModuloPago").addClass("ringed");
-        setTimeout('AjaxRegistroPago()', 2000);
+        setTimeout('AjaxRegistroPagoP()', 2000);
     } else {
         notificar_warning("Complete :<br>" + error);
     }
 }
 
-function AjaxRegistroPago() {
+function AjaxRegistroPagoP() {
     var formData = new FormData($("#FormularioPago")[0]);
     console.log(formData);
     $.ajax({
@@ -153,6 +153,7 @@ function AjaxRegistroPago() {
                 tablaDeuda1.ajax.reload();
                 tablaDeuda2.ajax.reload();
                 tablaPagar.ajax.reload();
+                $("#ModalPago").modal("hide");
             } else {
                 $("#ModuloPago").removeClass("whirl");
                 $("#ModuloPago").removeClass("ringed");
@@ -161,6 +162,7 @@ function AjaxRegistroPago() {
                 tablaDeuda1.ajax.reload();
                 tablaDeuda2.ajax.reload();
                 tablaPagar.ajax.reload();
+                $("#ModalPago").modal("hide");
             }
         }
     });
@@ -300,13 +302,9 @@ function RegistroPago(){
 	}
 }
 function AjaxRegistroPago(){
-	debugger;
-    var idPlan=$("#idPlan").val();
-    var idAlumno=$("#idAlumno").val();
+
      var formData = new FormData($("#FormularioPago")[0]);
-        formData.append("idPlan",idPlan);
-        formData.append("idAlumno",idAlumno);
-		console.log(formData);
+
 		$.ajax({
 			url: "../../controlador/Gestion/CGestion.php?op=RegistrarPago",
 			 type: "POST",
@@ -666,7 +664,7 @@ function Listar_Pagar(idAlumno,year) {
          }
 
 }
-function EnviarPago (idAlumno,idPago,year,importe,mora,TipoPago){
+function EnviarPago (idAlumno,idPago,year,importe,mora,TipoPago,TituloPago){
     //Tipo pago M=MATRICULA, P=PENSION
 
 $("#idAlumnoP").val(idAlumno);
@@ -675,7 +673,7 @@ $("#importePago").val(importe);
 $("#importeMora").val(mora);
 $("#TipoPago").val(TipoPago);
 $("#codigoPago").val(idPago);
-
+$("#tituloPago").val(TituloPago);
 
 $("#pagar_importe").val(parseFloat(importe));
 $("#pagar_importe_mora").val(parseFloat(mora));
@@ -693,6 +691,37 @@ if(parseFloat(mora)>0){
    }
 
  $("#ModalPago").modal("show");
+
+}
+
+function EliminarPagar(idPagar,importePagar,idAlumno,year,idCuota,idMatricula){
+     swal({
+      title: "Eliminar?",
+      text: "Esta Seguro que desea Eliminar Pago Agregado!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Eliminar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarPagar(idPagar,importePagar,idAlumno,year,idCuota,idMatricula);
+   });
+}
+
+function ajaxEliminarPagar(idPagar,importePagar,idAlumno,year,idCuota,idMatricula){
+     $.post("../../controlador/Gestion/CGestion.php?op=EliminarPagar", {
+         idPagar: idPagar,importePagar:importePagar,idAlumno:idAlumno,year:year,idCuota:idCuota,idMatricula:idMatricula}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Eliminar;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Eliminado!", Mensaje, "success");
+         tablaTarjeta.ajax.reload();
+      }
+   });
+
 
 }
 

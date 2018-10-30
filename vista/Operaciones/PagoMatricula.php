@@ -243,6 +243,8 @@ if(isset($_POST["idAlumno"])){
 
                     <input type="hidden" name="pagar_importe" id="pagar_importe" value="0">
                     <input type="hidden" name="pagar_importe_mora" id="pagar_importe_mora" value="0">
+
+                     <input type="hidden" name="tituloPago" id="tituloPago" value="0">
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label for="m_importe" class=" col-form-label">Importe:</label>

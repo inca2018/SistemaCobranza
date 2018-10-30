@@ -91,7 +91,20 @@
           $sql="SELECT @p0 AS `numCuotas`, @p1 AS `cuotaPend`, @p2 AS `cuotaPagada`, @p3 AS `cuotaVencida`;";
 			return ejecutarConsultaSimpleFila($sql);
        }
-
+       public function RegistrarPagoP($idAlumnoP,$yearP,$importePago,$importeMora,$codigoPago,$TipoPago,$pagar_importe,$pagar_importe_mora,$tituloPago){
+          $sql="CALL `SP_OPERACIONES_REGISTRO_PAGO`('$idAlumnoP','$yearP','$importePago','$importeMora','$codigoPago','$TipoPago','$pagar_importe','$pagar_importe_mora','$tituloPago');";
+			return ejecutarConsulta($sql);
+       }
+       public function EliminarPagar($idPagar,$importePagar,$idAlumno,$year,$idCuota,$idMatricula){
+           if($idCuota=='' || $idCuota==null || empty($idCuota)){
+			  $idCuota='0';
+		  }
+           if($idMatricula=='' || $idMatricula==null || empty($idMatricula)){
+			  $idMatricula='0';
+		  }
+          $sql="CALL `SP_OPERACIONES_ELIMINAR_PAGAR`('$idPagar','$importePagar','$idAlumno','$year','$idCuota','$idMatricula');";
+			return ejecutarConsulta($sql);
+       }
 
 
    }

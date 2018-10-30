@@ -2,8 +2,10 @@
    session_start();
    require_once "../../modelo/Gestion/MGestion.php";
    require_once "../../modelo/General/MGeneral.php";
+    require_once "../../config/conexion.php";
    $gestion = new MGestion();
    $general = new MGeneral();
+    $recursos = new Conexion();
 
 
 	$idGestion=isset($_POST["idGestion"])?limpiarCadena($_POST["idGestion"]):"";
@@ -39,15 +41,22 @@
     $year=isset($_POST["year"])?limpiarCadena($_POST["year"]):"";
 
 
-$idAlumnoP=isset($_POST["idAlumnoP"])?limpiarCadena($_POST["idAlumnoP"]):"";
-$yearP=isset($_POST["yearP"])?limpiarCadena($_POST["yearP"]):"";
-$importePago=isset($_POST["importePago"])?limpiarCadena($_POST["importePago"]):"";
-$importeMora=isset($_POST["importeMora"])?limpiarCadena($_POST["importeMora"]):"";
-$codigoPago=isset($_POST["codigoPago"])?limpiarCadena($_POST["codigoPago"]):"";
-$TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
-$pagar_importe=isset($_POST["pagar_importe"])?limpiarCadena($_POST["pagar_importe"]):"";
-$pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pagar_importe_mora"]):"";
+    $idAlumnoP=isset($_POST["idAlumnoP"])?limpiarCadena($_POST["idAlumnoP"]):"";
+    $yearP=isset($_POST["yearP"])?limpiarCadena($_POST["yearP"]):"";
+    $importePago=isset($_POST["importePago"])?limpiarCadena($_POST["importePago"]):"";
+    $importeMora=isset($_POST["importeMora"])?limpiarCadena($_POST["importeMora"]):"";
+    $codigoPago=isset($_POST["codigoPago"])?limpiarCadena($_POST["codigoPago"]):"";
+    $TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
+    $pagar_importe=isset($_POST["pagar_importe"])?limpiarCadena($_POST["pagar_importe"]):"";
+    $pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pagar_importe_mora"]):"";
 
+    $tituloPago=isset($_POST["tituloPago"])?limpiarCadena($_POST["tituloPago"]):"";
+
+
+ $idPagar=isset($_POST["idPagar"])?limpiarCadena($_POST["idPagar"]):"";
+$importePagar=isset($_POST["importePagar"])?limpiarCadena($_POST["importePagar"]):"";
+
+$idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"";
 
 
     $date = str_replace('/', '-', $fechaInicio);
@@ -221,7 +230,7 @@ $pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pa
                "2"=>BuscarEstado($reg),
                "3"=>$reg->NombrePago,
                "4"=>"S/. ".number_format($reg->Diferencia,2),
-               "5"=>'<button class="btn btn-purple btn-sm " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idPago.','.$reg->year.','.$reg->Diferencia.',0,1)"><i class="fas fa-angle-double-right"></i></button>'
+               "5"=>'<button class="btn btn-purple btn-sm " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idPago.','.$reg->year.','.$reg->Diferencia.',0,1,\''.$reg->NombrePago.'\')"><i class="fas fa-angle-double-right"></i></button>'
             );
          }
          $results = array(
@@ -244,12 +253,12 @@ $pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pa
                              </label>
                      </div>',
                "2"=>BuscarEstado($reg),
-               "3"=>"PENSIÓN ".($count++),
+               "3"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
                "4"=>"S/. ".number_format($reg->Diferencia,2),
                "5"=>$reg->DiasMora,
                "6"=>"S/. ".number_format((($reg->DiasMora*1)-$reg->Mora),2),
                "7"=>$reg->fechaVencimiento,
-               "8"=>'<button class="btn btn-purple btn-sm" title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idCuota.','.$reg->year.','.$reg->Diferencia.','.(($reg->DiasMora*1)-$reg->Mora).',2)"><i class="fas fa-angle-double-right"></i></button>'
+               "8"=>'<button class="btn btn-purple btn-sm" title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idCuota.','.$reg->year.','.$reg->Diferencia.','.(($reg->DiasMora*1)-$reg->Mora).',2,\'PENSIÓN '.$recursos->convertir($reg->Mes).'\')"><i class="fas fa-angle-double-right"></i></button>'
 
             );
          }
@@ -261,7 +270,7 @@ $pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pa
          echo json_encode($results);
       break;
 
- case 'ListarPagar':
+    case 'ListarPagar':
          $rspta=$gestion->ListarPagar($idAlumno,$year);
          $data= array();
          $count=1;
@@ -269,7 +278,8 @@ $pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pa
          $data[]=array(
                "0"=>$count++,
                "1"=>$reg->NombrePago,
-               "2"=>"S/. ".number_format($reg->ImportePago,2)
+               "2"=>"S/. ".number_format($reg->ImportePago,2),
+               "3"=>"<button type='button' class='btn btn-danger btn-sm' onclick='EliminarPagar(".$reg->idDetallePago.",".$reg->ImportePago.",".$reg->Alumno_idAlumno.",".$reg->year.",".$reg->Cuota_idCuota.",".$reg->TipoPago_idTipoPago.")'><i class='fa fa-trash'></i></>"
             );
          }
          $results = array(
@@ -300,8 +310,17 @@ $pagar_importe_mora=isset($_POST["pagar_importe_mora"])?limpiarCadena($_POST["pa
      case 'RegistrarPagoP':
          $rspta = array("Mensaje"=>"","Registro"=>false,"Error"=>false);
 
-         $rspta['Registro']=$gestion->RegistrarPago( );
+         $rspta['Registro']=$gestion->RegistrarPagoP($idAlumnoP,$yearP,$importePago,$importeMora,$codigoPago,$TipoPago,$pagar_importe,$pagar_importe_mora,$tituloPago);
          $rspta['Registro']?$rspta['Mensaje']="Pago Registrado.":$rspta['Mensaje']="Pago no se pudo Registrar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
+
+ case 'EliminarPagar':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+
+         $rspta['Registro']=$gestion->EliminarPagar($idPagar,$importePagar,$idAlumno,$year,$idCuota,$idMatricula);
+         $rspta['Eliminar']?$rspta['Mensaje']="Pago por Pagar Eliminado.":$rspta['Mensaje']="Pago por Pagar no se pudo Eliminar  comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
 
