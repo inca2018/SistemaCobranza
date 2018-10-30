@@ -58,6 +58,7 @@ $importePagar=isset($_POST["importePagar"])?limpiarCadena($_POST["importePagar"]
 
 $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"";
 
+$TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
 
     $date = str_replace('/', '-', $fechaInicio);
     $fechaInicio = date("Y-m-d", strtotime($date));
@@ -126,6 +127,10 @@ $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"
       break;
    case 'RecuperarParametros':
 			$rspta=$gestion->RecuperarParametros();
+         echo json_encode($rspta);
+      break;
+	 case 'RecuperarTotales':
+			$rspta=$gestion->RecuperarTotales($idAlumno,$year);
          echo json_encode($rspta);
       break;
 
@@ -224,13 +229,32 @@ $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"
                "0"=>$count++,
                "1"=>'<div  title="Seleccione">
                            <label>
-                           <input type="checkbox" class="pagos_matricula" id="" data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idPago.'"  data-year="'.$reg->year.'" ">
+                           <input type="checkbox" class="pagos_matricula" id="'.$reg->idPago.'" data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idPago.'"  data-year="'.$reg->year.' data-importe="'.$reg->Diferencia.'" data-nombre="'.$reg->NombrePago.'" data-tipo="1">
                              </label>
                      </div>',
                "2"=>BuscarEstado($reg),
                "3"=>$reg->NombrePago,
                "4"=>"S/. ".number_format($reg->Diferencia,2),
-               "5"=>'<button class="btn btn-purple btn-sm " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idPago.','.$reg->year.','.$reg->Diferencia.',0,1,\''.$reg->NombrePago.'\')"><i class="fas fa-angle-double-right"></i></button>'
+               "5"=>'<div class="badge badge-purple   " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idPago.','.$reg->year.','.$reg->Diferencia.',0,1,\''.$reg->NombrePago.'\')"><i class="fas fa-angle-double-right"></i></div>'
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+	 case 'ListarDeuda1A':
+         $rspta=$gestion->ListarDeudas($idAlumno,$year);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>BuscarEstado($reg),
+               "2"=>$reg->NombrePago,
+               "3"=>"S/. ".number_format($reg->Diferencia,2)
             );
          }
          $results = array(
@@ -249,7 +273,7 @@ $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"
                "0"=>$count++,
                "1"=>'<div  title="Seleccione">
                            <label>
-                           <input type="checkbox" class="pagos_pensiones" id="" data-mora="'.(($reg->DiasMora*1)-$reg->Mora).'"  data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idCuota.'"  data-year="'.$reg->year.'" ">
+                           <input type="checkbox" class="pagos_pensiones" id="'.$reg->idCuota.'" data-mora="'.(($reg->DiasMora*1)-$reg->Mora).'"  data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idCuota.'"  data-year="'.$reg->year.'" data-importe="'.$reg->Diferencia.' data-tipo="2" data-nombre="\'PENSIÓN'.$recursos->convertir($reg->Mes).'">
                              </label>
                      </div>',
                "2"=>BuscarEstado($reg),
@@ -258,7 +282,30 @@ $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"
                "5"=>$reg->DiasMora,
                "6"=>"S/. ".number_format((($reg->DiasMora*1)-$reg->Mora),2),
                "7"=>$reg->fechaVencimiento,
-               "8"=>'<button class="btn btn-purple btn-sm" title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idCuota.','.$reg->year.','.$reg->Diferencia.','.(($reg->DiasMora*1)-$reg->Mora).',2,\'PENSIÓN '.$recursos->convertir($reg->Mes).'\')"><i class="fas fa-angle-double-right"></i></button>'
+               "8"=>'<div class="badge badge-purple  " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idCuota.','.$reg->year.','.$reg->Diferencia.','.(($reg->DiasMora*1)-$reg->Mora).',2,\'PENSIÓN '.$recursos->convertir($reg->Mes).'\')"><i class="fas fa-angle-double-right"></i></div>'
+
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+	 case 'ListarDeuda2A':
+         $rspta=$gestion->ListarDeudasPensiones($idAlumno,$year);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>BuscarEstado($reg),
+               "2"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
+               "3"=>"S/. ".number_format($reg->Diferencia,2),
+               "4"=>$reg->DiasMora,
+               "5"=>"S/. ".number_format((($reg->DiasMora*1)-$reg->Mora),2),
+               "6"=>$reg->fechaVencimiento
 
             );
          }
@@ -279,7 +326,7 @@ $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"
                "0"=>$count++,
                "1"=>$reg->NombrePago,
                "2"=>"S/. ".number_format($reg->ImportePago,2),
-               "3"=>"<button type='button' class='btn btn-danger btn-sm' onclick='EliminarPagar(".$reg->idDetallePago.",".$reg->ImportePago.",".$reg->Alumno_idAlumno.",".$reg->year.",".$reg->Cuota_idCuota.",".$reg->TipoPago_idTipoPago.")'><i class='fa fa-trash'></i></>"
+               "3"=>"<div class='badge badge-danger' onclick='EliminarPagar(".$reg->idDetallePago.",".$reg->ImportePago.",".$reg->Alumno_idAlumno.",".$reg->year.",".$reg->Cuota_idCuota.",".$reg->TipoPago_idTipoPago.",".$reg->TipoPago.")'><i class='fa fa-trash'></i></div>"
             );
          }
          $results = array(
@@ -319,7 +366,7 @@ $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"
  case 'EliminarPagar':
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
 
-         $rspta['Registro']=$gestion->EliminarPagar($idPagar,$importePagar,$idAlumno,$year,$idCuota,$idMatricula);
+         $rspta['Eliminar']=$gestion->EliminarPagar($idPagar,$importePagar,$idAlumno,$year,$idCuota,$idMatricula,$TipoPago);
          $rspta['Eliminar']?$rspta['Mensaje']="Pago por Pagar Eliminado.":$rspta['Mensaje']="Pago por Pagar no se pudo Eliminar  comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;

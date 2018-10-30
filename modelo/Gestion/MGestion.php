@@ -73,6 +73,11 @@
            $sql="CALL `SP_OPERACION_RECUPERAR_CUOTA_PAGAR`('$idPlan','$idCuota');";
 			return ejecutarConsultaSimpleFila($sql);
        }
+		 public function RecuperarTotales($idAlumno,$year){
+           $sql="CALL `SP_OPERACIONES_RECUPERAR_TOTALES`('$idAlumno','$year');";
+
+			return ejecutarConsultaSimpleFila($sql);
+       }
 
 		  public function RecuperarParametros(){
 			  $sql1=ejecutarConsulta("CALL `SP_RECUPERAR_PARAMETROS`(@p0, @p1, @p2, @p3);");
@@ -91,19 +96,22 @@
           $sql="SELECT @p0 AS `numCuotas`, @p1 AS `cuotaPend`, @p2 AS `cuotaPagada`, @p3 AS `cuotaVencida`;";
 			return ejecutarConsultaSimpleFila($sql);
        }
+
+
        public function RegistrarPagoP($idAlumnoP,$yearP,$importePago,$importeMora,$codigoPago,$TipoPago,$pagar_importe,$pagar_importe_mora,$tituloPago){
           $sql="CALL `SP_OPERACIONES_REGISTRO_PAGO`('$idAlumnoP','$yearP','$importePago','$importeMora','$codigoPago','$TipoPago','$pagar_importe','$pagar_importe_mora','$tituloPago');";
 			return ejecutarConsulta($sql);
        }
-       public function EliminarPagar($idPagar,$importePagar,$idAlumno,$year,$idCuota,$idMatricula){
-           if($idCuota=='' || $idCuota==null || empty($idCuota)){
+       public function EliminarPagar($idPagar,$importePagar,$idAlumno,$year,$idCuota,$idMatricula,$TipoPago){
+           if($idCuota=='0' || $idCuota==null || empty($idCuota)){
 			  $idCuota='0';
 		  }
-           if($idMatricula=='' || $idMatricula==null || empty($idMatricula)){
+           if($idMatricula=='0' || $idMatricula==null || empty($idMatricula)){
 			  $idMatricula='0';
 		  }
-          $sql="CALL `SP_OPERACIONES_ELIMINAR_PAGAR`('$idPagar','$importePagar','$idAlumno','$year','$idCuota','$idMatricula');";
-			return ejecutarConsulta($sql);
+          $sql="CALL `SP_OPERACIONES_ELIMINAR_PAGAR`('$idPagar','$importePagar','$idAlumno','$year','$idCuota','$idMatricula','$TipoPago');";
+
+			 return ejecutarConsulta($sql);
        }
 
 

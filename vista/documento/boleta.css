@@ -1,0 +1,281 @@
+* {
+   margin: 0px;
+   padding: 0px;
+   height: 100%;
+   width: 100%;
+   font-family: sans-serif;
+   font-size: 13px;
+}
+.Logo{
+    height: 110px;
+    width: 200px;
+}
+
+.bloqueA{
+    width: 222px;
+    text-align: center;
+    border-top:2px solid #616161;
+    border-left: 2px solid #616161;
+    border-right: 2px solid #616161 ;
+    border-radius: 10px 10px 0px 0px;
+    padding: 5px 0px;
+
+}
+
+.bloqueB{
+    width: 222px;
+    text-align: center;
+    background: #616161;
+    padding: 5px 0px;
+     border-left: 2px solid #616161;
+    border-right: 2px solid #616161 ;
+
+}
+.bloqueC{
+    width: 222px;
+    text-align: center;
+    border-left: 2px solid #616161;
+    border-right: 2px solid #616161 ;
+    border-bottom: 2px solid #616161;
+    border-radius: 0px 0px 10px 10px;
+    padding: 5px 0px;
+}
+.DatosCliente{
+   font-weight: bold;
+   font-size: 16px !important;
+   padding-bottom: 7px;
+}
+.Noc{
+   width: 70px !important;
+}
+
+#tablaFactura .CabeceraFactura tr th{
+   color: white;
+   text-align: center;
+   background: #626262 ;
+}
+table{
+   width: 100%;
+
+}
+table td{
+   font-size: 12px !important;
+}
+
+.TNumero{
+   width: 10%;
+}
+
+.TDetalle{
+  width: 70%;
+}
+.TTotal{
+   width: 20%;
+}
+
+.DNumero{
+   text-align: center;
+   width: 10%;
+}
+.DDetalle{
+  width: 70%;
+}
+.DTotal{
+   width: 20%;
+   text-align: right;
+}
+#tablaFactura thead tr th{
+   border: 2px solid #c3c3c3;
+}
+#tablaFactura tbody tr td{
+   border: 2px solid #c3c3c3;
+}
+#tablaFactura tfoot tr td{
+   border: 2px solid #c3c3c3;
+}
+#tablaFactura #tbody{
+   height: 500px;
+   background: red;
+}
+table#tablaFactura{
+   height: 50%;
+}
+
+.Fdetalle{
+   width: 65%;
+   background: red;
+}
+.FNomSub{
+  width: 15%;
+}
+
+.bloqueD1{
+   border-top:2px solid #616161;
+   border-left: 2px solid #616161;
+   border-right: 2px solid #616161 ;
+   border-radius: 10px 10px 0px 0px;
+   padding: 5px 0px;
+   background: #616161;
+}
+.bloqueD2{
+   height: 45%;
+   text-align:left;
+   padding: 5px 0px;
+   border-left: 2px solid #616161;
+   border-right: 2px solid #616161 ;
+   border-bottom: 1px solid #616161;
+   width: 100%;
+}
+.bloqueD3{
+   border-top: 1px solid  #616161;
+   border-left: 2px solid #616161;
+   border-right: 2px solid #616161 ;
+   border-bottom: 2px solid #616161;
+   border-radius: 0px 0px 10px 10px;
+   padding: 10px 0px;
+
+}
+.bloqueD3 .datos{
+   width: 60%;
+   padding: 5px;
+   float: left;
+   background: green;
+   font-size: 12px;
+}
+.bloqueD3 .total{
+   width: 35%;
+   padding: 5px;
+   background: red;
+   font-size: 12px;
+}
+
+.item1{
+    font-size: 12px;
+    width: 5%;
+    text-align: center;
+    padding: 4px ;
+}
+.colum-a {
+    width: 70%;
+    float: left;
+}
+.item2{
+
+    font-size: 12px;
+    text-align: left;
+    width: 65%;
+    padding: 0px 40px;
+    display: inline;
+    float: left;
+    text-align: justify;
+
+}
+.item3{
+    font-size: 12px;
+    width: 15%;
+    text-align: left;
+    padding: 4px;
+    display: inline;
+}
+.colum-2{
+    width: 33%;
+    float: left;
+}
+.cliente-info{
+   padding: 10px;
+}
+hr{
+   background: #cb0f0f;
+}
+
+hr .general{
+    margin: 10px 0px 10px 0px;
+    background: #cb0f0f;
+}
+
+b {
+   font-weight: bold;
+}
+
+address, td{
+    font-size: 12px;
+}
+
+.titulo{
+    margin: 5px;
+    font-size: 14px;
+    color: #616161;
+    text-decoration: underline;
+}
+
+.titulo2{
+    margin: 4px;
+    font-size: 16px;
+    color: #616161;
+    font-weight: bold;
+
+}
+.titulo3{
+    margin: 4px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+
+}
+
+.caja{
+    width: 100%;
+
+}
+.caja2{
+    width: 100%;
+    padding-top: 10px;
+
+}
+
+.pregunta{
+   background: red;
+    width: 23%;
+    float:left;
+    padding: 1px;
+    font-size: 12px;
+    font-weight: bold;
+}
+ .respuesta{
+    width: 75%;
+    font-size: 12px;
+    float:right;
+    padding: 1px  ;
+   background: green;
+}
+
+.pregunta2{
+
+    width: 40%;
+    float:left;
+    padding: 1px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: left;
+}
+ .respuesta2{
+    width: 45%;
+    font-size: 12px;
+    float:right;
+    padding: 3px  ;
+
+}
+.titulo_caja{
+     padding-top: 18px;
+    padding-bottom: 18px;
+     font-size: 14px;
+    text-decoration: underline;
+}
+
+.grupo{
+    padding: 0px;
+}
+
+
+
+
