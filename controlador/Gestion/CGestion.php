@@ -227,15 +227,11 @@ $TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-               "1"=>'<div  title="Seleccione">
-                           <label>
-                           <input type="checkbox" class="pagos_matricula" id="'.$reg->idPago.'" data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idPago.'"  data-year="'.$reg->year.' data-importe="'.$reg->Diferencia.'" data-nombre="'.$reg->NombrePago.'" data-tipo="1">
-                             </label>
-                     </div>',
+               "1"=>'<input title="Seleccionar" type="checkbox" class="pagos_matricula" id="'.$reg->idPago.'" data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idPago.'"  data-year="'.$reg->year.' data-importe="'.$reg->Diferencia.'" data-nombre="'.$reg->NombrePago.'" data-tipo="1" onchange="CambioEstado('.$reg->idPago.');">',
                "2"=>BuscarEstado($reg),
                "3"=>$reg->NombrePago,
                "4"=>"S/. ".number_format($reg->Diferencia,2),
-               "5"=>'<div class="badge badge-purple   " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idPago.','.$reg->year.','.$reg->Diferencia.',0,1,\''.$reg->NombrePago.'\')"><i class="fas fa-angle-double-right"></i></div>'
+               "5"=>'<div class="badge badge-purple" title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idPago.','.$reg->year.','.$reg->Diferencia.',0,1,\''.$reg->NombrePago.'\')"><i class="fas fa-angle-double-right"></i></div>'
             );
          }
          $results = array(

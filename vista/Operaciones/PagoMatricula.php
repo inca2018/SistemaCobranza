@@ -98,13 +98,7 @@ if(isset($_POST["idAlumno"])){
                             <div class="tab-content">
                                 <div class="tab-pane active  panelAccion" id="op_datos" role="tabpanel">
                                     <div class="container contenedor_modal">
-                                        <div class="row">
-                                            <div class="col-md-4 offset-8">
-                                                <label>Seleccionar Todos:
-                                                    <input type="checkbox" class="seleccion_pagos" id="Selector_matricula">
-                                                </label>
-                                            </div>
-                                        </div>
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaDeudas1" style="font-size:11px">
@@ -129,13 +123,7 @@ if(isset($_POST["idAlumno"])){
                                 </div>
                                 <div class="tab-pane panelAccion" id="op_info" role="tabpanel">
                                     <div class="container contenedor_modal">
-                                        <div class="row">
-                                            <div class="col-md-4 offset-8">
-                                                <label>Seleccionar Todos:
-                                                    <input type="checkbox" class="seleccion_pagos" id="Selector_pensiones">
-                                                </label>
-                                            </div>
-                                        </div>
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <table class="table w-100 table-hover table-sm dt-responsive " id="tablaDeudas2" style="font-size:11px">
@@ -248,7 +236,7 @@ if(isset($_POST["idAlumno"])){
                     <input type="hidden" name="pagar_importe_mora" id="pagar_importe_mora" value="0">
 
                      <input type="hidden" name="tituloPago" id="tituloPago" value="0">
-                    <div class="row">
+                    <div class="row" id="modulo_pago" style="display:none">
                         <div class="col-md-12 form-group">
                             <label for="m_importe" class=" col-form-label">Importe:</label>
                             <input class="form-control" id="m_importe" name="m_importe"  type="text" maxlength="50" readonly>
