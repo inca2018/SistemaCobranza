@@ -616,7 +616,7 @@ function Recuperar_Pagos_Registrado(idAlumno, year) {
 
 
 function Pagado(check,mensaje){
-    debugger;
+
    if(mensaje=="NO"){
        //check.prop("checked", true);
    }else{

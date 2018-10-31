@@ -478,13 +478,13 @@ function RecuperarInformacionMatricula(idAlumno) {
 		$("#info_apo_dni").empty();
 		$("#info_apo_nombres").empty();
 		$("#info_apo_telefono").empty();
-		$("#info_alu_dni").html("<strong>" + data.ALumnoDNI + "</strong>");
-		$("#info_alu_nombres").html("<strong>" + data.AlumnoNombres + "</strong>");
-		$("#info_alu_nivel").html("<strong>" + data.AlumnoNivel + "</strong>");
-		$("#info_alu_grado").html("<strong>" + data.AlumnoGradoSeccion + "</strong>");
-		$("#info_apo_dni").html("<strong>" + data.ApoderadoDNI + "</strong>");
-		$("#info_apo_nombres").html("<strong>" + data.ApoderadoNombre + "</strong>");
-		$("#info_apo_telefono").html("<strong>" + data.ApoderadoTelefono + "</strong>");
+		//$("#info_alu_dni").html("<strong>" + data.ALumnoDNI + "</strong>");
+		//$("#info_alu_nombres").html("<strong>" + data.AlumnoNombres + "</strong>");
+		//$("#info_alu_nivel").html("<strong>" + data.AlumnoNivel + "</strong>");
+		//$("#info_alu_grado").html("<strong>" + data.AlumnoGradoSeccion + "</strong>");
+		//$("#info_apo_dni").html("<strong>" + data.ApoderadoDNI + "</strong>");
+		//$("#info_apo_nombres").html("<strong>" + data.ApoderadoNombre + "</strong>");
+		//$("#info_apo_telefono").html("<strong>" + data.ApoderadoTelefono + "</strong>");
 	});
 }
 init();

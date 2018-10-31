@@ -2,9 +2,11 @@
    session_start();
    require_once "../../modelo/Gestion/MGestion.php";
    require_once "../../modelo/General/MGeneral.php";
-    require_once "../../config/conexion.php";
-   $gestion = new MGestion();
-   $general = new MGeneral();
+   require_once "../../config/conexion.php";
+    require_once "../../vista/documento/boleta.php";
+
+    $gestion = new MGestion();
+    $general = new MGeneral();
     $recursos = new Conexion();
 
 
@@ -75,8 +77,7 @@
     $final_cvv_tarjeta=isset($_POST["final_cvv_tarjeta"])?limpiarCadena($_POST["final_cvv_tarjeta"]):"";
     $final_detalle=isset($_POST["final_detalle"])?limpiarCadena($_POST["final_detalle"]):"";
 
-
-
+ 	$idRecuperado=isset($_POST["idRecuperado"])?limpiarCadena($_POST["idRecuperado"]):"";
 
     $date = str_replace('/', '-', $fechaInicio);
     $fechaInicio = date("Y-m-d", strtotime($date));
@@ -378,21 +379,55 @@
          echo json_encode($rspta);
       break;
 
-     case 'RegistrarFinal':
+		case 'RegistrarFinal':
+			$rspta = array("Mensaje"=>"","Registro"=>false,"Recuperado"=>0,"Error"=>false);
+			$datosVenta=$gestion->RegistrarPagoCabecera($idAlumno,$year,$final_importe_pagar,$final_importe_vuelto,$final_importe_total,$final_metodoPago,$final_tipo_tarjeta,$final_num_tarjeta,$final_cvv_tarjeta,$final_detalle);
+
+			if($datosVenta){
+				$rspta["Registro"]=true;
+				$rspta["Recuperado"]=$datosVenta["idCodigo"];
+				$rspta['Mensaje']="PASO";
+			}else{
+				$rspta["Registro"]=false;
+				$rspta['Mensaje']="Se encontro inconveniente Registro Cabecera";
+			}
+
+		 echo json_encode($rspta);
+		break;
+
+		case 'RegistrarFinal2':
+			$rspta = array("Mensaje"=>"","Registro"=>false,"Recuperado"=>0,"Error"=>false);
+
+			$actualizar_pagos=$gestion->Cambios($idAlumno,$year,$idRecuperado);
+
+			if($actualizar_pagos){
+				$rspta["Registro"]=true;
+				$rspta['Mensaje']="PASO";
+			}else{
+				$rspta["Registro"]=false;
+				$rspta['Mensaje']="Se encontro inconveniente Realizar Cambios";
+			}
+
+		 echo json_encode($rspta);
+		break;
+
+     case 'RegistrarFinal3':
          $rspta = array("Mensaje"=>"","Registro"=>false,"Error"=>false);
 
+			$datosCabecera=$gestion->RecuperarCabecera($idRecuperado,$idAlumno);
 
-         $datosVenta=$gestion->RegistrarPagoCabecera($idAlumno,$year,$final_importe_pagar,$final_importe_vuelto,$final_importe_total,$final_metodoPago,$final_tipo_tarjeta,$final_num_tarjeta,$final_cvv_tarjeta,$final_detalle);
+			$nombreVoucher=$datosCabecera["ReciboVoucher"];
 
-         $actualizar_pagos=$gestion->RealizarCambios($idAlumno,$year,$datosVenta->idCodigo);
+			$datosDetalle=$gestion->RecuperarDetalle($idRecuperado,$idAlumno,$year);
 
+			GeneracionFacturaPDF($datosCabecera,$datosDetalle);
 
+			$rspta["Registro"]=$gestion->actualizar_Documento($idRecuperado,$idAlumno,$nombreVoucher.'.pdf');
+			$rspta['Registro']?$rspta['Mensaje']="Pago Registrado.":$rspta['Mensaje']="Pago no se pudo Registrar comuniquese con el area de soporte";
 
-
-         $rspta['Registro']=$gestion->RegistrarPagoP($idAlumnoP,$yearP,$importePago,$importeMora,$codigoPago,$TipoPago,$pagar_importe,$pagar_importe_mora,$tituloPago);
-         $rspta['Registro']?$rspta['Mensaje']="Pago Registrado.":$rspta['Mensaje']="Pago no se pudo Registrar comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
+
 
 
  case 'EliminarPagar':

@@ -320,7 +320,7 @@ function RegistroPago(){
 			}
     });
 
-	debugger;
+
     if(parseFloat(pagoPagar)<parseFloat(importeIngreso)){
         error=error+"Importe Ingresado no puede ser Mayor al Importe a Pagar.<br>";
     }

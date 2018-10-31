@@ -78,7 +78,7 @@ function Iniciar_Acciones() {
         $("#m_importe_mora_pagar").val("S/. " + Formato_Moneda($("#pagar_importe_mora").val(), 2));
     });
     $("#m_importe_pagar_cliente").change(function () {
-        debugger;
+
         var importe =parseFloat($("#m_importe_pagar_cliente").val());
         var total =  parseFloat($("#oculto_importe_total").val());
         if (importe != '') {
@@ -145,12 +145,12 @@ function RegistrarFinal(event){
     if (error == "") {
         $("#modulo_finalizacion").addClass("whirl");
         $("#modulo_finalizacion").addClass("ringed");
-        setTimeout('AjaxRegistroPagoFinal()', 2000);
+        setTimeout('AjaxRegistroPagoFinal1()', 2000);
     } else {
         notificar_warning("Complete :<br>" + error);
     }
 }
-function AjaxRegistroPagoFinal() {
+function AjaxRegistroPagoFinal1() {
     var year = $("#yearSelect").val();
     var idAlumno = $("#idAlumno").val();
     var formData = new FormData($("#FormularioPagoFinal")[0]);
@@ -168,28 +168,71 @@ function AjaxRegistroPagoFinal() {
             console.log(data);
             var Mensaje = data.Mensaje;
             var Error = data.Registro;
+			   var idRecuperado = data.Recuperado;
             if (!Error) {
-                $("#ModuloPago").removeClass("whirl");
-                $("#ModuloPago").removeClass("ringed");
-                $("#ModalAlumno").modal("hide");
-                swal("Error:", Mensaje);
-                tablaDeuda1.ajax.reload();
-                tablaDeuda2.ajax.reload();
-                tablaPagar.ajax.reload();
-                Recuperar_Totales();
-                $("#ModalPago").modal("hide");
+					swal("Error:", Mensaje);
+
             } else {
-                $("#ModuloPago").removeClass("whirl");
-                $("#ModuloPago").removeClass("ringed");
-                swal("Acción:", Mensaje);
-                tablaDeuda1.ajax.reload();
-                tablaDeuda2.ajax.reload();
-                tablaPagar.ajax.reload();
-                Recuperar_Totales();
-                $("#ModalPago").modal("hide");
+					AjaxRegistroPagoFinal2(idRecuperado,year,idAlumno);
+
             }
         }
     });
+}
+function AjaxRegistroPagoFinal2(idRecuperado,year,idAlumno){
+	$.post("../../controlador/Gestion/CGestion.php?op=RegistrarFinal2", {
+        idRecuperado: idRecuperado,
+        year: year,
+        idAlumno: idAlumno,
+
+    }, function (data, e) {
+        data = JSON.parse(data);
+        var Registro = data.Registro;
+        var Mensaje = data.Mensaje;
+        if (!Registro) {
+            swal("Error", Mensaje, "error");
+        } else {
+          AjaxRegistroPagoFinal3(idRecuperado,year,idAlumno);
+        }
+    });
+
+}
+
+function AjaxRegistroPagoFinal3(idRecuperado,year,idAlumno){
+	$.post("../../controlador/Gestion/CGestion.php?op=RegistrarFinal3", {
+        idRecuperado: idRecuperado,
+        year: year,
+        idAlumno: idAlumno,
+
+    }, function (data, e) {
+        data = JSON.parse(data);
+        var Registro = data.Registro;
+        var Mensaje = data.Mensaje;
+        if (!Registro) {
+            swal("Error", Mensaje, "error");
+			     $("#ModuloPago").removeClass("whirl");
+				  $("#ModuloPago").removeClass("ringed");
+                $("#ModalAlumno").modal("hide");
+
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+                Recuperar_Totales();
+                $("#ModalPago").modal("hide");
+			     swal("Error:", Mensaje);
+        } else {
+				 $("#ModuloPago").removeClass("whirl");
+				 $("#ModuloPago").removeClass("ringed");
+
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+                Recuperar_Totales();
+                $("#ModalPago").modal("hide");
+			     swal("Acción:", Mensaje);
+        }
+    });
+
 }
 
 function RegistrarPagoP(event) {

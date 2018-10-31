@@ -2,7 +2,7 @@
 //require_once "../../modelos/Facturacion/MFactura.php";
 require_once "conversion.php";
 
-$Factura = new MFactura();
+
 
 function fechaCastellano ($fecha) {
   $fecha = substr($fecha, 0, 10);
@@ -22,14 +22,17 @@ function fechaCastellano ($fecha) {
 
 function GeneracionFacturaPDF($detalles,$cuerpo){
 
-   $total=$detalles["MontoTotal"];
-   $cambio = valorEnLetras($total,$detalles["Moneda"]);
-   $fecha = $detalles['FechaEmision'];
+   $total=$detalles["ImporteTotal"];
+	$vuelto=$detalles["ImporteVuelto"];
+	$pagado=$detalles["ImportePagar"];
+
+   $cambio = valorEnLetras($total,1);
+   $fecha = $detalles['fechaRegistro'];
    $fecha_letras = fechaCastellano($fecha);
 
    $fecha_emi= date(" d/ m/ Y", strtotime($fecha));
 
-   $Moneda=$detalles["Moneda"];
+   $Moneda=1;
    $valor='';
 	 if($Moneda=='1'){
 		 $valor="S./ ";
@@ -37,16 +40,20 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
 		 $valor="$. ";
 	 }
 	$int=1;
-	$detalle_Factura="";
 
-	$detalle_convertido=str_replace("      ","<br>",$detalles["Detalle"]);
+	$detalle_documento="";
 
-	$detalle_Factura.= '
+	//$detalle_convertido=str_replace("      ","<br>",$detalles["Detalle"]);
+
+	while ($reg=$cuerpo->fetch_object()){
+			$detalle_documento.= '
             <tr id="cuerpoFactura">
                <td class="DNumero">1</td>
-               <td colspan="2" class="DDetalle" >'.$detalle_convertido.'</td>
-               <td class="DTotal">'.$valor.$detalles["MontoBruto"].'</td>
+               <td colspan="2" class="DDetalle" >'.$reg->NombrePago.'</td>
+               <td class="DTotal">S/. '.number_format($reg->ImportePago,2).'</td>
             </tr>';
+	}
+
 
    $html = '<body>
      <!-- Content Wrapper. Contains page content -->
@@ -61,7 +68,7 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
                 Ruc: 20508843411<br>
                 Telefono: 01-4627633<br>
                 Correo:contactoqs@example.com.pe <br>
-                Web: www.example.com.pe
+                Web: www.colegio.com.pe
               </address>
             </div>
             <div class="colum-2">
@@ -83,26 +90,26 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
 $html .="
         <div class='cliente-info'>
             <div class='caja'>
-                <span class='DatosCliente'>Datos del Apoderado:</span>
+                <span class='DatosCliente'>Datos del Alumno:</span>
             </div>
             <div class='DatosClienteTabla'>
                <table class='table table-bordered'>
                   <tbody>
                      <tr>
                         <td>Razón Social:</td>
-                        <td>".$detalles['RazonSocialCli']."</td>
+                        <td> </td>
                         <td>Ruc:</td>
-                        <td>".$detalles['RucCli']."</td>
+                        <td> </td>
                      </tr>
                      <tr>
                         <td>Dirección:</td>
-                        <td>".$detalles['DireccionCli']."</td>
+                        <td> </td>
                         <td>Teléfono:</td>
-                        <td>".$detalles['TelefonoCli']."</td>
+                        <td> </td>
                      </tr>
                      <tr>
                         <td>Atención:</td>
-                        <td>".$detalles['Atencion']." </td>
+                        <td> </td>
                         <td>Fecha:</td>
                         <td>".$fecha_emi."</td>
                      </tr>
@@ -122,7 +129,7 @@ $html .='<table id="tablaFactura" class="table table-bordered">
            </thead>
    ';
 $html .='<tbody id="tbody">
-            '.$detalle_Factura.'
+            '.$detalle_documento.'
          </tbody>';
 
 $html .='<tfoot>
@@ -130,18 +137,18 @@ $html .='<tfoot>
                <td class="DNumero">Sol</td>
                <td class="Fdetalle">'. $cambio .'</td>
                <td class="FNomSub">SubTotal</td>
-               <td class="DTotal">'.$valor. $detalles['MontoBruto'] .'</td>
+               <td class="DTotal">'.$valor. $detalles['ImporteTotal'] .'</td>
             </tr>
             <tr>
                <td class="DNumero" >Fecha </td>
                <td class="Fdetalle">'. $fecha_letras .'</td>
                <td class="FNomSub"> IGV </td>
-               <td class="DTotal"> '.$valor. $detalles['IGV'] .'</td>
+               <td class="DTotal"> '.$valor. $detalles['ImportePagar'] .'</td>
             </tr>
             <tr>
                <td colspan="2"></td>
                <td class="FNomSub" >Monto Total:</td>
-               <td class="DTotal">'.$valor. $detalles['MontoTotal'] .'</td>
+               <td class="DTotal">'.$valor. $detalles['ImporteVuelto'] .'</td>
             </tr>
          </tfoot>
       </table>';
@@ -156,16 +163,16 @@ $html .='</body>';
 
         $mpdf->SetDisplayMode('fullpage');
         // LOAD a stylesheet
-        $stylesheet1 = file_get_contents('../../views/documento/bootstrap.min.css');
-        $stylesheet2 = file_get_contents('../../views/documento/boleta.css');
+        $stylesheet1 = file_get_contents('../../vista/documento/bootstrap.min.css');
+        $stylesheet2 = file_get_contents('../../vista/documento/boleta.css');
         $mpdf->WriteHTML($stylesheet1,1);
         $mpdf->WriteHTML($stylesheet2,1);
         $mpdf->WriteHTML($html);
 
-        $nombre_doc=$detalles['NumeroFactura'].'.pdf';
-        $ruta_pre='../../views/Finanzas/Documento/';
+        $nombre_doc=$detalles['ReciboVoucher'].'.pdf';
+        $ruta_pre='../../vista/Operaciones/Documento/';
 
-        $ruta=Verificar_Carpeta($ruta_pre,$nombre_doc,$detalles['RucCli']);
+        $ruta=Verificar_Carpeta($ruta_pre,$nombre_doc,$detalles['idPago']);
 
         $mpdf->Output($ruta,'F');
          //$mpdf->Output();

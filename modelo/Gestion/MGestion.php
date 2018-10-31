@@ -2,6 +2,7 @@
    require_once '../../config/config.php';
 
 
+
    class MGestion{
 
       public function __construct(){
@@ -113,13 +114,43 @@
 			return ejecutarConsulta($sql);
        }
 
+       public function RegistrarPagoCabecera($idAlumno,$year,$final_importe_pagar,$final_importe_vuelto,$final_importe_total,$final_metodoPago,$final_tipo_tarjeta,$final_num_tarjeta,$final_cvv_tarjeta,$final_detalle){
+			 if($final_tipo_tarjeta=='0' || $final_tipo_tarjeta==null || empty($final_tipo_tarjeta)){
+			  $final_tipo_tarjeta='0';
+		  }
+			 if($final_num_tarjeta=='0' || $final_num_tarjeta==null || empty($final_num_tarjeta)){
+			  $final_num_tarjeta='0';
+		  }
+			 if($final_cvv_tarjeta=='0' || $final_cvv_tarjeta==null || empty($final_cvv_tarjeta)){
+			  $final_cvv_tarjeta='0';
+		  }
+		  $sql="CALL`SP_REGISTRAR_DATOS`('$idAlumno','$year','$final_importe_pagar','$final_importe_vuelto','$final_importe_total','$final_metodoPago','$final_tipo_tarjeta','$final_num_tarjeta','$final_cvv_tarjeta','$final_detalle');";
 
-
-       public function RegistrarPagoCabecera($fechaInicio,$fechaFin){
-          $sql1=ejecutarConsulta("CALL `SP_REGISTRAR_DATOS`('$idAlumno','$year','$final_importe_pagar','$final_importe_vuelto','$final_importe_total','$final_metodoPago','$final_tipo_tarjeta','$final_num_tarjeta','$final_cvv_tarjeta','$final_detalle','@p10')");
-          $sql="SELECT @p10 AS `idCodigo`;";
 			return ejecutarConsultaSimpleFila($sql);
        }
+
+		public function Cambios($idAlumno,$year,$cabecera){
+			$sql="CALL `SP_ACTUALIZAR_PAGOS_NUEVO`($idAlumno, $year, $cabecera);";
+			return ejecutarConsulta($sql);
+		}
+
+		public function actualizar_Documento($cabecera,$alumno,$documento){
+			$sql="UPDATE `pagocabecera` SET  `Documento`='$documento'  WHERE  `idPago`='$cabecera' and `Alumno_idAlumno`='$alumno'";
+			return ejecutarConsulta($sql);
+		}
+
+		public function RecuperarCabecera($cabecera,$idAlumno){
+           $sql="SELECT pg.idPago,pg.ImporteTotal,pg.ImporteVuelto,pg.ImportePagar,pg.Observaciones,tt.Descripcion as Tarjeta,pg.NumeroTarjeta,pg.CVV,DATE_FORMAT(pg.fechaRegistro,'%d%m%Y') as fechaRegistro,pg.ReciboVoucher  FROM pagocabecera pg  INNER JOIN alumno al ON al.idAlumno=pg.Alumno_idAlumno INNER JOIN tipotarjeta tt ON tt.idTipoTarjeta=pg.TipoTarjeta_idTipoTarjeta WHERE pg.Alumno_idAlumno='$idAlumno' and pg.idPago='$cabecera';";
+
+			return ejecutarConsultaSimpleFila($sql);
+       }
+		public function RecuperarDetalle($cabecera,$idAlumno,$year){
+           $sql="SELECT * FROM pagodetalle pg WHERE pg.Cabecera_idCabecera='$cabecera' and pg.Alumno_idAlumno='$idAlumno' and pg.year='$year' and pg.Estado_idEstado=10";
+
+			return ejecutarConsulta($sql);
+       }
+
+
 
 
        public function EliminarPagar($idPagar,$importePagar,$idAlumno,$year,$idCuota,$idMatricula,$TipoPago){
