@@ -751,4 +751,10 @@ function AbrirPago() {
 	var importe_total = $("#oculto_importe_total").val();
 	var importe_vuelto = $("#oculto_importe_vuelto").val();
 }
+
+
+function AgregarPagos(){
+ $("#pagos_matricula").val();
+}
+
 init();

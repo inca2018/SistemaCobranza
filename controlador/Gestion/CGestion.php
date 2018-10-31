@@ -109,7 +109,7 @@ $TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
             $respuesta.='<div class="badge badge-primary">DEBE HABILITAR PAGOS DEL ALUMNO</div>';
        }else{
 
-         $respuesta.='<button type="button"   title="Pago de Cuota" class="btn btn-success btn-sm m-1" onclick="Pagos('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button>
+         $respuesta.='<button type="button"   title="Realizar Pago" class="btn btn-success btn-sm m-1" onclick="Pagos('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button>
             ';
 
        }
