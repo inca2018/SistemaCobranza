@@ -273,8 +273,7 @@
                "4"=>$reg->DNI,
                "5"=>$reg->FechaNacimiento,
                "6"=>$reg->fechaRegistro,
-               "7"=>'<button type="button"  title="Ver Plan de Pago" class="btn btn-primary btn-sm m-1" onclick="VerPlanPago('.$reg->idPersona.','.$reg->idAlumno.');"><i class="far fa-eye"></i></button>',
-               "8"=>BuscarAccion($reg)
+               "7"=>BuscarAccion($reg)
             );
          }
          $results = array(

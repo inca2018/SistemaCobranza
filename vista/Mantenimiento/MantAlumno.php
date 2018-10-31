@@ -45,7 +45,7 @@
                                             <th>DNI</th>
                                             <th>FECHA NACIMIENTO</th>
                                             <th>FECHA REGISTRO</th>
-                                            <th>INFORMACIÓN MATRICULAS</th>
+
                                             <th>ACCION</th>
                                         </tr>
                                     </thead>

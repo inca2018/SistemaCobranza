@@ -95,7 +95,7 @@ if(isset($_POST["idAlumno"])){
 
 
                             </ul>
-                            <div class="tab-content">
+                            <div class="tab-content" id="campo_tab">
                                 <div class="tab-pane active  panelAccion" id="op_datos" role="tabpanel">
                                     <div class="container contenedor_modal">
 
@@ -261,6 +261,72 @@ if(isset($_POST["idAlumno"])){
                         <div class="col-md-12 form-group">
                             <button type="submit" class="btn btn-success  btn-block" title="Guardar">
                                 <i class="fa fa-save fa-lg mr-2"></i>AGREGAR
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="ModalPagarFinal" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="row m-1 bb">
+                <div class="col-md-12">
+                    <h4 class="text-center text-" id="">MODO DE PAGO</h4>
+                </div>
+            </div>
+            <div class="modal-body" id="modulo_finalizacion">
+                <form id="FormularioPagoFinal" method="POST" autocomplete="off">
+
+                    <input type="hidden" name="final_importe_pagar" id="final_importe_pagar" value="0">
+                    <input type="hidden" name="final_importe_vuelto" id="final_importe_vuelto" value="0">
+                    <input type="hidden" name="final_importe_total" id="final_importe_total" value="0">
+
+
+                    <div class="row"  >
+                        <div class="col-md-12 form-group">
+                            <label for="m_importe" class=" col-form-label">Importe a Pagar:</label>
+                            <input class="form-control" id="final_pagar" name="final_pagar"  type="text" maxlength="50" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                       <div class="col-md-12 form-group">
+                           <label>Metodo de Pago:</label>
+                            <select class="form-control m-0 p-0 bg bg-gray-light" id="final_metodoPago" name="final_metodoPago">
+                                <option value="0">-- SELECCIONAR --</option>
+                                <option value="1">EFECTIVO</option>
+                                <option value="2">TARJETA</option>
+                            </select>
+                       </div>
+                    </div>
+                    <div class="row" id="panel_tipotarjeta" style="display:none">
+                       <div class="col-md-12 form-group">
+                           <label>Tipo de Tarjeta:</label>
+                            <select class="form-control m-0 p-0 bg bg-gray-light" id="final_tipo_tarjeta" name="final_tipo_tarjeta">
+                            </select>
+                       </div>
+                       <div class="col-md-12 form-group">
+                            <label for="m_importe" class=" col-form-label">NUMERO DE TARJETA:</label>
+                            <input class="form-control" id="final_num_tarjeta" name="final_num_tarjeta"  type="number" maxlength="16" >
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="m_importe" class=" col-form-label">CVV:</label>
+                            <input class="form-control" id="final_cvv_tarjeta" name="final_cvv_tarjeta"  type="number" maxlength="3" >
+                        </div>
+                    </div>
+                     <div class="row"  >
+                        <div class="col-md-12 form-group">
+                            <label for="m_importe" class=" col-form-label">OBSERVACIONES:</label>
+                            <input class="form-control" id="final_detalle" name="final_detalle"  type="text" maxlength="200" >
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-12 form-group">
+                            <button type="submit" class="btn btn-success  btn-block" title="Guardar">
+                                <i class="fa fa-save fa-lg mr-2"></i>COMPLETAR PAGO
                             </button>
                         </div>
                     </div>

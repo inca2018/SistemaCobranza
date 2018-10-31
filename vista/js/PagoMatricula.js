@@ -22,6 +22,15 @@ function init() {
 
 function Iniciar_Acciones() {
 
+    $("#final_metodoPago").change(function(){
+        var tipo = $("#final_metodoPago").val();
+        if(tipo==2){
+              $("#panel_tipotarjeta").show();
+           }else{
+              $("#panel_tipotarjeta").hide();
+           }
+    });
+
     $("#m_importe_pagar").change(function () {
         var importe = $("#m_importe_pagar").val();
         var total = $("#pagar_importe").val();
@@ -69,14 +78,15 @@ function Iniciar_Acciones() {
         $("#m_importe_mora_pagar").val("S/. " + Formato_Moneda($("#pagar_importe_mora").val(), 2));
     });
     $("#m_importe_pagar_cliente").change(function () {
-        var importe = $("#m_importe_pagar_cliente").val();
-        var total = $("#oculto_importe_total").val();
+        debugger;
+        var importe =parseFloat($("#m_importe_pagar_cliente").val());
+        var total =  parseFloat($("#oculto_importe_total").val());
         if (importe != '') {
             if (importe >= total) {
                 $("#oculto_importe_pagar").val(parseFloat(importe));
                 $("#m_importe_pagar_cliente").val("S/. " + Formato_Moneda(parseFloat(importe), 2));
                 $("#oculto_importe_vuelto").val(importe - total);
-                $("#m_importe_vuelto").val(Formato_Moneda(parseFloat(importe - total), 2));
+                $("#m_importe_vuelto").val("S/. "+Formato_Moneda(parseFloat(importe - total), 2));
             } else {
                 notificar_warning("Ingrese un Monto Mayor o Igual al Importe a Pagar");
                 $("#oculto_importe_pagar").val(parseFloat(0));
@@ -100,6 +110,86 @@ function Iniciar_Acciones() {
     $("#FormularioPago").on("submit", function (e) {
         RegistrarPagoP(e);
     });
+    $("#FormularioPagoFinal").on("submit", function (e) {
+        RegistrarFinal(e);
+    });
+
+
+}
+function RegistrarFinal(event){
+     //cargar(true);
+    event.preventDefault(); //No se activará la acción predeterminada del evento
+    var error = "";
+    var tipopago = $("#final_metodoPago").val();
+
+    var tipotarjeta= $("#final_tipo_tarjeta").val();
+    var numtarjeta= $("#final_num_tarjeta").val();
+    var cvvtarjeta= $("#final_cvv_tarjeta").val();
+
+    if(tipopago==0){
+       error=error+"- Tipo de Pago. <BR>";
+       }
+
+    if(tipopago==2){
+        if(tipotarjeta==""){
+            error=error+"- Tipo de Tarjeta. <BR>";
+        }
+        if(numtarjeta==""){
+           error=error+"- Numero de Tarjeta. <BR>";
+        }
+        if(cvvtarjeta==""){
+             error=error+"- CVV de Tarjeta. <BR>";
+        }
+    }
+
+    if (error == "") {
+        $("#modulo_finalizacion").addClass("whirl");
+        $("#modulo_finalizacion").addClass("ringed");
+        setTimeout('AjaxRegistroPagoFinal()', 2000);
+    } else {
+        notificar_warning("Complete :<br>" + error);
+    }
+}
+function AjaxRegistroPagoFinal() {
+    var year = $("#yearSelect").val();
+    var idAlumno = $("#idAlumno").val();
+    var formData = new FormData($("#FormularioPagoFinal")[0]);
+    formData.append("year",year);
+    formData.append("idAlumno",idAlumno);
+    console.log(formData);
+    $.ajax({
+        url: "../../controlador/Gestion/CGestion.php?op=RegistrarFinal",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data, status) {
+            data = JSON.parse(data);
+            console.log(data);
+            var Mensaje = data.Mensaje;
+            var Error = data.Registro;
+            if (!Error) {
+                $("#ModuloPago").removeClass("whirl");
+                $("#ModuloPago").removeClass("ringed");
+                $("#ModalAlumno").modal("hide");
+                swal("Error:", Mensaje);
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+                Recuperar_Totales();
+                $("#ModalPago").modal("hide");
+            } else {
+                $("#ModuloPago").removeClass("whirl");
+                $("#ModuloPago").removeClass("ringed");
+                swal("Acción:", Mensaje);
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+                Recuperar_Totales();
+                $("#ModalPago").modal("hide");
+            }
+        }
+    });
 }
 
 function RegistrarPagoP(event) {
@@ -107,6 +197,11 @@ function RegistrarPagoP(event) {
     event.preventDefault(); //No se activará la acción predeterminada del evento
     var error = "";
     var pagar_importe_mora = $("#pagar_importe_mora").val();
+    var pago =$("#pagar_importe").val();
+
+    if(pagar_importe_mora==0 && pago==0){
+       error=error+"No se puede Pagar Monto 0.00 soles. <BR>";
+       }
 
     if (error == "") {
         $("#ModuloPago").addClass("whirl");
@@ -170,7 +265,7 @@ function ListarYear() {
 
 function Listar_TipoDeTarjeta() {
     $.post("../../controlador/Gestion/CGestion.php?op=listar_tipoTarjeta", function (ts) {
-        $("#PagoTipoTarjeta").append(ts);
+        $("#final_tipo_tarjeta").append(ts);
     });
 }
 
@@ -191,7 +286,7 @@ function Recuperar_Totales() {
         data = JSON.parse(data);
         console.log(data);
         $("#oculto_importe_total").val(data.TotalPagar);
-        $("#v_importe_total").val("S/. " + Formato_Moneda(parseFloat(data.TotalPagar)), 2);
+        $("#v_importe_total").val("S/. " + Formato_Moneda(parseFloat(data.TotalPagar),2));
     });
 }
 
@@ -707,24 +802,89 @@ function AbrirPago() {
     var importe_pagar = $("#oculto_importe_pagar").val();
     var importe_total = $("#oculto_importe_total").val();
     var importe_vuelto = $("#oculto_importe_vuelto").val();
+    if(importe_pagar>0){
+         $("#ModalPagarFinal").modal("show");
+
+    $("#final_importe_pagar").val(importe_pagar);
+    $("#final_importe_vuelto").val(importe_vuelto);
+    $("#final_importe_total").val(importe_total);
+
+    $("#final_pagar").val("S/. "+Formato_Moneda(parseFloat(importe_total),2) );
+    }else{
+        notificar_warning("Ingrese Monto a Pagar.");
+    }
+
+
+
 }
 
 function AgregarPagos() {
 
+    var error = "";
+    ArregloPagos = [];
+    ArregloPagos2 = [];
+    var year = $("#yearSelect").val();
+    var idAlumno = $("#idAlumno").val();
+
     $('.pagos_matricula:checked').each(function () {
-      var codigo_Orden = $(this).attr("id");
-      var nombre = $(this).attr("data-nombre");
-        console.log(nombre);
-      /* var Orden = new Object();
-      Orden.codigo = codigo_Orden;
-      Orden.clientes = cliente;
-      //console.log("codigo: "+id_po);
-      ArregloOrdenes.push(Orden); */
-   });
+        var id = $(this).attr("id");
+        ArregloPagos.push(id);
+    });
+
+    $('.pagos_pensiones:checked').each(function () {
+        var id = $(this).attr("id");
+        ArregloPagos2.push(id);
+    });
+
+    if (ArregloPagos.length == 0 && ArregloPagos2.length == 0) {
+        error = error + "- Seleccione al menos una Dedua a Pagar.<br>";
+    }
+
+    if (error != "") {
+        notificar_warning("Mensaje :<br>" + error);
+    } else {
+        $.post("../../controlador/Gestion/CGestion.php?op=RegistrarVariosPagos", {
+            "Arreglo1": ArregloPagos.join(','),
+            "Arreglo2": ArregloPagos2.join(','),
+            "idAlumno": idAlumno,
+            "year": year
+        }, function (data, status) {
+            data = JSON.parse(data);
+            console.log(data);
+            var Mensaje = data.Mensaje;
+            var Accion = data.Accion;
+
+            if (!Accion) {
+                $("#campo_tab").removeClass("whirl");
+                $("#campo_tab").removeClass("ringed");
+
+                swal("Error:", Mensaje);
+
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+
+                Recuperar_Totales();
+            } else {
+                $("#campo_tab").removeClass("whirl");
+                $("#campo_tab").removeClass("ringed");
+
+                swal("Acción:", Mensaje);
+
+                tablaDeuda1.ajax.reload();
+                tablaDeuda2.ajax.reload();
+                tablaPagar.ajax.reload();
+
+                Recuperar_Totales();
+            }
+        });
+    }
+
+
 }
 
-function CambioEstado(id){
-   console.log(id);
+function CambioEstado(id) {
+    console.log(id);
 }
 
 init();

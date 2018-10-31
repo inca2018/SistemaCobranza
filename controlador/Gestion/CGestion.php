@@ -53,17 +53,37 @@
     $tituloPago=isset($_POST["tituloPago"])?limpiarCadena($_POST["tituloPago"]):"";
 
 
- $idPagar=isset($_POST["idPagar"])?limpiarCadena($_POST["idPagar"]):"";
-$importePagar=isset($_POST["importePagar"])?limpiarCadena($_POST["importePagar"]):"";
+     $idPagar=isset($_POST["idPagar"])?limpiarCadena($_POST["idPagar"]):"";
+    $importePagar=isset($_POST["importePagar"])?limpiarCadena($_POST["importePagar"]):"";
 
-$idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"";
+    $idMatricula=isset($_POST["idMatricula"])?limpiarCadena($_POST["idMatricula"]):"";
 
-$TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
+    $TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
+
+    $Arreglo1=isset($_POST["Arreglo1"])?limpiarCadena($_POST["Arreglo1"]):"";
+    $Arreglo2=isset($_POST["Arreglo2"])?limpiarCadena($_POST["Arreglo2"]):"";
+
+
+
+
+    $final_importe_pagar=isset($_POST["final_importe_pagar"])?limpiarCadena($_POST["final_importe_pagar"]):"";
+    $final_importe_vuelto=isset($_POST["final_importe_vuelto"])?limpiarCadena($_POST["final_importe_vuelto"]):"";
+    $final_importe_total=isset($_POST["final_importe_total"])?limpiarCadena($_POST["final_importe_total"]):"";
+    $final_metodoPago=isset($_POST["final_metodoPago"])?limpiarCadena($_POST["final_metodoPago"]):"";
+    $final_tipo_tarjeta=isset($_POST["final_tipo_tarjeta"])?limpiarCadena($_POST["final_tipo_tarjeta"]):"";
+    $final_num_tarjeta=isset($_POST["final_num_tarjeta"])?limpiarCadena($_POST["final_num_tarjeta"]):"";
+    $final_cvv_tarjeta=isset($_POST["final_cvv_tarjeta"])?limpiarCadena($_POST["final_cvv_tarjeta"]):"";
+    $final_detalle=isset($_POST["final_detalle"])?limpiarCadena($_POST["final_detalle"]):"";
+
+
+
 
     $date = str_replace('/', '-', $fechaInicio);
     $fechaInicio = date("Y-m-d", strtotime($date));
  	 $date = str_replace('/', '-', $fechaFin);
     $fechaFin = date("Y-m-d", strtotime($date));
+
+
 
    function BuscarEstado($reg){
         if($reg->Estado_idEstado=='1' || $reg->Estado_idEstado==1 ){
@@ -227,7 +247,7 @@ $TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-               "1"=>'<input title="Seleccionar" type="checkbox" class="pagos_matricula" id="'.$reg->idPago.'" data-alumno="'.$reg->Alumno_idAlumno.'" data-pago="'.$reg->idPago.'"  data-year="'.$reg->year.' data-importe="'.$reg->Diferencia.'" data-nombre="'.$reg->NombrePago.'" data-tipo="1" onchange="CambioEstado('.$reg->idPago.');">',
+               "1"=>'<input title="Seleccionar" type="checkbox" class="pagos_matricula" id="'.$reg->idAlumnoPago.'">',
                "2"=>BuscarEstado($reg),
                "3"=>$reg->NombrePago,
                "4"=>"S/. ".number_format($reg->Diferencia,2),
@@ -358,6 +378,22 @@ $TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
          echo json_encode($rspta);
       break;
 
+     case 'RegistrarFinal':
+         $rspta = array("Mensaje"=>"","Registro"=>false,"Error"=>false);
+
+
+         $datosVenta=$gestion->RegistrarPagoCabecera($idAlumno,$year,$final_importe_pagar,$final_importe_vuelto,$final_importe_total,$final_metodoPago,$final_tipo_tarjeta,$final_num_tarjeta,$final_cvv_tarjeta,$final_detalle);
+
+         $actualizar_pagos=$gestion->RealizarCambios($idAlumno,$year,$datosVenta->idCodigo);
+
+
+
+
+         $rspta['Registro']=$gestion->RegistrarPagoP($idAlumnoP,$yearP,$importePago,$importeMora,$codigoPago,$TipoPago,$pagar_importe,$pagar_importe_mora,$tituloPago);
+         $rspta['Registro']?$rspta['Mensaje']="Pago Registrado.":$rspta['Mensaje']="Pago no se pudo Registrar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+
 
  case 'EliminarPagar':
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
@@ -366,6 +402,41 @@ $TipoPago=isset($_POST["TipoPago"])?limpiarCadena($_POST["TipoPago"]):"";
          $rspta['Eliminar']?$rspta['Mensaje']="Pago por Pagar Eliminado.":$rspta['Mensaje']="Pago por Pagar no se pudo Eliminar  comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
+
+   case 'RegistrarVariosPagos':
+         $rspta=array("Error"=>false,"Mensaje"=>"","Accion"=>false);
+
+         $Arreglo1 = explode(',', $Arreglo1);
+         $Arreglo2 = explode(',', $Arreglo2);
+
+         $contador1=count($Arreglo1);
+         $contador2=count($Arreglo2);
+
+         if($contador1!=0){
+           foreach ($Arreglo1 as &$valor) {
+               $respuesta = $gestion->RecuperarInfoMatricula($valor,$idAlumno,$year);
+           }
+         }
+
+         if($contador2!=0){
+              foreach ($Arreglo2 as &$valor2){
+               $respuesta =  $gestion->RecuperarInfoPension($valor2,$idAlumno,$year);
+              }
+         }
+
+       if($respuesta){
+            $rspta["Accion"]=true;
+            $rspta["Mensaje"]="Pagos Agregados.";
+         }else{
+            $rspta["Accion"]=true;
+            $rspta["Mensaje"]="Pagos Agregados.";
+         }
+
+
+         echo json_encode($rspta);
+      break;
+
+
 
 
    case 'Recuperar_Detalle_Indicadores':
