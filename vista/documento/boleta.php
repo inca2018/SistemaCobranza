@@ -1,7 +1,7 @@
 <?php
 //require_once "../../modelos/Facturacion/MFactura.php";
 require_once "conversion.php";
-
+require_once "../../modelo/Gestion/MGestion.php";
 
 
 function fechaCastellano ($fecha) {
@@ -22,9 +22,15 @@ function fechaCastellano ($fecha) {
 
 function GeneracionFacturaPDF($detalles,$cuerpo){
 
-   $total=$detalles["ImporteTotal"];
-	$vuelto=$detalles["ImporteVuelto"];
-	$pagado=$detalles["ImportePagar"];
+
+    $total=$detalles["ImporteTotal"];
+    $vuelto=$detalles["ImporteVuelto"];
+    $pagado=$detalles["ImportePagar"];
+    $corre=$detalles["ReciboVoucher"];
+    $alumnoNombre=$detalles["NombresAlumno"];
+    $alumnoDNI=$detalles["DNI"];
+    $alumnoTelefono=$detalles["telefono"];
+    $alumnoDireccion=$detalles["direccion"];
 
    $cambio = valorEnLetras($total,1);
    $fecha = $detalles['fechaRegistro'];
@@ -44,28 +50,30 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
 	$detalle_documento="";
 
 	//$detalle_convertido=str_replace("      ","<br>",$detalles["Detalle"]);
-
+    $correlativo=1;
 	while ($reg=$cuerpo->fetch_object()){
+
 			$detalle_documento.= '
             <tr id="cuerpoFactura">
-               <td class="DNumero">1</td>
+               <td class="DNumero">'.$correlativo.'</td>
                <td colspan="2" class="DDetalle" >'.$reg->NombrePago.'</td>
                <td class="DTotal">S/. '.number_format($reg->ImportePago,2).'</td>
             </tr>';
+          $correlativo=$correlativo+1;
 	}
 
 
    $html = '<body>
-     <!-- Content Wrapper. Contains page content -->
+
       <div class="content-wrapper">
             <div class="colum-2">
-               <!-- <img src="../../views/documento/logo.png" class="Logo"> -- >
+               <img src="../../vista/documento/logo.png" class="Logo">
             </div>
             <div class="colum-2">
               <address>
-                <b>COLEGIO XXXX</b><br>
-                Cal. los Ruiseñores 323 - Surquillo<br>
-                Ruc: 20508843411<br>
+                <b>COLEGIO JOSÉ GÁLVEZ</b><br>
+                Cal. AREQUIPA- CALLAO<br>
+                Ruc: 20508843411<br >
                 Telefono: 01-4627633<br>
                 Correo:contactoqs@example.com.pe <br>
                 Web: www.colegio.com.pe
@@ -80,7 +88,7 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
                  <span class="titulo3">RECIBO DE PAGO</span>
                  </div>
                   <div class="bloqueC">
-                  <span class="titulo2">1</span>
+                  <span class="titulo2">'.$corre.'</span>
               </div>
             </div>
             </div>
@@ -96,16 +104,16 @@ $html .="
                <table class='table table-bordered'>
                   <tbody>
                      <tr>
-                        <td>Razón Social:</td>
-                        <td> </td>
-                        <td>Ruc:</td>
-                        <td> </td>
+                        <td>Nombres y Apellidos:</td>
+                        <td>".$alumnoNombre." </td>
+                        <td>DNI:</td>
+                        <td>".$alumnoDNI."</td>
                      </tr>
                      <tr>
                         <td>Dirección:</td>
-                        <td> </td>
+                        <td>".$alumnoDireccion."</td>
                         <td>Teléfono:</td>
-                        <td> </td>
+                        <td>".$alumnoTelefono."</td>
                      </tr>
                      <tr>
                         <td>Atención:</td>
@@ -113,7 +121,6 @@ $html .="
                         <td>Fecha:</td>
                         <td>".$fecha_emi."</td>
                      </tr>
-
                   </tody>
                </table>
             <div>
@@ -124,7 +131,7 @@ $html .='<table id="tablaFactura" class="table table-bordered">
              <tr>
                <th class="TNumero">Nº</th>
                <th colspan="2" class="TDetalle">Detalle</th>
-               <th class="TTotal">Total</th>
+               <th class="TTotal">Importes</th>
              </tr>
            </thead>
    ';
@@ -136,18 +143,18 @@ $html .='<tfoot>
             <tr>
                <td class="DNumero">Sol</td>
                <td class="Fdetalle">'. $cambio .'</td>
-               <td class="FNomSub">SubTotal</td>
+               <td class="FNomSub">Monto Total</td>
                <td class="DTotal">'.$valor. $detalles['ImporteTotal'] .'</td>
             </tr>
             <tr>
                <td class="DNumero" >Fecha </td>
                <td class="Fdetalle">'. $fecha_letras .'</td>
-               <td class="FNomSub"> IGV </td>
+               <td class="FNomSub">Monto Pagado:</td>
                <td class="DTotal"> '.$valor. $detalles['ImportePagar'] .'</td>
             </tr>
             <tr>
                <td colspan="2"></td>
-               <td class="FNomSub" >Monto Total:</td>
+               <td class="FNomSub" >Vuelto:</td>
                <td class="DTotal">'.$valor. $detalles['ImporteVuelto'] .'</td>
             </tr>
          </tfoot>
@@ -155,7 +162,6 @@ $html .='<tfoot>
 
 $html .='</body>';
 
-        //echo $html;
         //==============================================================
         include("../../pdf/mpdf.php");
 
@@ -174,8 +180,10 @@ $html .='</body>';
 
         $ruta=Verificar_Carpeta($ruta_pre,$nombre_doc,$detalles['idPago']);
 
-        $mpdf->Output($ruta,'F');
-         //$mpdf->Output();
+         $mpdf->Output($ruta,'F');
+
+
+
 /* el error esta en el exit por que cierras el proceso */
 //exit;
 

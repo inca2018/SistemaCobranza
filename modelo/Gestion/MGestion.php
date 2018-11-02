@@ -140,12 +140,13 @@
 		}
 
 		public function RecuperarCabecera($cabecera,$idAlumno){
-           $sql="SELECT pg.idPago,pg.ImporteTotal,pg.ImporteVuelto,pg.ImportePagar,pg.Observaciones,tt.Descripcion as Tarjeta,pg.NumeroTarjeta,pg.CVV,DATE_FORMAT(pg.fechaRegistro,'%d%m%Y') as fechaRegistro,pg.ReciboVoucher  FROM pagocabecera pg  INNER JOIN alumno al ON al.idAlumno=pg.Alumno_idAlumno INNER JOIN tipotarjeta tt ON tt.idTipoTarjeta=pg.TipoTarjeta_idTipoTarjeta WHERE pg.Alumno_idAlumno='$idAlumno' and pg.idPago='$cabecera';";
+            $sql="SELECT pg.idPago,pg.ImporteTotal,pg.ImporteVuelto,pg.ImportePagar,pg.Observaciones,tt.Descripcion as Tarjeta,pg.NumeroTarjeta,pg.CVV,pg.fechaRegistro,pg.ReciboVoucher,CONCAT(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresAlumno,p.DNI,p.telefono,p.direccion FROM pagocabecera pg  INNER JOIN alumno al ON al.idAlumno=pg.Alumno_idAlumno INNER JOIN persona p On p.idPersona=al.Persona_idPersona
+INNER JOIN tipotarjeta tt ON tt.idTipoTarjeta=pg.TipoTarjeta_idTipoTarjeta WHERE pg.Alumno_idAlumno='$idAlumno' and pg.idPago='$cabecera';";
 
 			return ejecutarConsultaSimpleFila($sql);
        }
 		public function RecuperarDetalle($cabecera,$idAlumno,$year){
-           $sql="SELECT * FROM pagodetalle pg WHERE pg.Cabecera_idCabecera='$cabecera' and pg.Alumno_idAlumno='$idAlumno' and pg.year='$year' and pg.Estado_idEstado=10";
+           $sql="SELECT * FROM pagodetalle pg WHERE pg.Cabecera_idCabecera='$cabecera' and pg.Alumno_idAlumno='$idAlumno' and pg.year='$year' and pg.Estado_idEstado=10;";
 
 			return ejecutarConsulta($sql);
        }

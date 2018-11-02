@@ -3,7 +3,7 @@
    require_once "../../modelo/Gestion/MGestion.php";
    require_once "../../modelo/General/MGeneral.php";
    require_once "../../config/conexion.php";
-    require_once "../../vista/documento/boleta.php";
+   require_once "../../vista/documento/boleta.php";
 
     $gestion = new MGestion();
     $general = new MGeneral();
@@ -415,13 +415,10 @@
          $rspta = array("Mensaje"=>"","Registro"=>false,"Error"=>false);
 
 			$datosCabecera=$gestion->RecuperarCabecera($idRecuperado,$idAlumno);
-
 			$nombreVoucher=$datosCabecera["ReciboVoucher"];
 
-			$datosDetalle=$gestion->RecuperarDetalle($idRecuperado,$idAlumno,$year);
-
-			GeneracionFacturaPDF($datosCabecera,$datosDetalle);
-
+            $cuerpo=$gestion->RecuperarDetalle($idRecuperado,$idAlumno,$year);
+			GeneracionFacturaPDF($datosCabecera,$cuerpo);
 			$rspta["Registro"]=$gestion->actualizar_Documento($idRecuperado,$idAlumno,$nombreVoucher.'.pdf');
 			$rspta['Registro']?$rspta['Mensaje']="Pago Registrado.":$rspta['Mensaje']="Pago no se pudo Registrar comuniquese con el area de soporte";
 

@@ -15,6 +15,7 @@ function init() {
         $("#year_Actual").val(year);
         Listar_Deudas1(idAlumno, year);
         Listar_Deudas2(idAlumno, year);
+        Listar_Pagar(idAlumno, year);
         Recuperar_Totales();
     });
     Iniciar_Acciones();
@@ -22,13 +23,13 @@ function init() {
 
 function Iniciar_Acciones() {
 
-    $("#final_metodoPago").change(function(){
+    $("#final_metodoPago").change(function () {
         var tipo = $("#final_metodoPago").val();
-        if(tipo==2){
-              $("#panel_tipotarjeta").show();
-           }else{
-              $("#panel_tipotarjeta").hide();
-           }
+        if (tipo == 2) {
+            $("#panel_tipotarjeta").show();
+        } else {
+            $("#panel_tipotarjeta").hide();
+        }
     });
 
     $("#m_importe_pagar").change(function () {
@@ -79,14 +80,14 @@ function Iniciar_Acciones() {
     });
     $("#m_importe_pagar_cliente").change(function () {
 
-        var importe =parseFloat($("#m_importe_pagar_cliente").val());
-        var total =  parseFloat($("#oculto_importe_total").val());
+        var importe = parseFloat($("#m_importe_pagar_cliente").val());
+        var total = parseFloat($("#oculto_importe_total").val());
         if (importe != '') {
             if (importe >= total) {
                 $("#oculto_importe_pagar").val(parseFloat(importe));
                 $("#m_importe_pagar_cliente").val("S/. " + Formato_Moneda(parseFloat(importe), 2));
                 $("#oculto_importe_vuelto").val(importe - total);
-                $("#m_importe_vuelto").val("S/. "+Formato_Moneda(parseFloat(importe - total), 2));
+                $("#m_importe_vuelto").val("S/. " + Formato_Moneda(parseFloat(importe - total), 2));
             } else {
                 notificar_warning("Ingrese un Monto Mayor o Igual al Importe a Pagar");
                 $("#oculto_importe_pagar").val(parseFloat(0));
@@ -116,29 +117,30 @@ function Iniciar_Acciones() {
 
 
 }
-function RegistrarFinal(event){
-     //cargar(true);
+
+function RegistrarFinal(event) {
+    //cargar(true);
     event.preventDefault(); //No se activará la acción predeterminada del evento
     var error = "";
     var tipopago = $("#final_metodoPago").val();
 
-    var tipotarjeta= $("#final_tipo_tarjeta").val();
-    var numtarjeta= $("#final_num_tarjeta").val();
-    var cvvtarjeta= $("#final_cvv_tarjeta").val();
+    var tipotarjeta = $("#final_tipo_tarjeta").val();
+    var numtarjeta = $("#final_num_tarjeta").val();
+    var cvvtarjeta = $("#final_cvv_tarjeta").val();
 
-    if(tipopago==0){
-       error=error+"- Tipo de Pago. <BR>";
-       }
+    if (tipopago == 0) {
+        error = error + "- Tipo de Pago. <BR>";
+    }
 
-    if(tipopago==2){
-        if(tipotarjeta==""){
-            error=error+"- Tipo de Tarjeta. <BR>";
+    if (tipopago == 2) {
+        if (tipotarjeta == "") {
+            error = error + "- Tipo de Tarjeta. <BR>";
         }
-        if(numtarjeta==""){
-           error=error+"- Numero de Tarjeta. <BR>";
+        if (numtarjeta == "") {
+            error = error + "- Numero de Tarjeta. <BR>";
         }
-        if(cvvtarjeta==""){
-             error=error+"- CVV de Tarjeta. <BR>";
+        if (cvvtarjeta == "") {
+            error = error + "- CVV de Tarjeta. <BR>";
         }
     }
 
@@ -150,12 +152,13 @@ function RegistrarFinal(event){
         notificar_warning("Complete :<br>" + error);
     }
 }
+
 function AjaxRegistroPagoFinal1() {
     var year = $("#yearSelect").val();
     var idAlumno = $("#idAlumno").val();
     var formData = new FormData($("#FormularioPagoFinal")[0]);
-    formData.append("year",year);
-    formData.append("idAlumno",idAlumno);
+    formData.append("year", year);
+    formData.append("idAlumno", idAlumno);
     console.log(formData);
     $.ajax({
         url: "../../controlador/Gestion/CGestion.php?op=RegistrarFinal",
@@ -168,19 +171,20 @@ function AjaxRegistroPagoFinal1() {
             console.log(data);
             var Mensaje = data.Mensaje;
             var Error = data.Registro;
-			   var idRecuperado = data.Recuperado;
+            var idRecuperado = data.Recuperado;
             if (!Error) {
-					swal("Error:", Mensaje);
+                swal("Error:", Mensaje);
 
             } else {
-					AjaxRegistroPagoFinal2(idRecuperado,year,idAlumno);
+                AjaxRegistroPagoFinal2(idRecuperado, year, idAlumno);
 
             }
         }
     });
 }
-function AjaxRegistroPagoFinal2(idRecuperado,year,idAlumno){
-	$.post("../../controlador/Gestion/CGestion.php?op=RegistrarFinal2", {
+
+function AjaxRegistroPagoFinal2(idRecuperado, year, idAlumno) {
+    $.post("../../controlador/Gestion/CGestion.php?op=RegistrarFinal2", {
         idRecuperado: idRecuperado,
         year: year,
         idAlumno: idAlumno,
@@ -192,14 +196,14 @@ function AjaxRegistroPagoFinal2(idRecuperado,year,idAlumno){
         if (!Registro) {
             swal("Error", Mensaje, "error");
         } else {
-          AjaxRegistroPagoFinal3(idRecuperado,year,idAlumno);
+            AjaxRegistroPagoFinal3(idRecuperado, year, idAlumno);
         }
     });
 
 }
 
-function AjaxRegistroPagoFinal3(idRecuperado,year,idAlumno){
-	$.post("../../controlador/Gestion/CGestion.php?op=RegistrarFinal3", {
+function AjaxRegistroPagoFinal3(idRecuperado, year, idAlumno) {
+    $.post("../../controlador/Gestion/CGestion.php?op=RegistrarFinal3", {
         idRecuperado: idRecuperado,
         year: year,
         idAlumno: idAlumno,
@@ -210,26 +214,35 @@ function AjaxRegistroPagoFinal3(idRecuperado,year,idAlumno){
         var Mensaje = data.Mensaje;
         if (!Registro) {
             swal("Error", Mensaje, "error");
-			     $("#ModuloPago").removeClass("whirl");
-				  $("#ModuloPago").removeClass("ringed");
-                $("#ModalAlumno").modal("hide");
-
-                tablaDeuda1.ajax.reload();
-                tablaDeuda2.ajax.reload();
-                tablaPagar.ajax.reload();
-                Recuperar_Totales();
-                $("#ModalPago").modal("hide");
-			     swal("Error:", Mensaje);
+            $("#modulo_finalizacion").removeClass("whirl");
+            $("#modulo_finalizacion").removeClass("ringed");
+            tablaDeuda1.ajax.reload();
+            tablaDeuda2.ajax.reload();
+            tablaPagar.ajax.reload();
+            Recuperar_Totales();
+            $("#ModalPagarFinal").modal("hide");
+            swal("Error:", Mensaje);
+            $("#final_importe_pagar").val();
+            $("#final_importe_vuelto").val();
+            $("#final_importe_total").val();
+             $("#v_importe_total").val("S/. 0.00");
+            $("#m_importe_pagar_cliente").val("S/. 0.00");
+            $("#m_importe_vuelto").val("S/. 0.00");
         } else {
-				 $("#ModuloPago").removeClass("whirl");
-				 $("#ModuloPago").removeClass("ringed");
-
-                tablaDeuda1.ajax.reload();
-                tablaDeuda2.ajax.reload();
-                tablaPagar.ajax.reload();
-                Recuperar_Totales();
-                $("#ModalPago").modal("hide");
-			     swal("Acción:", Mensaje);
+            $("#modulo_finalizacion").removeClass("whirl");
+            $("#modulo_finalizacion").removeClass("ringed");
+            tablaDeuda1.ajax.reload();
+            tablaDeuda2.ajax.reload();
+            tablaPagar.ajax.reload();
+            Recuperar_Totales();
+            $("#ModalPagarFinal").modal("hide");
+            swal("Acción:", Mensaje);
+            $("#final_importe_pagar").val();
+            $("#final_importe_vuelto").val();
+            $("#final_importe_total").val();
+            $("#v_importe_total").val("S/. 0.00");
+            $("#m_importe_pagar_cliente").val("S/. 0.00");
+            $("#m_importe_vuelto").val("S/. 0.00");
         }
     });
 
@@ -240,11 +253,11 @@ function RegistrarPagoP(event) {
     event.preventDefault(); //No se activará la acción predeterminada del evento
     var error = "";
     var pagar_importe_mora = $("#pagar_importe_mora").val();
-    var pago =$("#pagar_importe").val();
+    var pago = $("#pagar_importe").val();
 
-    if(pagar_importe_mora==0 && pago==0){
-       error=error+"No se puede Pagar Monto 0.00 soles. <BR>";
-       }
+    if (pagar_importe_mora == 0 && pago == 0) {
+        error = error + "No se puede Pagar Monto 0.00 soles. <BR>";
+    }
 
     if (error == "") {
         $("#ModuloPago").addClass("whirl");
@@ -329,7 +342,7 @@ function Recuperar_Totales() {
         data = JSON.parse(data);
         console.log(data);
         $("#oculto_importe_total").val(data.TotalPagar);
-        $("#v_importe_total").val("S/. " + Formato_Moneda(parseFloat(data.TotalPagar),2));
+        $("#v_importe_total").val("S/. " + Formato_Moneda(parseFloat(data.TotalPagar), 2));
     });
 }
 
@@ -672,6 +685,7 @@ function Listar_Deudas2(idAlumno, year) {
 }
 
 function Listar_Pagar(idAlumno, year) {
+    debugger;
     if (tablaPagar == null) {
         tablaPagar = $('#tablaPagar').dataTable({
             "aProcessing": true,
@@ -722,7 +736,7 @@ function Listar_Pagar(idAlumno, year) {
         }).draw();
     } else {
         tablaPagar.destroy();
-        tablaPagar = $('#tablaDeudas2').dataTable({
+        tablaPagar = $('#tablaPagar').dataTable({
             "aProcessing": true,
             "aServerSide": true,
             "processing": true,
@@ -845,15 +859,15 @@ function AbrirPago() {
     var importe_pagar = $("#oculto_importe_pagar").val();
     var importe_total = $("#oculto_importe_total").val();
     var importe_vuelto = $("#oculto_importe_vuelto").val();
-    if(importe_pagar>0){
-         $("#ModalPagarFinal").modal("show");
+    if (importe_pagar > 0) {
+        $("#ModalPagarFinal").modal("show");
 
-    $("#final_importe_pagar").val(importe_pagar);
-    $("#final_importe_vuelto").val(importe_vuelto);
-    $("#final_importe_total").val(importe_total);
+        $("#final_importe_pagar").val(importe_pagar);
+        $("#final_importe_vuelto").val(importe_vuelto);
+        $("#final_importe_total").val(importe_total);
 
-    $("#final_pagar").val("S/. "+Formato_Moneda(parseFloat(importe_total),2) );
-    }else{
+        $("#final_pagar").val("S/. " + Formato_Moneda(parseFloat(importe_total), 2));
+    } else {
         notificar_warning("Ingrese Monto a Pagar.");
     }
 
@@ -880,7 +894,7 @@ function AgregarPagos() {
     });
 
     if (ArregloPagos.length == 0 && ArregloPagos2.length == 0) {
-        error = error + "- Seleccione al menos una Dedua a Pagar.<br>";
+        error = error + "- Seleccione al menos una Deuda a Pagar.<br>";
     }
 
     if (error != "") {

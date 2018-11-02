@@ -14,14 +14,21 @@ if (mysqli_connect_errno())
 
 if (!function_exists('ejecutarConsulta')){
 
-   function ejecutarConsulta($sql){
+  /* function ejecutarConsulta($sql){
       global $conexion;
       $query=$conexion->prepare($sql);
       if($query){
          $query = $conexion->query($sql);
       }
       return $query;
-   }
+   }*/
+
+    function ejecutarConsulta($sql)
+	{
+		global $conexion;
+		$query = $conexion->query($sql);
+		return $query;
+	}
 
    function ejecutarConsultaSimpleFila($sql){
       global $conexion;
