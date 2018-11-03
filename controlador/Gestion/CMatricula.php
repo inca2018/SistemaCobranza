@@ -21,6 +21,7 @@
  	 $date = str_replace('/', '-', $fechaFin);
     $fechaFin = date("Y-m-d", strtotime($date));*/
 
+$login_idLog=$_SESSION['idUsuario'];
 function verificarFoto($reg){
     if($reg->imagen==NULL){
         return "";

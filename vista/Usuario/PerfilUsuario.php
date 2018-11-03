@@ -19,7 +19,8 @@
                     </div>
                 </div>
                 <hr class="mt-2 mb-2">
-                <div class="row">
+                <form id="FormularioPerfil" method="POST" autocomplete="off">
+                <div class="row" id="area_perfil">
 
                     <div class="col-md-6 br">
                         <h5 class="mt-3 mb-3 titulo_area"><em><b>Información de Usuario:</b></em></h5>
@@ -43,6 +44,12 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
+                                <label for="UsuarioContacto" class="col-md-5 col-form-label">Correo:</label>
+                                <input type="text" class="form-control" id="UsuarioCorreo" name="UsuarioCorreo" >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
                                 <label for="UsuarioContacto" class="col-md-5 col-form-label">Telefono de Contacto:</label>
                                 <input type="text" class="form-control" id="UsuarioContacto" name="UsuarioContacto" >
                             </div>
@@ -54,31 +61,37 @@
                          <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="UsuarioPassVerificar" class="col-md-5 col-form-label">Usuario:</label>
-                                <input type="text" class="form-control" id="UsuarioPassVerificar" name="UsuarUsuarioPassVerificarioNombre">
+                                <input type="text" class="form-control" id="UsuarioUsuario" name="UsuarioUsuario" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label for="UsuarioPassVerificar" class="col-md-5 col-form-label">Perfil:</label>
+                                <input type="text" class="form-control" id="UsuarioPerfil" name="UsuarioPerfil" readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="UsuarioPassVerificar" class="col-md-5 col-form-label">Contraseña Anterior:</label>
-                                <input type="text" class="form-control" id="UsuarioPassVerificar" name="UsuarUsuarioPassVerificarioNombre">
+                                <input type="password" class="form-control" id="UsuarioPassVerificar" name="UsuarUsuarioPassVerificarioNombre">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="UsuarioPassNuevo" class="col-md-5 col-form-label">Contraseña Nueva:</label>
-                                <input type="text" class="form-control" id="UsuarioPassNuevo" name="UsuarioPassNuevo">
+                                <input type="password" class="form-control" id="UsuarioPassNuevo" name="UsuarioPassNuevo">
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-6">
-                                <button class="btn btn-success btn-block ">ACTUALIZAR DATOS</button>
+                                <button type="submit" class="btn btn-success btn-block ">ACTUALIZAR DATOS</button>
                             </div>
 
                         </div>
                     </div>
 
                 </div>
-
+                </form>
             </div>
         </div>
     </div>

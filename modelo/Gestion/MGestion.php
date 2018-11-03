@@ -8,7 +8,10 @@
       public function __construct(){
       }
 
-
+        public function RecuperarDatosPerfil($idUsuario){
+            $sql="SELECT p.nombrePersona,p.apellidoPaterno,p.apellidoMaterno,p.DNI,p.telefono,p.correo,p.direccion,u.usuario,u.pass,per.nombrePerfil FROM usuario u INNER JOIN persona p On p.idPersona=u.idUsuario INNER JOIN perfil per On per.idPerfil=u.Perfil_idPerfil WHERE u.idUsuario='$idUsuario'";
+			return ejecutarConsultaSimpleFila($sql);
+        }
 		public function Recuperar_Gestion($idGestion){
 			$sql="CALL `SP_Gestion_RECUPERAR`('$idGestion');";
 			return ejecutarConsultaSimpleFila($sql);

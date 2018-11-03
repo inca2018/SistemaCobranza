@@ -145,6 +145,11 @@
   }
 
    switch($_GET['op']){
+       case 'RecuperarDatosPerfil':
+         $rspta=$gestion->RecuperarDatosPerfil($login_idLog);
+         echo json_encode($rspta);
+      break;
+
      case 'RecuperarInformacionMatricula':
 			$rspta=$gestion->RecuperarInformacionMatricula($idAlumno);
          echo json_encode($rspta);

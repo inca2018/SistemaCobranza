@@ -2,7 +2,7 @@ var tablaTarjeta;
 function init(){
    Iniciar_Componentes();
    Listar_Tarjeta();
-	Listar_Estado();
+  Listar_Estado();
 }
 function Iniciar_Componentes(){
    //var fecha=hoyFecha();
