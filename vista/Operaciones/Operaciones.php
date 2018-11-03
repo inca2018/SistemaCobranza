@@ -226,5 +226,41 @@
 		<!-- Fin del Cuerpo del Sistema del Menu-->
 		<!-- Inicio del footer -->
 		<?php require_once('../layaout/Footer.php');?>
+
+
+<div class="modal fade " id="ModalComprobantes" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="row m-1 bb">
+                <div class="col-md-12">
+                    <h4 class="text-center text-" id="">LISTADO DE COMPROBANTES</h4>
+                </div>
+            </div>
+            <div class="modal-body" id="modulo_finalizacion">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaComprobantes" style="font-size:11px">
+											<thead class="thead-light text-center">
+												<tr>
+													<th  data-priority="1">#</th>
+													<th>CODIGO DE COMPROBANTE</th>
+													<th>AÑO DE GESTIÓN</th>
+													<th>IMPORTE</th>
+													<th>TIPO DE PAGO</th>
+													<th>FECHA EMISIÓN</th>
+													<th>DOCUMENTO</th>
+
+												</tr>
+											</thead>
+											<tbody> </tbody>
+										</table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 			<!-- Fin del Footer -->
 			<script src="<?php echo $conexionConfig->rutaOP(); ?>vista/js/Operaciones.js"></script>

@@ -2,6 +2,8 @@ var tablaOperacion;
 var tablaDeuda1;
 var tablaDeuda2;
 
+var tablaComprobantes;
+
 function init(){
 
 var perfil=$("#PerfilCodigo").val();
@@ -460,6 +462,168 @@ function MostrarGestionApoderados(){
 function Pagos(idAlumno){
    $.redirect('../Operaciones/PagoMatricula.php',{'idAlumno':idAlumno});
 }
+function Comprobantes(idAlumno){
+    $("#ModalComprobantes").modal("show");
+    Listar_Comprobantes(idAlumno);
+}
+
+function Listar_Comprobantes(idAlumno) {
+	if (tablaComprobantes == null) {
+		tablaComprobantes = $('#tablaComprobantes').dataTable({
+			"aProcessing": true
+			, "aServerSide": true
+			, "processing": true
+			, "paging": true, // Paginacion en tabla
+			"ordering": true, // Ordenamiento en columna de tabla
+			"info": true, // Informacion de cabecera tabla
+			"responsive": true, // Accion de responsive
+			"searching": false,
+			  dom: 'lBfrtip'
+			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			, "order": [[0, "asc"]]
+			, "bDestroy": true
+			, "columnDefs": [
+				{
+					"className": "text-center"
+					, "targets": [0, 1]
+            }
+            , {
+					"className": "text-left"
+					, "targets": [3]
+            }, {
+					"className": "text-right"
+					, "targets": [1]
+            }
+         , ], buttons: [
+            {
+                extend: 'copy',
+                className: 'btn-info'
+            }
+            , {
+                extend: 'csv',
+                className: 'btn-info'
+            }
+            , {
+                extend: 'excel',
+                className: 'btn-info',
+                title: 'Facturacion'
+            }
+            , {
+                extend: 'pdfHtml5',
+                className: 'btn-info sombra3',
+                title: "Reporte de Alumnos",
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            }
+            , {
+                extend: 'print',
+                className: 'btn-info'
+            }
+            ]
+			, "ajax": { //Solicitud Ajax Servidor
+				url: '../../controlador/Gestion/CGestion.php?op=listarComprobantes'
+				, type: "POST"
+				, dataType: "JSON"
+				, data: { idAlumno: idAlumno
+				}
+				, error: function (e) {
+					console.log(e.responseText);
+				}
+			}
+			, // cambiar el lenguaje de datatable
+			oLanguage: español
+		, }).DataTable();
+		//Aplicar ordenamiento y autonumeracion , index
+		tablaComprobantes.on('order.dt search.dt', function () {
+			tablaComprobantes.column(0, {
+				search: 'applied'
+				, order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+	}
+	else {
+		tablaComprobantes.destroy();
+		tablaComprobantes = $('#tablaComprobantes').dataTable({
+			"aProcessing": true
+			, "aServerSide": true
+			, "processing": true
+			, "paging": true, // Paginacion en tabla
+			"ordering": true, // Ordenamiento en columna de tabla
+			"info": true, // Informacion de cabecera tabla
+			"responsive": true, // Accion de responsive
+			"searching": false,
+			  dom: 'lBfrtip'
+			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			, "order": [[0, "asc"]]
+			, "bDestroy": true
+			, "columnDefs": [
+				{
+					"className": "text-center"
+					, "targets": [0, 1]
+            }
+            , {
+					"className": "text-left"
+					, "targets": [3]
+            }, {
+					"className": "text-right"
+					, "targets": [1]
+            }
+         , ],
+			 buttons: [
+            {
+                extend: 'copy',
+                className: 'btn-info'
+            }
+            , {
+                extend: 'csv',
+                className: 'btn-info'
+            }
+            , {
+                extend: 'excel',
+                className: 'btn-info',
+                title: 'Facturacion'
+            }
+            , {
+                extend: 'pdfHtml5',
+                className: 'btn-info sombra3',
+                title: "Reporte de Alumnos",
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            }
+            , {
+                extend: 'print',
+                className: 'btn-info'
+            }
+            ]
+			, "ajax": { //Solicitud Ajax Servidor
+				url: '../../controlador/Gestion/CGestion.php?op=listarComprobantes'
+				, type: "POST"
+				, dataType: "JSON"
+				, data: {
+	 idAlumno: idAlumno
+				}
+				, error: function (e) {
+					console.log(e.responseText);
+				}
+			}
+			, // cambiar el lenguaje de datatable
+			oLanguage: español
+		, }).DataTable();
+		//Aplicar ordenamiento y autonumeracion , index
+		tablaComprobantes.on('order.dt search.dt', function () {
+			tablaComprobantes.column(0, {
+				search: 'applied'
+				, order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+	}
+}
+
+
 function MatricularAlumnos(){
    $.redirect('../Operaciones/Matricula.php',{});
 }

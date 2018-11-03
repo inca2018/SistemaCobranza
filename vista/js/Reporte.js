@@ -8,6 +8,11 @@ var cuerpo="";
 var cuerpo2="";
 var cont=0;
 
+
+var tabladetalle1;
+var tabladetalle2;
+
+
 function init(){
 
 	iniciar();
@@ -130,13 +135,13 @@ function buscar_reporte(){
 }
 function actualizar_indicadores1(f_inicio,f_fin){
 
-	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarReporteFechas",{fechaInicio:f_inicio,fechaFin:f_fin}, function(data, status){
+	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarGraficoFechas",{fechaInicio:f_inicio,fechaFin:f_fin}, function(data, status){
       data = JSON.parse(data);
 		console.log(data);
-      var cuotaTotal = parseInt(data.numCuotas);
-      var cuotaPendiente = parseInt(data.cuotaPend);
-		var cuotaPagada = parseInt(data.cuotaPagada);
-		var cuotaVencida = parseInt(data.cuotaVencida);
+      var cuotaTotal = parseInt(data.CuotaTotales);
+      var cuotaPendiente = parseInt(data.CuotaPendiente);
+      var cuotaPagada = parseInt(data.CuotaPagada);
+      var cuotaVencida = parseInt(data.CuotaVencida);
 
 
 
@@ -198,6 +203,7 @@ function detalles1(){
     }
 
 }
+
 function detalles2(){
 
     var inicio=$("#inicio1").val();
@@ -212,61 +218,6 @@ function detalles2(){
 
 }
 
-function mostrar_Tabla_detalles1(inicio,fin){
-	  cuerpo="";
-	 $.post("../../controlador/Gestion/CGestion.php?op=Recuperar_Detalle_Indicadores",{fechaInicio:inicio,fechaFin:fin}, function(data, status){
-      data = JSON.parse(data);
-         console.log(data);
-
-     for (var i in data) {
-         //console.log("entro:"+i);
-       var dato=data[i];
-        //console.log(data);
-       var fecha=dato.dia;
-       var Total=parseInt(dato.Total);
-       var Pendiente=parseInt(dato.Pendiente);
-		 var Pagada=parseInt(dato.Pagada);
-       var Vencida=parseInt(dato.Vencida);
-
-         var corre=(parseInt(i)+1);
-         cuerpo=cuerpo+"<tr><th>"+corre+"</th><th class='text-center'>"+fecha+"</th><th class='text-center'>"+verificar(Pagada)+"</th><th class='text-center'>"+verificar(Total)+"</th><th class='text-center'>"+verificar(parseFloat(Pagada/Total).toFixed(2))+"</th></tr>"
-        }
-
-        $("#body_detalles1").empty();
-        $("#body_detalles1").append(cuerpo);
-
-
-   });
-}
-
-function mostrar_Tabla_detalles2(inicio,fin){
-	     cuerpo2="";
-	 $.post("../../controlador/Gestion/CGestion.php?op=Recuperar_Detalle_Indicadores",{fechaInicio:inicio,fechaFin:fin}, function(data, status){
-      data = JSON.parse(data);
-         console.log(data);
-
-     for (var i in data) {
-         //console.log("entro:"+i);
-       var dato=data[i];
-        //console.log(data);
-       var fecha=dato.dia;
-       var Total=parseInt(dato.Total);
-       var Pendiente=parseInt(dato.Pendiente);
-		 var Pagada=parseInt(dato.Pagada);
-       var Vencida=parseInt(dato.Vencida);
-
-         var corre=(parseInt(i)+1);
-         cuerpo2=cuerpo2+"<tr><th>"+corre+"</th><th class='text-center'>"+fecha+"</th><th class='text-center'>"+verificar(Vencida)+"</th><th class='text-center'>"+verificar(Total)+"</th><th class='text-center'>"+verificar(parseFloat(Vencida/Total).toFixed(2))+"</th> </tr>"
-        }
-
-        $("#body_detalles2").empty();
-        $("#body_detalles2").append(cuerpo2);
-
-
-
-   });
-}
-
 
 function verificar(dato){
     if(isNaN(dato)){
@@ -277,4 +228,300 @@ function verificar(dato){
     }
 }
 
+
+
+function mostrar_Tabla_detalles1(inicio,fin){
+    if(tabladetalle1==null){
+        tabladetalle1 = $('#tabla_Detalles1').dataTable({
+		"aProcessing": true,
+		"aServerSide": true,
+		"processing": true,
+		"paging": false, // Paginacion en tabla
+		"ordering": true, // Ordenamiento en columna de tabla
+		"info": true, // Informacion de cabecera tabla
+		"responsive": true, // Accion de responsive
+          dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
+
+		"bDestroy": true
+        , "columnDefs": [
+            {
+               "className": "text-center"
+               , "targets": [0,1,2,3,4]
+            }
+            , {
+               "className": "text-left"
+               , "targets": []
+            }
+         , ]
+         , buttons: [
+            {
+               extend: 'copy'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'csv'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'excel'
+               , className: 'btn-info'
+               , title: 'Reporte'
+            }
+            , {
+				extend: 'pdfHtml5',
+				className: 'btn-info sombra3',
+				title: "Reporte",
+				orientation: 'landscape',
+				pageSize: 'LEGAL'
+            }
+            , {
+               extend: 'print'
+               , className: 'btn-info'
+            }
+            ],
+         "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Gestion/CGestion.php?op=ListarReportes1',
+			type: "POST",
+			dataType: "JSON",
+			data:{fechaInicio:inicio,fechaFin:fin},
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
+		// cambiar el lenguaje de datatable
+		oLanguage: español,
+	}).DataTable();
+	//Aplicar ordenamiento y autonumeracion , index
+	tabladetalle1.on('order.dt search.dt', function () {
+		tabladetalle1.column(0, {
+			search: 'applied',
+			order: 'applied'
+		}).nodes().each(function (cell, i) {
+			cell.innerHTML = i + 1;
+		});
+	}).draw();
+    }else{
+        tabladetalle1.destroy();
+        tabladetalle1 = $('#tabla_Detalles1').dataTable({
+		"aProcessing": true,
+		"aServerSide": true,
+		"processing": true,
+		"paging": false, // Paginacion en tabla
+		"ordering": true, // Ordenamiento en columna de tabla
+		"info": true, // Informacion de cabecera tabla
+		"responsive": true, // Accion de responsive
+          dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
+
+		"bDestroy": true
+        , "columnDefs": [
+            {
+               "className": "text-center"
+               , "targets": [0,1,2,3,4]
+            }
+            , {
+               "className": "text-left"
+               , "targets": []
+            }
+         , ]
+         , buttons: [
+            {
+               extend: 'copy'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'csv'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'excel'
+               , className: 'btn-info'
+               , title: 'Reporte'
+            }
+            , {
+				extend: 'pdfHtml5',
+				className: 'btn-info sombra3',
+				title: "Reporte",
+				orientation: 'landscape',
+				pageSize: 'LEGAL'
+            }
+            , {
+               extend: 'print'
+               , className: 'btn-info'
+            }
+            ],
+         "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Gestion/CGestion.php?op=ListarReportes1',
+			type: "POST",
+			dataType: "JSON",
+			data:{fechaInicio:inicio,fechaFin:fin},
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
+		// cambiar el lenguaje de datatable
+		oLanguage: español,
+	}).DataTable();
+	//Aplicar ordenamiento y autonumeracion , index
+	tabladetalle1.on('order.dt search.dt', function () {
+		tabladetalle1.column(0, {
+			search: 'applied',
+			order: 'applied'
+		}).nodes().each(function (cell, i) {
+			cell.innerHTML = i + 1;
+		});
+	}).draw();
+    }
+
+}
+function mostrar_Tabla_detalles2(inicio,fin){
+    if(tabladetalle2==null){
+       tabladetalle2 = $('#tabla_Detalles2').dataTable({
+		"aProcessing": true,
+		"aServerSide": true,
+		"processing": true,
+		"paging": false, // Paginacion en tabla
+		"ordering": true, // Ordenamiento en columna de tabla
+		"info": true, // Informacion de cabecera tabla
+		"responsive": true, // Accion de responsive
+          dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
+
+		"bDestroy": true
+        , "columnDefs": [
+            {
+               "className": "text-center"
+               , "targets": [0,1,2,3,4]
+            }
+            , {
+               "className": "text-left"
+               , "targets": []
+            }
+         , ]
+         , buttons: [
+            {
+               extend: 'copy'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'csv'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'excel'
+               , className: 'btn-info'
+               , title: 'Reporte'
+            }
+            , {
+				extend: 'pdfHtml5',
+				className: 'btn-info sombra3',
+				title: "Reporte",
+				orientation: 'landscape',
+				pageSize: 'LEGAL'
+            }
+            , {
+               extend: 'print'
+               , className: 'btn-info'
+            }
+            ],
+         "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Gestion/CGestion.php?op=ListarReportes2',
+			type: "POST",
+			dataType: "JSON",
+			data:{fechaInicio:inicio,fechaFin:fin},
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
+		// cambiar el lenguaje de datatable
+		oLanguage: español,
+	}).DataTable();
+	//Aplicar ordenamiento y autonumeracion , index
+	tabladetalle2.on('order.dt search.dt', function () {
+		tabladetalle2.column(0, {
+			search: 'applied',
+			order: 'applied'
+		}).nodes().each(function (cell, i) {
+			cell.innerHTML = i + 1;
+		});
+	}).draw();
+       }else{
+       tabladetalle2.destroy();
+       tabladetalle2 = $('#tabla_Detalles2').dataTable({
+		"aProcessing": true,
+		"aServerSide": true,
+		"processing": true,
+		"paging": false, // Paginacion en tabla
+		"ordering": true, // Ordenamiento en columna de tabla
+		"info": true, // Informacion de cabecera tabla
+		"responsive": true, // Accion de responsive
+          dom: 'lBfrtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "order": [[0, "asc"]],
+
+		"bDestroy": true
+        , "columnDefs": [
+            {
+               "className": "text-center"
+               , "targets": [0,1,2,3,4]
+            }
+            , {
+               "className": "text-left"
+               , "targets": []
+            }
+         , ]
+         , buttons: [
+            {
+               extend: 'copy'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'csv'
+               , className: 'btn-info'
+            }
+            , {
+               extend: 'excel'
+               , className: 'btn-info'
+               , title: 'Reporte'
+            }
+            , {
+				extend: 'pdfHtml5',
+				className: 'btn-info sombra3',
+				title: "Reporte",
+				orientation: 'landscape',
+				pageSize: 'LEGAL'
+            }
+            , {
+               extend: 'print'
+               , className: 'btn-info'
+            }
+            ],
+         "ajax": { //Solicitud Ajax Servidor
+			url: '../../controlador/Gestion/CGestion.php?op=ListarReportes2',
+			type: "POST",
+			dataType: "JSON",
+			data:{fechaInicio:inicio,fechaFin:fin},
+			error: function (e) {
+				console.log(e.responseText);
+			}
+		},
+		// cambiar el lenguaje de datatable
+		oLanguage: español,
+	}).DataTable();
+	//Aplicar ordenamiento y autonumeracion , index
+	tabladetalle2.on('order.dt search.dt', function () {
+		tabladetalle2.column(0, {
+			search: 'applied',
+			order: 'applied'
+		}).nodes().each(function (cell, i) {
+			cell.innerHTML = i + 1;
+		});
+	}).draw();
+       }
+
+}
 init();

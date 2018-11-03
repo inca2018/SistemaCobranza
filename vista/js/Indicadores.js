@@ -5,6 +5,35 @@ function init(){
 
 	ListarAlumnos();
 	Mostrar_Indicadores();
+
+
+    $('#date_inicio1').datepicker({
+			 format: 'dd/mm/yyyy',
+
+        });
+	$('#date_fin1').datepicker({
+
+		    format: 'dd/mm/yyyy',
+    });
+
+	$('#date_inicio1').datepicker().on('changeDate', function (ev) {
+	    var f_inicio=$("#inicio1").val();
+		 var f_fin=$("#fin1").val();
+	   var day = parseInt(f_inicio.substr(0,2));
+		var month = parseInt(f_inicio.substr(3,2));
+		var year = parseInt(f_inicio.substr(6,8));
+	 $('#date_fin1').datepicker('setStartDate',new Date(year,(month-1),day));
+   });
+
+	$('#date_fin1').datepicker().on('changeDate', function (ev) {
+	    var f_inicio=$("#inicio1").val();
+		 var f_fin=$("#fin1").val();
+		var day = parseInt(f_fin.substr(0,2));
+		var month = parseInt(f_fin.substr(3,2));
+		var year = parseInt(f_fin.substr(6,8));
+
+	 $('#date_inicio1').datepicker('setEndDate',new Date(year,(month-1),day));
+   });
 }
 
 function Mostrar_Indicadores(){
@@ -87,23 +116,26 @@ function buscar_reporte1(){
 
 
 	var usuario=$("#alumnosSelect").val();
+    var f_inicio=$("#inicio1").val();
+   var f_fin=$("#fin1").val();
 
-	if(usuario=='' ){
-		  	notificar_warning("Seleccione Alumno")
+	if(usuario=='' || f_inicio=='' || f_fin=='' ){
+		  	notificar_warning("Seleccione Paramentros")
 		}else{
-			actualizar_indicadores1(usuario);
+			actualizar_indicadores1(f_inicio,f_fin,usuario);
 		}
+
 }
 
-function actualizar_indicadores1(idAlumno){
+function actualizar_indicadores1(f_inicio,f_fin,idAlumno){
 
-	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarReporte",{idAlumno:idAlumno}, function(data, status){
+	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarGraficoFechasAlumno",{fechaInicio:f_inicio,fechaFin:f_fin,idAlumno:idAlumno}, function(data, status){
       data = JSON.parse(data);
 		console.log(data);
-      var cuotaTotal = parseInt(data.numCuotas);
-      var cuotaPendiente = parseInt(data.cuotaPend);
-		var cuotaPagada = parseInt(data.cuotaPagada);
-		var cuotaVencida = parseInt(data.cuotaVencida);
+      var cuotaTotal = parseInt(data.CuotaTotales);
+      var cuotaPendiente = parseInt(data.CuotaPendiente);
+		var cuotaPagada = parseInt(data.CuotaPagada);
+		var cuotaVencida = parseInt(data.CuotaVencida);
 
 
 

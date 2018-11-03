@@ -13,10 +13,35 @@
 			$sql="CALL `SP_Gestion_RECUPERAR`('$idGestion');";
 			return ejecutarConsultaSimpleFila($sql);
 		}
+
+       public function RecuperarGraficoFechas($Inicio,$Fin){
+			$sql="CALL `SP_REPORTE_GRAFICO1`('$Inicio','$Fin');";
+			return ejecutarConsultaSimpleFila($sql);
+		}
+        public function RecuperarGraficoFechasAlumno($Inicio,$Fin,$idAlumno){
+			$sql="CALL `SP_REPORTE_GRAFICO2`('$Inicio','$Fin','$idAlumno');";
+
+			return ejecutarConsultaSimpleFila($sql);
+		}
        public function ListarOperaciones(){
 			$sql="CALL `SP_OPERACIONES_LISTAR`();";
 			return ejecutarConsulta($sql);
 		}
+
+       public function BuscarReporteIndicadores($fechaInicio,$fechaFin){
+           $sql="CALL `SP_REPORTE_1`('$fechaInicio','$fechaFin');";
+			return ejecutarConsulta($sql);
+       }
+
+       public function BuscarReporteIndicadoresAlumno($fechaInicio,$fechaFin,$idAlumno){
+           $sql="CALL `SP_REPORTE_2`('$fechaInicio','$fechaFin','$idAlumno');";
+			return ejecutarConsulta($sql);
+       }
+
+       public function ListaComprobantes($idAlumno){
+           $sql="CALL `SP_OPERACIONES_LISTAR_COMPROBANTES`($idAlumno);";
+			return ejecutarConsulta($sql);
+       }
        public function ListarDeudas($idAlumno,$year){
 			$sql="CALL `SP_OPERACIONES_RECUPERAR_DEUDA`('$idAlumno','$year');";
 			return ejecutarConsulta($sql);

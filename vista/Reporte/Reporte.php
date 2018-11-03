@@ -55,6 +55,79 @@
                      <div class="row justify-content-center m-3">
                         <button type="button" class="btn btn-success col-md-6" onclick="buscar_reporte()">BUSCAR RESULTADOS</button>
                     </div>
+                    <hr>
+                    	<div class="row">
+										<div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0 sombra3">
+												<div class="row row-flush">
+													<div class="col-4 bg-info-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-file-invoice-dollar fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-info" id="ind_cuota_total"><b>0</b></h4>
+															<p class="mb-0 text-muted">Numero de Cuotas</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+              						 <div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0  sombra3">
+												<div class="row row-flush">
+													<div class="col-4 bg-warning-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-file-powerpoint fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-warning" id="ind_cuota_pendiente"><b>0</b></h4>
+															<p class="mb-0 text-muted">Cuota Pendiente</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+              						  <div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0 sombra3 ">
+												<div class="row row-flush">
+													<div class="col-4 bg-success-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-check-square fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-success" id="ind_cuota_pagada"><b>0</b></h4>
+															<p class="mb-0 text-muted">Cuota Pagada</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+              						 <div class="col-xl-3">
+											<!-- START card-->
+											<div class="card border-0 sombra3 ">
+												<div class="row row-flush">
+													<div class="col-4 bg-danger-dark text-center d-flex align-items-center justify-content-center rounded-left">
+														<em class="fas fa-times fa-2x"></em>
+													</div>
+													<div class="col-8">
+														<div class="card-body text-center p-1">
+															<h4 class="text-center text-danger" id="ind_cuota_vencida"><b>0</b></h4>
+															<p class="mb-0 text-muted">Cuota Vencida</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- END card-->
+              						 </div>
+
+ 								</div>
+                      <hr>
                     <div class="row  justify-content-center ">
                         <div class="col-md-6 col-xs-12 card ">
                             <h6 align="center" class="m-2">Porcentaje de incidencias gestionadas: </h6>
@@ -103,14 +176,14 @@
          <div class="modal-body">
          <form id="formularioCliente" class="form-horizontal" method="POST">
 
-              <table class="table my-4 w-100 table-hover table-sm dt-responsive nowrap" id="datatable_clientes">
+              <table class="table my-4 w-100 table-hover table-sm dt-responsive " id="tabla_Detalles1">
                      <thead class="thead-light">
                        <tr>
-                         <th data-priority="1">#</th>
-                         <th>Fecha</th>
-                         <th>Numero de Cuentas Pagadas(NCPA)</th>
-                         <th>Numero de Cuentas Programadas(NCPR)</th>
-                         <th>ICP=(NCPA/NCPR)</th>
+                         <th width="20%" data-priority="1">#</th>
+                         <th width="20%" >Fecha</th>
+                         <th width="20%">Numero de Cuentas Pagadas(NCPA)</th>
+                         <th width="20%">Numero de Cuentas Programadas(NCPR)</th>
+                         <th width="20%">ICP=(NCPA/NCPR)</th>
 
                        </tr>
                      </thead>
@@ -141,14 +214,14 @@
          <div class="modal-body">
          <form id="formularioCliente" class="form-horizontal" method="POST">
 
-              <table class="table my-4 w-100 table-hover table-sm dt-responsive nowrap" id="datatable_clientes">
+              <table class="table my-4 w-100 table-hover table-sm dt-responsive " id="tabla_Detalles2">
                      <thead class="thead-light">
                        <tr>
-                         <th data-priority="1">#</th>
-                         <th>Fecha</th>
-                         <th>Cartera Vencida (CV)</th>
-                         <th>Cartera Total (CT)</th>
-                         <th>IMOR=(CV/CT)</th>
+                         <th idth="20%" data-priority="1">#</th>
+                         <th idth="20%">Fecha</th>
+                         <th idth="20%">Cartera Vencida (CV)</th>
+                         <th idth="20%">Cartera Total (CT)</th>
+                         <th idth="20%">IMOR=(CV/CT)</th>
 
                        </tr>
                      </thead>

@@ -79,6 +79,8 @@
 
  	$idRecuperado=isset($_POST["idRecuperado"])?limpiarCadena($_POST["idRecuperado"]):"";
 
+
+
     $date = str_replace('/', '-', $fechaInicio);
     $fechaInicio = date("Y-m-d", strtotime($date));
  	 $date = str_replace('/', '-', $fechaFin);
@@ -130,12 +132,17 @@
             $respuesta.='<div class="badge badge-primary">DEBE HABILITAR PAGOS DEL ALUMNO</div>';
        }else{
 
-         $respuesta.='<button type="button"   title="Realizar Pago" class="btn btn-success btn-sm m-1" onclick="Pagos('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button>
+         $respuesta.='<button type="button"   title="Realizar Pago" class="btn btn-success btn-sm m-1" onclick="Pagos('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button><button type="button"   title="Comprobantes de Pago" class="btn btn-info btn-sm m-1" onclick="Comprobantes('.$reg->idAlumno.')"><i class="fas fa-bars"></i></button>
             ';
 
        }
      return $respuesta;
    }
+  function MostrarDocumento($reg){
+      if($reg->Documento!=null){
+        return '<a href="../../vista/Operaciones/Documento/'.$reg->idPago.'/'.$reg->Documento.'" target="_blank" class="btn btn-danger btn-sm ml-1 sombra3"><i class="fas fa-file-pdf"></i></a> ';
+      }
+  }
 
    switch($_GET['op']){
      case 'RecuperarInformacionMatricula':
@@ -164,7 +171,14 @@
          echo json_encode($rspta);
       break;
 
-
+       case 'RecuperarGraficoFechas':
+			$rspta=$gestion->RecuperarGraficoFechas($fechaInicio,$fechaFin);
+         echo json_encode($rspta);
+      break;
+      case 'RecuperarGraficoFechasAlumno':
+			$rspta=$gestion->RecuperarGraficoFechasAlumno($fechaInicio,$fechaFin,$idAlumno);
+         echo json_encode($rspta);
+      break;
       case 'listar_tipoTarjeta':
 
       		$rpta = $general->Listar_TipoTarjeta();
@@ -203,7 +217,33 @@
                "6"=>$reg->CuotaPendiente,
                "7"=>$reg->CuotasPagadas,
                "8"=>$reg->CuotasVencidas,
-               "9"=>AccionesOperacion($reg),
+               "9"=>AccionesOperacion($reg)
+
+
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+
+    case 'listarComprobantes':
+
+         $rspta=$gestion->ListaComprobantes($idAlumno);
+         $data= array();
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>'',
+               "1"=>$reg->ReciboVoucher,
+               "2"=>$reg->YearComp,
+               "3"=>"S/. ".number_format($reg->ImporteTotal,2),
+               "4"=>$reg->TipoPago,
+               "5"=>$reg->fechaRegistro,
+               "6"=>MostrarDocumento($reg)
+
 
             );
          }
@@ -483,8 +523,8 @@
                 $dia["dia"]=$fechaaamostar;
                 $dia["Total"]=$resu["numCuotas"];
                 $dia["Pendiente"]=$resu["cuotaPend"];
-					 $dia["Pagada"]=$resu["cuotaPagada"];
-					 $dia["Vencida"]=$resu["cuotaVencida"];
+                $dia["Pagada"]=$resu["cuotaPagada"];
+                $dia["Vencida"]=$resu["cuotaVencida"];
 
                 $response[]=$dia;
                 $fechaaamostar = date("Y-m-d", strtotime($fechaaamostar . " + 1 day"));
@@ -503,6 +543,78 @@
         }
             echo json_encode($response);
     break;
+
+
+
+     case 'ListarReportes1':
+         $rspta=$gestion->BuscarReporteIndicadores($fechaInicio,$fechaFin);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>$reg->fecha,
+               "2"=>$reg->CuotaPagada,
+               "3"=>$reg->CuotaTotal,
+               "4"=>number_format(($reg->CuotaPagada/$reg->CuotaTotal),2)
+
+
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+
+     case 'ListarReportes2':
+         $rspta=$gestion->BuscarReporteIndicadores($fechaInicio,$fechaFin);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>$reg->fecha,
+               "2"=>$reg->CuotaVencida,
+               "3"=>$reg->CuotaTotal,
+               "4"=>number_format(($reg->CuotaVencida/$reg->CuotaTotal),2)
+
+
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+
+     case 'ListarReportesAlumno':
+         $rspta=$gestion->BuscarReporteIndicadoresAlumno($fechaInicio,$fechaFin,$idAlumno);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>BuscarEstado($reg),
+               "2"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
+               "3"=>"S/. ".number_format($reg->Diferencia,2),
+               "4"=>$reg->DiasMora,
+               "5"=>"S/. ".number_format((($reg->DiasMora*1)-$reg->Mora),2),
+               "6"=>$reg->fechaVencimiento
+
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
 
    }
 

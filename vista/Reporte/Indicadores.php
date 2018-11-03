@@ -19,6 +19,40 @@
                                 <h3>Panel de Indicadores:</h3>
                             </div>
 							</div>
+							<div class="row justify-content-center m-3">
+								 <div class="col-md-4 col-12">
+                                        <div class="form-group row">
+                                            <label for="inicio1" class="col-md-5 col-form-label"><i class="far fa-calendar-check fa-lg mr-2"></i>Fecha Inicio:<span class="red">*</span>:</label>
+                                            <div class="col-md-7">
+                                                <div class=" row">
+																<div class="input-group date  col-md-12" id="date_inicio1"   >
+																	<input class="form-control validarPanel" type="text" id="inicio1" name="inicio1"  autocomplete="off" data-message="- Fecha de Nacimiento">
+																	<span class="input-group-append input-group-addon">
+																		<span class="input-group-text "><i class="fa fa-calendar fa-lg"></i></span>
+																	</span>
+																</div>
+															</div>
+                                            </div>
+                                        </div>
+									</div>
+                          <div class="col-md-4 col-12">
+                                        <div class="form-group row">
+                                            <label for="fin1" class="col-md-5 col-form-label"><i class="far fa-calendar-check fa-lg mr-2"></i>Fecha Fin:<span class="red">*</span>:</label>
+                                            <div class="col-md-7">
+                                                <div class=" row">
+																<div class="input-group date  col-md-12" id="date_fin1"   >
+																	<input class="form-control validarPanel" type="text" id="fin1" name="fin1"  autocomplete="off" data-message="- Fecha de Nacimiento">
+																	<span class="input-group-append input-group-addon">
+																		<span class="input-group-text "><i class="fa fa-calendar fa-lg"></i></span>
+																	</span>
+																</div>
+															</div>
+                                            </div>
+                                        </div>
+									</div>
+
+
+                    </div>
 							<div class="row mt-2">
 									<div class="col-md-3 col-12">
 										<div class="form-group">
