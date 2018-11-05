@@ -54,7 +54,7 @@
 
                     </div>
 							<div class="row mt-2">
-									<div class="col-md-3 col-12">
+									<div class="col-md-5 col-12">
 										<div class="form-group">
 										<label>Seleccione Alumno:</label>
 										<select class="form-control" id="alumnosSelect">
@@ -62,7 +62,7 @@
 										</select>
 										</div>
 									</div>
-									<div class="col-md-3 col-12 mt-4">
+									<div class="col-md-4 col-12 mt-4">
 											<button class=" btn btn-success sombra3   btn-block" type="button"  onclick="buscar_reporte1()"><i class="fa fa-search fa-lg mr-2"></i>BUSCAR</button>
 									</div>
 							</div>

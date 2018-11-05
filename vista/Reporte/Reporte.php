@@ -130,24 +130,24 @@
                       <hr>
                     <div class="row  justify-content-center ">
                         <div class="col-md-6 col-xs-12 card ">
-                            <h6 align="center" class="m-2">Porcentaje de incidencias gestionadas: </h6>
+
                             <div class="card-body">
                                 <div class="row">
                                     <canvas id="chart"></canvas>
                                 </div>
                                 <div class="row justify-content-center m-2">
-                                    <button type="button" class="btn btn-info col-md-6" onclick="detalles1()">DETALLES</button>
+                                    <button type="button" class="btn btn-info col-md-6" onclick="detalles1()">REPORTES</button>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-12 card ">
-                            <h6 align="center" class="m-2">Ratio de Impacto de Incidencias sobre el cliente: </h6>
+
                             <div class="card-body">
                                 <div class="row">
                                     <canvas id="chart2"></canvas>
                                 </div>
                                 <div class="row justify-content-center m-2">
-                                    <button type="button" class="btn btn-info col-md-6" onclick="detalles2()">DETALLES</button>
+                                    <button type="button" class="btn btn-info col-md-6" onclick="detalles2()">REPORTES</button>
                                 </div>
                             </div>
                         </div>

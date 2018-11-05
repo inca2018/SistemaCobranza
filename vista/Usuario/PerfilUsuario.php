@@ -20,6 +20,7 @@
                 </div>
                 <hr class="mt-2 mb-2">
                 <form id="FormularioPerfil" method="POST" autocomplete="off">
+                <input type="hidden" id="idUsuario" name="idUsuario" >
                 <div class="row" id="area_perfil">
 
                     <div class="col-md-6 br">
@@ -45,13 +46,13 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="UsuarioContacto" class="col-md-5 col-form-label">Correo:</label>
-                                <input type="text" class="form-control" id="UsuarioCorreo" name="UsuarioCorreo" >
+                                <input type="email" class="form-control" id="UsuarioCorreo" name="UsuarioCorreo" >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="UsuarioContacto" class="col-md-5 col-form-label">Telefono de Contacto:</label>
-                                <input type="text" class="form-control" id="UsuarioContacto" name="UsuarioContacto" >
+                                <input type="text" class="form-control" id="UsuarioContacto" name="UsuarioContacto" onkeypress="return SoloNumerosModificado(event,8,this.id);">
                             </div>
                         </div>
 
@@ -73,7 +74,7 @@
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="UsuarioPassVerificar" class="col-md-5 col-form-label">Contraseña Anterior:</label>
-                                <input type="password" class="form-control" id="UsuarioPassVerificar" name="UsuarUsuarioPassVerificarioNombre">
+                                <input type="password" class="form-control" id="UsuarioPassVerificar" name="UsuarioPassVerificar">
                             </div>
                         </div>
                         <div class="row">

@@ -85,19 +85,16 @@
                      </div>
 
 					 <div class="row" id="cuerpo">
-					      <div class="col-md-12 bl">
-
+					      <div class="col-md-12 ">
                                 <div class="row">
-                                      <div class="col-md-6 br">
-                                        <div class="form-group row">
-                                            <label for="UsuarioPersona" class="col-md-5 col-form-label"><i class="fa fa-male fa-lg mr-3"></i>Persona<span class="red">*</span>:</label>
-                                            <div class="col-md-7">
-                                                <select class="form-control validarPanel" id="UsuarioPersona" name="UsuarioPersona" data-message="- Campo Persona">
-
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-12 form-group ">
+                                            <label for="UsuarioPersona" class=" col-form-label"><i class="fa fa-male fa-lg mr-3"></i>Persona<span class="red">*</span>:</label>
+                                            <select class="form-control validarPanel" id="UsuarioPersona" name="UsuarioPersona" data-message="- Campo Persona">
+                                            </select>
                                     </div>
+                                </div>
+                                <div class="row">
+
                                       <div class="col-md-6 ">
                                            <div class="form-group row">
                                                 <label for="UsuarioUsuario " class="col-md-5 col-form-label  "><i class="fa fa-user mr-2"></i>Usuario<span class="red">*</span>:</label>

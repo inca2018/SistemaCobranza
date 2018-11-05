@@ -171,6 +171,7 @@
 								</form>
 							</div>
 						</div>
+						<hr>
 						<div class="row">
 							<div class="col-md-2 form-group ml-3 br bl bt bb p-2 sombra2">
 								<label>Seleccione Año:</label>
@@ -207,8 +208,6 @@
 													<th width="15%">ESTADO</th>
 													<th width="15%">PAGO</th>
 													<th width="15%">IMPORTE</th>
-													<th width="5%">D.MORA</th>
-													<th width="15%">MORA</th>
 													<th width="15%">F.V.</th>
 												</tr>
 											</thead>

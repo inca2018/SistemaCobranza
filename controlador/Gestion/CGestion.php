@@ -5,6 +5,8 @@
    require_once "../../config/conexion.php";
    require_once "../../vista/documento/boleta.php";
 
+   require_once "../../../php/PasswordHash.php";
+
     $gestion = new MGestion();
     $general = new MGeneral();
     $recursos = new Conexion();
@@ -79,6 +81,14 @@
 
  	$idRecuperado=isset($_POST["idRecuperado"])?limpiarCadena($_POST["idRecuperado"]):"";
 
+
+    // GESTION DE PERFIL
+    $UsuarioCorreo=isset($_POST["UsuarioCorreo"])?limpiarCadena($_POST["UsuarioCorreo"]):"";
+    $UsuarioContacto=isset($_POST["UsuarioContacto"])?limpiarCadena($_POST["UsuarioContacto"]):"";
+    $idUsuario=isset($_POST["idUsuario"])?limpiarCadena($_POST["idUsuario"]):"";
+
+    $UsuarioPassVerificar=isset($_POST["UsuarioPassVerificar"])?limpiarCadena($_POST["UsuarioPassVerificar"]):"";
+    $UsuarioPassNuevo=isset($_POST["UsuarioPassNuevo"])?limpiarCadena($_POST["UsuarioPassNuevo"]):"";
 
 
     $date = str_replace('/', '-', $fechaInicio);
@@ -203,7 +213,7 @@
 
       		$rpta = $general->Listar_Alumnos();
          	while ($reg = $rpta->fetch_object()){
-					echo '<option   value=' . $reg->idAlumno . '>' . $reg->personaNombre . '</option>';
+					echo '<option   value=' . $reg->idAlumno . '>' . $reg->personaNombre . '- DNI:'.$reg->DNI.'</option>';
          	}
        break;
 
@@ -308,7 +318,7 @@
          echo json_encode($results);
       break;
 	 case 'ListarDeuda1A':
-         $rspta=$gestion->ListarDeudas($idAlumno,$year);
+         $rspta=$gestion->ListarDeudasOperaciones($idAlumno,$year);
          $data= array();
          $count=1;
          while ($reg=$rspta->fetch_object()){
@@ -316,7 +326,7 @@
                "0"=>$count++,
                "1"=>BuscarEstado($reg),
                "2"=>$reg->NombrePago,
-               "3"=>"S/. ".number_format($reg->Diferencia,2)
+               "3"=>"S/. ".number_format($reg->Importe,2)
             );
          }
          $results = array(
@@ -356,7 +366,7 @@
          echo json_encode($results);
       break;
 	 case 'ListarDeuda2A':
-         $rspta=$gestion->ListarDeudasPensiones($idAlumno,$year);
+         $rspta=$gestion->ListarDeudasPensionesOperaciones($idAlumno,$year);
          $data= array();
          $count=1;
          while ($reg=$rspta->fetch_object()){
@@ -364,10 +374,8 @@
                "0"=>$count++,
                "1"=>BuscarEstado($reg),
                "2"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
-               "3"=>"S/. ".number_format($reg->Diferencia,2),
-               "4"=>$reg->DiasMora,
-               "5"=>"S/. ".number_format((($reg->DiasMora*1)-$reg->Mora),2),
-               "6"=>$reg->fechaVencimiento
+               "3"=>"S/. ".number_format($reg->Importe+$reg->Mora,2),
+               "4"=>$reg->fechaVencimiento
 
             );
          }
@@ -619,6 +627,36 @@
             "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
             "aaData"=>$data);
          echo json_encode($results);
+      break;
+
+
+
+     case 'ActualizarPerfil':
+           $rspta = array("Mensaje"=>"","Registro"=>false,"Error"=>false);
+
+           $hasher=new PasswordHash(8,false);
+           $hash=$gestion->password($idUsuario);
+           $hash=$hash['pass'];
+
+           if($UsuarioPassVerificar=='' || $UsuarioPassVerificar==null){
+                $rspta["Registro"]=$gestion->actualizar_datos_perfil($idUsuario,$UsuarioCorreo,$UsuarioContacto,$UsuarioPassNuevo,1);
+               $rspta["Mensaje"]="Datos del Perfil Actualizado Correctamente.";
+           }else{
+
+                if($hasher->CheckPassword($UsuarioPassVerificar,$hash)==1){
+
+                  $UsuarioPassword = $hasher->HashPassword($UsuarioPassNuevo);
+                  $rspta["Registro"]=$gestion->actualizar_datos_perfil($idUsuario,$UsuarioCorreo,$UsuarioContacto,$UsuarioPassword,2);
+                  $rspta["Mensaje"]="Datos del Perfil Actualizado Correctamente.";
+
+               }else{
+                 $rspta["Registro"]=false;
+                 $rspta["Mensaje"]="Contraseña anterior incorrecta";
+               }
+           }
+
+
+         echo json_encode($rspta);
       break;
 
    }

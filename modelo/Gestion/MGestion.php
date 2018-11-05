@@ -9,7 +9,7 @@
       }
 
         public function RecuperarDatosPerfil($idUsuario){
-            $sql="SELECT p.nombrePersona,p.apellidoPaterno,p.apellidoMaterno,p.DNI,p.telefono,p.correo,p.direccion,u.usuario,u.pass,per.nombrePerfil FROM usuario u INNER JOIN persona p On p.idPersona=u.idUsuario INNER JOIN perfil per On per.idPerfil=u.Perfil_idPerfil WHERE u.idUsuario='$idUsuario'";
+            $sql="SELECT u.idUsuario,p.nombrePersona,p.apellidoPaterno,p.apellidoMaterno,p.DNI,p.telefono,p.correo,p.direccion,u.usuario,u.pass,per.nombrePerfil FROM usuario u INNER JOIN persona p On p.idPersona=u.idUsuario INNER JOIN perfil per On per.idPerfil=u.Perfil_idPerfil WHERE u.idUsuario='$idUsuario'";
 			return ejecutarConsultaSimpleFila($sql);
         }
 		public function Recuperar_Gestion($idGestion){
@@ -49,8 +49,16 @@
 			$sql="CALL `SP_OPERACIONES_RECUPERAR_DEUDA`('$idAlumno','$year');";
 			return ejecutarConsulta($sql);
 		}
+         public function ListarDeudasOperaciones($idAlumno,$year){
+			$sql="CALL `SP_OPERACIONES_INFO_DEUDA1`('$idAlumno','$year');";
+			return ejecutarConsulta($sql);
+		}
        public function ListarDeudasPensiones($idAlumno,$year){
 			$sql="CALL `SP_OPERACIONES_RECUPERAR_PENSIONES`('$idAlumno','$year');";
+			return ejecutarConsulta($sql);
+		}
+         public function ListarDeudasPensionesOperaciones($idAlumno,$year){
+			$sql="CALL `SP_OPERACIONES_INFO_DEUDA2`('$idAlumno','$year');";
 			return ejecutarConsulta($sql);
 		}
          public function ListarPagar($idAlumno,$year){
@@ -194,6 +202,26 @@ INNER JOIN tipotarjeta tt ON tt.idTipoTarjeta=pg.TipoTarjeta_idTipoTarjeta WHERE
 			 return ejecutarConsulta($sql);
        }
 
+
+
+    public function password($idUsuario){
+     $sql="Select pass from usuario where idUsuario='$idUsuario'";
+     return ejecutarConsultaSimpleFila($sql);
+   }
+    public function actualizar_datos_perfil($idUsuario,$UsuarioCorreo,$UsuarioContacto,$UsuarioPassNuevo,$accion){
+         if($UsuarioCorreo=='0' || $UsuarioCorreo==null || empty($UsuarioCorreo)){
+			  $UsuarioCorreo='0';
+		  }
+        if($UsuarioContacto=='0' || $UsuarioContacto==null || empty($UsuarioContacto)){
+			  $UsuarioContacto='0';
+		  }
+        if($UsuarioPassNuevo=='0' || $UsuarioPassNuevo==null || empty($UsuarioPassNuevo)){
+			  $UsuarioPassNuevo='0';
+		  }
+        $sql="CALL `SP_ACTUALIZAR_PERFIL`('$idUsuario','$UsuarioCorreo','$UsuarioContacto','$UsuarioPassNuevo','$accion')";
+
+        return ejecutarConsulta($sql);
+    }
 
 
    }

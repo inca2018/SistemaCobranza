@@ -34,11 +34,16 @@ function init(){
 
 	 $('#date_inicio1').datepicker('setEndDate',new Date(year,(month-1),day));
    });
+
+    $("#alumnosSelect").select2({
+      theme: 'bootstrap'
+   });
 }
 
 function Mostrar_Indicadores(){
 		 datos = {
 						               type: "pie",
+
 										data : {
 											datasets :[{
 												data :[
@@ -62,6 +67,10 @@ function Mostrar_Indicadores(){
 										   },
 										options : {
 											responsive : true,
+                                             title: {
+                                                    display: true,
+                                                    text: 'INDICE DE CUMPLIMIENTO DE PAGO - ICP=(NCPA/NCPR)'
+                                                }
 
 										}
 
@@ -80,9 +89,9 @@ function Mostrar_Indicadores(){
 
 													],
 												backgroundColor: [
-
+                                                    "#EE2D2A",
 													"#5BC374",
-													"#EE2D2A",
+
 
 												],
 											}],
@@ -97,6 +106,10 @@ function Mostrar_Indicadores(){
 										   },
 										options : {
 											responsive : true,
+                                             title: {
+                                                    display: true,
+                                                    text: 'INDICE DE MOROCIDAD - IMOR=(CV/CT)'
+                                                }
 
 										}
 
@@ -172,9 +185,8 @@ function actualizar_indicadores1(f_inicio,f_fin,idAlumno){
 		datos2.data.datasets.splice(0);
 		var newData2 = {
 									backgroundColor : [
+                                            "#EE2D2A",
 											"#5BC374",
-											"#EE2D2A",
-
 
 									],
 									data : [porcCartNoPagadas,porcCartPagadas]

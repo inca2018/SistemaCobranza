@@ -74,7 +74,7 @@
                 if($rspta["Error"]){
                     $rspta["Mensaje"].="Por estas razones no se puede Registrar el Usuario.";
                 }else{
-                    if($UsuarioPassword==''){
+                    if($UsuarioPassword!=''){
                         $hasher= new PasswordHash(8,FALSE);
                         $UsuarioPassword = $hasher->HashPassword($UsuarioPassword);
                     }else{
@@ -114,14 +114,14 @@
             echo '<option value="0">-- SELECCIONAR --</option>';
       		$rpta = $general->Listar_Personas_Sin_Usuario();
          	while ($reg = $rpta->fetch_object()){
-					echo '<option   value=' . $reg->idPersona . '>' . $reg->nombrePersona.' '.$reg->apellidoPaterno.' '.$reg->apellidoMaterno.'</option>';
+					echo '<option   value=' . $reg->idPersona . '>' . $reg->nombrePersona.' '.$reg->apellidoPaterno.' '.$reg->apellidoMaterno.'-DNI:'.$reg->DNI.'</option>';
          	}
        break;
 		case 'listar_personas_todo':
             echo '<option value="0">-- SELECCIONAR --</option>';
       		$rpta = $general->Listar_Personas_Todo();
          	while ($reg = $rpta->fetch_object()){
-					echo '<option   value=' . $reg->idPersona . '>' . $reg->nombrePersona.' '.$reg->apellidoPaterno.' '.$reg->apellidoMaterno.'</option>';
+					echo '<option   value=' . $reg->idPersona . '>' . $reg->nombrePersona.' '.$reg->apellidoPaterno.' '.$reg->apellidoMaterno.'-DNI:'.$reg->DNI.'</option>';
          	}
        break;
 

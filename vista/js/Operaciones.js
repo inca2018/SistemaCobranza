@@ -73,27 +73,33 @@ function Listar_Deudas1(idAlumno, year) {
          , ], buttons: [
             {
                 extend: 'copy',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-                extend: 'csv',
-                className: 'btn-info'
-            }
+
             , {
                 extend: 'excel',
                 className: 'btn-info',
-                title: 'Facturacion'
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                 extend: 'pdfHtml5',
                 className: 'btn-info sombra3',
-                title: "Reporte de Alumnos",
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
                 orientation: 'landscape',
-                pageSize: 'LEGAL'
+                pageSize: 'LEGAL',
+                 customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                 extend: 'print',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ]
 			, "ajax": { //Solicitud Ajax Servidor
@@ -152,27 +158,33 @@ function Listar_Deudas1(idAlumno, year) {
 			 buttons: [
             {
                 extend: 'copy',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-                extend: 'csv',
-                className: 'btn-info'
-            }
+
             , {
                 extend: 'excel',
                 className: 'btn-info',
-                title: 'Facturacion'
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                 extend: 'pdfHtml5',
                 className: 'btn-info sombra3',
-                title: "Reporte de Alumnos",
+               title: "Sistema de Matricula - Jose Galvez - Reporte" ,
                 orientation: 'landscape',
-                pageSize: 'LEGAL'
+                pageSize: 'LEGAL',
+                 customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                 extend: 'print',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ]
 			, "ajax": { //Solicitud Ajax Servidor
@@ -219,7 +231,7 @@ function Listar_Deudas2(idAlumno, year) {
 			, "columnDefs": [
 				{
 					"className": "text-center"
-					, "targets": [1, 2, 3, 4 ]
+					, "targets": [1, 2, 3 ]
             }
             , {
 					"className": "text-left"
@@ -231,27 +243,33 @@ function Listar_Deudas2(idAlumno, year) {
          , ], buttons: [
             {
                 extend: 'copy',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-                extend: 'csv',
-                className: 'btn-info'
-            }
+
             , {
                 extend: 'excel',
                 className: 'btn-info',
-                title: 'Facturacion'
+               title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                 extend: 'pdfHtml5',
                 className: 'btn-info sombra3',
-                title: "Reporte de Alumnos",
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
                 orientation: 'landscape',
-                pageSize: 'LEGAL'
+                pageSize: 'LEGAL',
+                 customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                 extend: 'print',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ]
 			, "ajax": { //Solicitud Ajax Servidor
@@ -296,7 +314,7 @@ function Listar_Deudas2(idAlumno, year) {
 			, "columnDefs": [
 				{
 					"className": "text-center"
-					, "targets": [1, 2, 3, 4]
+					, "targets": [1, 2, 3]
             }
             , {
 					"className": "text-left"
@@ -308,27 +326,34 @@ function Listar_Deudas2(idAlumno, year) {
          , ], buttons: [
             {
                 extend: 'copy',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-                extend: 'csv',
-                className: 'btn-info'
-            }
+
             , {
                 extend: 'excel',
                 className: 'btn-info',
-                title: 'Facturacion'
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                 extend: 'pdfHtml5',
                 className: 'btn-info sombra3',
-                title: "Reporte de Alumnos",
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
                 orientation: 'landscape',
-                pageSize: 'LEGAL'
+                pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
+
             }
             , {
                 extend: 'print',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ]
 			, "ajax": { //Solicitud Ajax Servidor
@@ -406,27 +431,33 @@ function Listar_Operacion(){
          , buttons: [
             {
                extend: 'copy'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                 title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-               extend: 'csv'
-               , className: 'btn-info'
-            }
+
             , {
                extend: 'excel'
                , className: 'btn-info'
-               , title: 'Facturacion'
+               ,  title: "Sistema de Matricula - Jose Galvez - Reporte"
             },
             {
                extend: 'pdfHtml5'
                , className: 'btn-info sombra3'
-               , title: "Reporte de Operaciones"
+               ,  title: "Sistema de Matricula - Jose Galvez - Reporte"
                ,orientation: 'landscape'
-               ,pageSize: 'LEGAL'
+               ,pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                extend: 'print'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                 title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ],
          "ajax": { //Solicitud Ajax Servidor
@@ -497,27 +528,33 @@ function Listar_Comprobantes(idAlumno) {
          , ], buttons: [
             {
                 extend: 'copy',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-                extend: 'csv',
-                className: 'btn-info'
-            }
+
             , {
                 extend: 'excel',
                 className: 'btn-info',
-                title: 'Facturacion'
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                 extend: 'pdfHtml5',
                 className: 'btn-info sombra3',
-                title: "Reporte de Alumnos",
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
                 orientation: 'landscape',
-                pageSize: 'LEGAL'
+                pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                 extend: 'print',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ]
 			, "ajax": { //Solicitud Ajax Servidor
@@ -574,27 +611,33 @@ function Listar_Comprobantes(idAlumno) {
 			 buttons: [
             {
                 extend: 'copy',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-                extend: 'csv',
-                className: 'btn-info'
-            }
+
             , {
                 extend: 'excel',
                 className: 'btn-info',
-                title: 'Facturacion'
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                 extend: 'pdfHtml5',
                 className: 'btn-info sombra3',
-                title: "Reporte de Alumnos",
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
                 orientation: 'landscape',
-                pageSize: 'LEGAL'
+                pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                 extend: 'print',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ]
 			, "ajax": { //Solicitud Ajax Servidor
@@ -642,10 +685,10 @@ function RecuperarInformacionMatricula(idAlumno) {
 		$("#info_apo_dni").empty();
 		$("#info_apo_nombres").empty();
 		$("#info_apo_telefono").empty();
-		//$("#info_alu_dni").html("<strong>" + data.ALumnoDNI + "</strong>");
-		//$("#info_alu_nombres").html("<strong>" + data.AlumnoNombres + "</strong>");
-		//$("#info_alu_nivel").html("<strong>" + data.AlumnoNivel + "</strong>");
-		//$("#info_alu_grado").html("<strong>" + data.AlumnoGradoSeccion + "</strong>");
+		$("#info_alu_dni").html("<strong>" + data.ALumnoDNI + "</strong>");
+		$("#info_alu_nombres").html("<strong>" + data.AlumnoNombres + "</strong>");
+		$("#info_alu_nivel").html("<strong>" + data.AlumnoNivel + "</strong>");
+		$("#info_alu_grado").html("<strong>" + data.AlumnoGradoSeccion + "</strong>");
 		//$("#info_apo_dni").html("<strong>" + data.ApoderadoDNI + "</strong>");
 		//$("#info_apo_nombres").html("<strong>" + data.ApoderadoNombre + "</strong>");
 		//$("#info_apo_telefono").html("<strong>" + data.ApoderadoTelefono + "</strong>");

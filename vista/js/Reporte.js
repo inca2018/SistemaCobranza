@@ -77,6 +77,10 @@ function Mostrar_Indicadores(){
 										   },
 										options : {
 											responsive : true,
+                                            title: {
+                                                    display: true,
+                                                    text: 'INDICE DE CUMPLIMIENTO DE PAGO - ICP=(NCPA/NCPR)'
+                                                }
 
 										}
 
@@ -112,6 +116,10 @@ function Mostrar_Indicadores(){
 										   },
 										options : {
 											responsive : true,
+                                            title: {
+                                                    display: true,
+                                                    text: 'INDICE DE MOROCIDAD - IMOR=(CV/CT)'
+                                                }
 
 										}
 
@@ -258,27 +266,33 @@ function mostrar_Tabla_detalles1(inicio,fin){
          , buttons: [
             {
                extend: 'copy'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-               extend: 'csv'
-               , className: 'btn-info'
-            }
+
             , {
                extend: 'excel'
                , className: 'btn-info'
-               , title: 'Reporte'
+               , title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
 				extend: 'pdfHtml5',
 				className: 'btn-info sombra3',
-				title: "Reporte",
+				title: "Sistema de Matricula - Jose Galvez - Reporte" ,
 				orientation: 'landscape',
-				pageSize: 'LEGAL'
+				pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                extend: 'print'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ],
          "ajax": { //Solicitud Ajax Servidor
@@ -330,27 +344,33 @@ function mostrar_Tabla_detalles1(inicio,fin){
          , buttons: [
             {
                extend: 'copy'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-               extend: 'csv'
-               , className: 'btn-info'
-            }
+
             , {
                extend: 'excel'
                , className: 'btn-info'
-               , title: 'Reporte'
+               , title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
 				extend: 'pdfHtml5',
 				className: 'btn-info sombra3',
-				title: "Reporte",
+				title: "Sistema de Matricula - Jose Galvez - Reporte" ,
 				orientation: 'landscape',
-				pageSize: 'LEGAL'
+				pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                extend: 'print'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ],
          "ajax": { //Solicitud Ajax Servidor
@@ -405,27 +425,33 @@ function mostrar_Tabla_detalles2(inicio,fin){
          , buttons: [
             {
                extend: 'copy'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-               extend: 'csv'
-               , className: 'btn-info'
-            }
+
             , {
                extend: 'excel'
                , className: 'btn-info'
-               , title: 'Reporte'
+               , title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
 				extend: 'pdfHtml5',
 				className: 'btn-info sombra3',
-				title: "Reporte",
+				title: "Sistema de Matricula - Jose Galvez - Reporte" ,
 				orientation: 'landscape',
-				pageSize: 'LEGAL'
+				pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                extend: 'print'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ],
          "ajax": { //Solicitud Ajax Servidor
@@ -477,27 +503,33 @@ function mostrar_Tabla_detalles2(inicio,fin){
          , buttons: [
             {
                extend: 'copy'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-               extend: 'csv'
-               , className: 'btn-info'
-            }
+
             , {
                extend: 'excel'
                , className: 'btn-info'
-               , title: 'Reporte'
+               , title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
 				extend: 'pdfHtml5',
 				className: 'btn-info sombra3',
-				title: "Reporte",
+				title: "Sistema de Matricula - Jose Galvez - Reporte" ,
 				orientation: 'landscape',
-				pageSize: 'LEGAL'
+				pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                extend: 'print'
-               , className: 'btn-info'
+               , className: 'btn-info',
+
             }
             ],
          "ajax": { //Solicitud Ajax Servidor

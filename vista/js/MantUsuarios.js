@@ -16,6 +16,9 @@ function Iniciar_Componentes(){
 	      RegistroUsuario(e);
 	});
 
+    $("#UsuarioPersona").select2({
+      theme: 'bootstrap'
+   });
 }
 function RegistroUsuario(event){
 	  //cargar(true);
@@ -112,27 +115,33 @@ function Listar_Usuario(){
          , buttons: [
             {
                extend: 'copy'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-               extend: 'csv'
-               , className: 'btn-info'
-            }
+
             , {
                extend: 'excel'
                , className: 'btn-info'
-               , title: 'Facturacion'
+               , title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                extend: 'pdfHtml5'
                , className: 'btn-info sombra3'
-               , title: "Reporte de Usuarios"
+               ,title: "Sistema de Matricula - Jose Galvez - Reporte"
                ,orientation: 'landscape'
-               ,pageSize: 'LEGAL'
+               ,pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                extend: 'print'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ],
           "ajax": { //Solicitud Ajax Servidor

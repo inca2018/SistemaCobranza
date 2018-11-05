@@ -39,27 +39,27 @@ function Listar_Matriculas(year) {
         buttons: [
             {
                 extend: 'copy',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-                extend: 'csv',
-                className: 'btn-info'
-            }
+
             , {
                 extend: 'excel',
                 className: 'btn-info',
-                title: 'Facturacion'
+               title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                 extend: 'pdfHtml5',
                 className: 'btn-info sombra3',
-                title: "Reporte de Matriculas",
+                title: "Sistema de Matricula - Jose Galvez - Reporte",
                 orientation: 'landscape',
-                pageSize: 'LEGAL'
+                pageSize: 'LEGAL',
+
             }
             , {
                 extend: 'print',
-                className: 'btn-info'
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ],
         "ajax": { //Solicitud Ajax Servidor
@@ -91,9 +91,9 @@ function ListarYear() {
     $.post("../../controlador/Gestion/CMatricula.php?op=ListarYear", function (ts) {
         $("#yearSelect").append(ts);
 
-        var year = $("#yearSelect").val();
-        $("#year_Actual").val(year);
-        Listar_Matriculas(year);
+        $("#yearSelect").val(2018);
+        $("#year_Actual").val(2018);
+        Listar_Matriculas(2018);
         IniciarComponentes();
     });
 }

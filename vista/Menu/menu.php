@@ -10,15 +10,24 @@
       <section class="section-container">
          <!-- Page content-->
          <div class="content-wrapper">
-            <div class="content-heading">
-               <div>Menu Principal
-                  <small data-localize="dashboard.WELCOME"></small>
-               </div>
-               <!-- END Language list-->
+
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <img src="../../vista/documento/logo.png" class="Logo" style="height:180px; width:400px">
+                </div>
             </div>
-            <div class="row">
-               <div class="col-12 text-center">
-                  <h2 class="text-thin">Bienvenido</h2>
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-4 form-group bb br bl bt">
+
+                     <h2 class="text-center form-label">HORARIO DE ATENCIÓN:</h2>
+                     <div class="row justify-content-center mt-2">
+                          <h4 class="  text-muted  text-center  "><b>Turno Mañana : 7.30 am - 12.30 pm</b></h4>
+                     </div>
+                     <div class="row justify-content-center mt-2">
+                          <h4 class="  text-muted  text-center  "><b>Turno Tarde  : 1.30 pm -  3.30 pm </b></h4>
+                     </div>
+
+
                </div>
             </div>
          </div>

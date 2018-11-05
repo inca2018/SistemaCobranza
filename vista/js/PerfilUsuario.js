@@ -22,6 +22,7 @@ function RecuperarInformacionUsuario(){
     $("#UsuarioPerfil").val(data.nombrePerfil);
     $("#UsuarioPassVerificar").val("");
     $("#UsuarioPassNuevo").val("");
+    $("#idUsuario").val(data.idUsuario);
 
 
     });
@@ -43,7 +44,7 @@ function AjaxActualizarPerfil(){
     var formData = new FormData($("#FormularioPerfil")[0]);
 		console.log(formData);
 		$.ajax({
-			url: "../../controlador/Gestion/CGestion.php?op=ActualziarPerfil",
+			url: "../../controlador/Gestion/CGestion.php?op=ActualizarPerfil",
 			 type: "POST",
 			 data: formData,
 			 contentType: false,
@@ -59,15 +60,13 @@ function AjaxActualizarPerfil(){
 						$("#area_perfil").removeClass("ringed");
 
 						swal("Error:", Mensaje);
-						LimpiarTarjeta();
-						tablaTarjeta.ajax.reload();
+
 					}else{
 						$("#area_perfil").removeClass("whirl");
 						$("#area_perfil").removeClass("ringed");
 
 					    swal("Acción:", Mensaje);
-						LimpiarTarjeta();
-						tablaTarjeta.ajax.reload();
+
 					}
 			 }
 		});

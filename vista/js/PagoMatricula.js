@@ -309,12 +309,13 @@ function AjaxRegistroPagoP() {
 function ListarYear() {
     $.post("../../controlador/Gestion/CMatricula.php?op=ListarYear", function (ts) {
         $("#yearSelect").append(ts);
-        var year = $("#yearSelect").val();
+        //var year = $("#yearSelect").val();
         var idAlumno = $("#idAlumno").val();
-        $("#year_Actual").val(year);
-        Listar_Deudas1(idAlumno, year);
-        Listar_Deudas2(idAlumno, year);
-        Listar_Pagar(idAlumno, year);
+        $("#yearSelect").val(2018);
+        $("#year_Actual").val(2018);
+        Listar_Deudas1(idAlumno, 2018);
+        Listar_Deudas2(idAlumno, 2018);
+        Listar_Pagar(idAlumno, 2018);
         Recuperar_Totales();
     });
 }

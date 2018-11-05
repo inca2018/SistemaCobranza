@@ -100,27 +100,33 @@ function Listar_Tarjeta(){
          , buttons: [
             {
                extend: 'copy'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
-            , {
-               extend: 'csv'
-               , className: 'btn-info'
-            }
+
             , {
                extend: 'excel'
                , className: 'btn-info'
-               , title: 'Facturacion'
+               , title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
                extend: 'pdfHtml5'
                , className: 'btn-info sombra3'
-               , title: "Reporte de Tarjetas"
+               , title: "Sistema de Matricula - Jose Galvez - Reporte"
                ,orientation: 'landscape'
-               ,pageSize: 'LEGAL'
+               ,pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
             }
             , {
                extend: 'print'
-               , className: 'btn-info'
+               , className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             ],
         "ajax": { //Solicitud Ajax Servidor
