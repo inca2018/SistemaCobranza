@@ -164,6 +164,11 @@
 			$rspta=$gestion->RecuperarInformacionMatricula($idAlumno);
          echo json_encode($rspta);
       break;
+			 case 'RecuperarInformacionMatricula2':
+			$rspta=$gestion->RecuperarInformacionMatricula2($idAlumno);
+         echo json_encode($rspta);
+      break;
+
     case 'RecuperarCuotaPagar':
 			$rspta=$gestion->RecuperarCuotaPagar($idPlan,$idCuota);
          echo json_encode($rspta);

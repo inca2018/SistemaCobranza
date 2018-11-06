@@ -70,6 +70,11 @@
            $sql="CALL `SP_OPERACION_RECUPERAR_INFO`('$idAlumno');";
 			return ejecutarConsultaSimpleFila($sql);
        }
+
+       public function RecuperarInformacionMatricula2($idAlumno){
+           $sql="CALL `SP_RECUPERAR_RECUPERAR_ALUMNO`('$idAlumno');";
+			return ejecutarConsultaSimpleFila($sql);
+       }
        public function RegistrarPago($idPlan,$idAlumno,$numPago,$PagoTipoPago,$PagoTipoTarjeta,$importePago,$pago_detalle,$login_idLog){
 
            if($PagoTipoTarjeta=='' || $PagoTipoTarjeta==null || empty($PagoTipoTarjeta)){

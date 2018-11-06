@@ -673,7 +673,7 @@ function MatricularAlumnos(){
 
 function RecuperarInformacionMatricula(idAlumno) {
 	//solicitud de recuperar Proveedor
-	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarInformacionMatricula", {
+	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarInformacionMatricula2", {
 		"idAlumno": idAlumno
 	}, function (data, status) {
 		data = JSON.parse(data);
