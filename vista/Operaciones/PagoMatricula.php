@@ -134,8 +134,6 @@ if(isset($_POST["idAlumno"])){
                                                             <th width="15%" >ESTADO</th>
                                                             <th width="15%" >PAGO</th>
                                                             <th width="15%" >IMPORTE</th>
-                                                            <th width="5%" >D.MORA</th>
-                                                            <th width="15%" >MORA</th>
                                                             <th width="15%" >F.V.</th>
                                                             <th width="10%" >ACCION</th>
                                                         </tr>
@@ -174,6 +172,9 @@ if(isset($_POST["idAlumno"])){
                         	</div>
                         	<div class="col-md-3 mt-4">
                         	   <button type="button" class="btn btn-success btn-block" onclick="AbrirPago();">PAGAR</button>
+                        	</div>
+                        	<div class="col-md-3 offset-9 mt-4">
+                        	   <button type="button" class="btn btn-warning btn-block" onclick="Recibos();">RECIBOS</button>
                         	</div>
                         </div>
                         <p class="lead bb">Pagos a Pagar:</p>
@@ -254,7 +255,7 @@ if(isset($_POST["idAlumno"])){
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="NivelNombre" class="  col-form-label">Monto de Mora a Pagar:</label>
-                            <input class="form-control" id="m_importe_mora_pagar"   type="text" maxlength="50" onkeypress="return SoloNumerosModificado(event,5,this.id);">
+                            <input class="form-control" id="m_importe_mora_pagar"   type="text" maxlength="50" onkeypress="return SoloNumerosModificado(event,5,this.id);" readonly>
                         </div>
                     </div>
                     <div class="row" >
@@ -336,6 +337,37 @@ if(isset($_POST["idAlumno"])){
     </div>
 </div>
 
+<div class="modal fade " id="ModalComprobantes" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="row m-1 bb">
+                <div class="col-md-12">
+                    <h4 class="text-center text-" id="">LISTADO DE COMPROBANTES</h4>
+                </div>
+            </div>
+            <div class="modal-body" id="modulo_finalizacion">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table w-100 table-hover table-sm dt-responsive nowrap" id="tablaComprobantes" style="font-size:11px">
+											<thead class="thead-light text-center">
+												<tr>
+													<th  data-priority="1">#</th>
+													<th>CODIGO DE COMPROBANTE</th>
+													<th>AÑO DE GESTIÓN</th>
+													<th>IMPORTE</th>
+													<th>TIPO DE PAGO</th>
+													<th>FECHA EMISIÓN</th>
+													<th>DOCUMENTO</th>
 
+												</tr>
+											</thead>
+											<tbody> </tbody>
+										</table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="<?php echo $conexionConfig->rutaOP(); ?>vista/js/PagoMatricula.js"></script>
