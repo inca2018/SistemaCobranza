@@ -286,11 +286,23 @@ if(isset($_POST["idAlumno"])){
                     <input type="hidden" name="final_importe_vuelto" id="final_importe_vuelto" value="0">
                     <input type="hidden" name="final_importe_total" id="final_importe_total" value="0">
 
+                    <div class="row"  >
+                        <div class="col-md-12 form-group">
+                            <label for="m_importe" class=" col-form-label">Importe Total:</label>
+                            <input class="form-control" id="final_total" name="final_total"  type="text" maxlength="50" readonly>
+                        </div>
+                    </div>
 
                     <div class="row"  >
                         <div class="col-md-12 form-group">
                             <label for="m_importe" class=" col-form-label">Importe a Pagar:</label>
                             <input class="form-control" id="final_pagar" name="final_pagar"  type="text" maxlength="50" readonly>
+                        </div>
+                    </div>
+                     <div class="row"  >
+                        <div class="col-md-12 form-group">
+                            <label for="m_importe" class=" col-form-label">Importe a Vuelto:</label>
+                            <input class="form-control" id="final_vuelto" name="final_vuelto"  type="text" maxlength="50" readonly>
                         </div>
                     </div>
                     <div class="row">

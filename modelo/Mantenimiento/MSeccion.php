@@ -16,6 +16,11 @@
 
            return ejecutarConsulta($sql);
        }
+        public function Borrar_Seccion($idSeccion){
+           $sql="DELETE FROM `seccion` WHERE `idSeccion`='$idSeccion'";
+
+           return ejecutarConsulta($sql);
+       }
       public function ValidarSeccion($Seccionnom,$idSeccion){
           $sql="";
           if($idSeccion=='' || $idSeccion==null || empty($idSeccion)){

@@ -377,7 +377,7 @@
                "0"=>$count++,
                "1"=>BuscarEstado($reg),
                "2"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
-               "3"=>"S/. ".number_format($reg->Importe+$reg->Mora,2),
+               "3"=>"S/. ".number_format(($reg->Importe-$reg->Diferencia)+$reg->Mora,2),
                "4"=>$reg->fechaVencimiento
 
             );

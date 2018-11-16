@@ -29,7 +29,8 @@
         if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
             return '
             <button type="button" title="Editar" class="btn btn-warning btn-sm" onclick="EditarSeccion('.$reg->idSeccion.')"><i class="fa fa-edit"></i></button>
-               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="EliminarSeccion('.$reg->idSeccion.')"><i class="fa fa-trash"></i></button>
+               <button type="button"  title="Deshabilitar" class="btn btn-info btn-sm" onclick="EliminarSeccion('.$reg->idSeccion.')"><i class="fa fa-times"></i></button>
+               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="BorrarSeccion('.$reg->idSeccion.')"><i class="fa fa-trash"></i></button>
                ';
         }elseif($reg->Estado_idEstado==4){
             return '<button type="button"  title="Habilitar" class="btn btn-info btn-sm" onclick="HabilitarSeccion('.$reg->idSeccion.')"><i class="fa fa-sync"></i></button>';
@@ -116,6 +117,14 @@
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
          $rspta['Eliminar']=$mantenimiento->Eliminar_Seccion($idSeccion,1,$login_idLog);
+
+         $rspta['Eliminar']?$rspta['Mensaje']="Seccion Deshabilitado.":$rspta['Mensaje']="Seccion no se pudo Deshabilitar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+        case 'Borrar_Seccion':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->Borrar_Seccion($idSeccion);
 
          $rspta['Eliminar']?$rspta['Mensaje']="Seccion Eliminado.":$rspta['Mensaje']="Seccion no se pudo eliminar comuniquese con el area de soporte";
          echo json_encode($rspta);

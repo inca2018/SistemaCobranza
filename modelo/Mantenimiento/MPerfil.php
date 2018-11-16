@@ -16,6 +16,12 @@
 
            return ejecutarConsulta($sql);
        }
+        public function Borrar_Perfil($idPerfil){
+           $sql="CALL `SP_ELIMINAR_PERFIL_PERMISOS`('$idPerfil');";
+
+           return ejecutarConsulta($sql);
+       }
+
       public function ValidarPerfil($perfilnom,$idPerfil){
           $sql="";
           if($idPerfil=='' || $idPerfil==null || empty($idPerfil)){

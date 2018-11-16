@@ -188,6 +188,19 @@ function RecuperarTipoPago(idTipoPago){
 }
 function EliminarTipoPago(idTipoPago){
       swal({
+      title: "Deshabilitar?",
+      text: "Esta Seguro que desea Deshabilitar TipoPago!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Deshabilitar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarTipoPago(idTipoPago);
+   });
+}
+function BorrarTipoPago(idTipoPago){
+      swal({
       title: "Eliminar?",
       text: "Esta Seguro que desea Eliminar TipoPago!",
       type: "warning",
@@ -196,7 +209,20 @@ function EliminarTipoPago(idTipoPago){
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarTipoPago(idTipoPago);
+      ajaxBorrarTipoPago(idTipoPago);
+   });
+}
+function ajaxBorrarTipoPago(idTipoPago){
+    $.post("../../controlador/Mantenimiento/CTipoPago.php?op=Borrar_TipoPago", {idTipoPago: idTipoPago}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Eliminado!", Mensaje, "success");
+         tablaTipoPago.ajax.reload();
+      }
    });
 }
 function ajaxEliminarTipoPago(idTipoPago){

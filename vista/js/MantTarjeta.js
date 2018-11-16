@@ -183,6 +183,19 @@ function RecuperarTarjeta(idTarjeta){
 }
 function EliminarTarjeta(idTarjeta){
       swal({
+      title: "Deshabilitar?",
+      text: "Esta Seguro que desea Deshabilitar Tarjeta!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Deshabilitar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarTarjeta(idTarjeta);
+   });
+}
+function BorrarTarjeta(idTarjeta){
+      swal({
       title: "Eliminar?",
       text: "Esta Seguro que desea Eliminar Tarjeta!",
       type: "warning",
@@ -191,7 +204,20 @@ function EliminarTarjeta(idTarjeta){
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarTarjeta(idTarjeta);
+      ajaxBorrarTarjeta(idTarjeta);
+   });
+}
+function ajaxBorrarTarjeta(idTarjeta){
+    $.post("../../controlador/Mantenimiento/CTarjeta.php?op=Borrar_Tarjeta", {idTarjeta: idTarjeta}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Eliminado!", Mensaje, "success");
+         tablaTarjeta.ajax.reload();
+      }
    });
 }
 function ajaxEliminarTarjeta(idTarjeta){

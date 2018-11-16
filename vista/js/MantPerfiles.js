@@ -183,6 +183,19 @@ function RecuperarPerfil(idPerfil){
 }
 function EliminarPerfil(idPerfil){
       swal({
+      title: "Deshabilitar?",
+      text: "Esta Seguro que desea Deshabilitar Perfil!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Deshabilitar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarPerfil(idPerfil);
+   });
+}
+function BorrarPerfil(idPerfil){
+      swal({
       title: "Eliminar?",
       text: "Esta Seguro que desea Eliminar Perfil!",
       type: "warning",
@@ -191,7 +204,20 @@ function EliminarPerfil(idPerfil){
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarPerfil(idPerfil);
+      ajaxBorrarPerfil(idPerfil);
+   });
+}
+function ajaxBorrarPerfil(idPerfil){
+    $.post("../../controlador/Mantenimiento/CPerfil.php?op=Borrar_Perfil", {idPerfil: idPerfil}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Eliminado!", Mensaje, "success");
+         tablaPerfil.ajax.reload();
+      }
    });
 }
 function ajaxEliminarPerfil(idPerfil){

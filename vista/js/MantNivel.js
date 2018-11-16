@@ -182,6 +182,19 @@ function RecuperarNivel(idNivel){
 }
 function EliminarNivel(idNivel){
       swal({
+      title: "Deshabilitar?",
+      text: "Esta Seguro que desea Deshabilitar Nivel!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Deshabilitar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarNivel(idNivel);
+   });
+}
+function BorrarNivel(idNivel){
+      swal({
       title: "Eliminar?",
       text: "Esta Seguro que desea Eliminar Nivel!",
       type: "warning",
@@ -190,11 +203,24 @@ function EliminarNivel(idNivel){
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarNivel(idNivel);
+      ajaxBorrarNivel(idNivel);
    });
 }
 function ajaxEliminarNivel(idNivel){
     $.post("../../controlador/Mantenimiento/CNivel.php?op=Eliminar_Nivel", {idNivel: idNivel}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Deshabilitar!", Mensaje, "success");
+         tablaNivel.ajax.reload();
+      }
+   });
+}
+function ajaxBorrarNivel(idNivel){
+    $.post("../../controlador/Mantenimiento/CNivel.php?op=Borrar_Nivel", {idNivel: idNivel}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;
@@ -227,7 +253,7 @@ function ajaxHabilitarNivel(idNivel){
       if (Error) {
          swal("Error", Mensaje, "error");
       } else {
-         swal("Eliminado!", Mensaje, "success");
+         swal("Habilitar!", Mensaje, "success");
          tablaNivel.ajax.reload();
       }
    });

@@ -226,9 +226,15 @@ function AjaxRegistroPagoFinal3(idRecuperado, year, idAlumno) {
             $("#final_importe_pagar").val();
             $("#final_importe_vuelto").val();
             $("#final_importe_total").val();
-             $("#v_importe_total").val("S/. 0.00");
+            $("#v_importe_total").val("S/. 0.00");
             $("#m_importe_pagar_cliente").val("S/. 0.00");
             $("#m_importe_vuelto").val("S/. 0.00");
+            $("#final_detalle").val("");
+            $("#final_metodoPago").val(0);
+
+             $("#oculto_importe_pagar").val(0);
+            $("#oculto_importe_total").val(0);
+            $("#oculto_importe_vuelto").val(0);
         } else {
             $("#modulo_finalizacion").removeClass("whirl");
             $("#modulo_finalizacion").removeClass("ringed");
@@ -244,6 +250,12 @@ function AjaxRegistroPagoFinal3(idRecuperado, year, idAlumno) {
             $("#v_importe_total").val("S/. 0.00");
             $("#m_importe_pagar_cliente").val("S/. 0.00");
             $("#m_importe_vuelto").val("S/. 0.00");
+            $("#final_detalle").val("");
+            $("#final_metodoPago").val(0);
+
+            $("#oculto_importe_pagar").val(0);
+            $("#oculto_importe_total").val(0);
+            $("#oculto_importe_vuelto").val(0);
         }
     });
 
@@ -650,7 +662,7 @@ function Listar_Deudas2(idAlumno, year) {
             "columnDefs": [
                 {
                     "className": "text-center",
-                    "targets": [1, 2, 3, 4, 5, 6 ]
+                    "targets": [1, 2, 3, 4, 5, 6]
             }
             , {
                     "className": "text-left",
@@ -868,7 +880,10 @@ function AbrirPago() {
         $("#final_importe_vuelto").val(importe_vuelto);
         $("#final_importe_total").val(importe_total);
 
-        $("#final_pagar").val("S/. " + Formato_Moneda(parseFloat(importe_total), 2));
+        $("#final_total").val("S/. " + Formato_Moneda(parseFloat(importe_total), 2));
+        $("#final_vuelto").val("S/. " + Formato_Moneda(parseFloat(importe_vuelto), 2));
+
+        $("#final_pagar").val("S/. " + Formato_Moneda(parseFloat(importe_pagar), 2));
     } else {
         notificar_warning("Ingrese Monto a Pagar.");
     }
@@ -946,177 +961,177 @@ function CambioEstado(id) {
     console.log(id);
 }
 
-function Recibos(){
-	var idAlumno=$("#idAlumno").val();
-	 $("#ModalComprobantes").modal("show");
+function Recibos() {
+    var idAlumno = $("#idAlumno").val();
+    $("#ModalComprobantes").modal("show");
     Listar_Comprobantes(idAlumno);
 }
-function Listar_Comprobantes(idAlumno) {
-	if (tablaComprobantes == null) {
-		tablaComprobantes = $('#tablaComprobantes').dataTable({
-			"aProcessing": true
-			, "aServerSide": true
-			, "processing": true
-			, "paging": true, // Paginacion en tabla
-			"ordering": true, // Ordenamiento en columna de tabla
-			"info": true, // Informacion de cabecera tabla
-			"responsive": true, // Accion de responsive
-			"searching": false,
-			  dom: 'lBfrtip'
-			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-			, "order": [[0, "asc"]]
-			, "bDestroy": true
-			, "columnDefs": [
-				{
-					"className": "text-center"
-					, "targets": [0, 1]
-            }
-            , {
-					"className": "text-left"
-					, "targets": [3]
-            }, {
-					"className": "text-right"
-					, "targets": [1]
-            }
-         , ], buttons: [
-            {
-                extend: 'copy',
-                className: 'btn-info',
-                title: "Sistema de Matricula - Jose Galvez - Reporte"
-            }
 
-            , {
-                extend: 'excel',
-                className: 'btn-info',
-                title: "Sistema de Matricula - Jose Galvez - Reporte"
+function Listar_Comprobantes(idAlumno) {
+    if (tablaComprobantes == null) {
+        tablaComprobantes = $('#tablaComprobantes').dataTable({
+            "aProcessing": true,
+            "aServerSide": true,
+            "processing": true,
+            "paging": true, // Paginacion en tabla
+            "ordering": true, // Ordenamiento en columna de tabla
+            "info": true, // Informacion de cabecera tabla
+            "responsive": true, // Accion de responsive
+            "searching": false,
+            dom: 'lBfrtip',
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "order": [[0, "asc"]],
+            "bDestroy": true,
+            "columnDefs": [
+                {
+                    "className": "text-center",
+                    "targets": [0, 1]
             }
             , {
-                extend: 'pdfHtml5',
-                className: 'btn-info sombra3',
-                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
-                orientation: 'landscape',
-                pageSize: 'LEGAL',
-                customize: function ( doc ) {
-                    doc.content.splice( 1, 0, {
-                        margin: [ 0, 0, 0, 12 ],
-                        alignment: 'center',
-                        image: RecuperarLogo64(),
-                    } );
-                }
-            }
-            , {
-                extend: 'print',
-                className: 'btn-info',
-                title: "Sistema de Matricula - Jose Galvez - Reporte"
-            }
-            ]
-			, "ajax": { //Solicitud Ajax Servidor
-				url: '../../controlador/Gestion/CGestion.php?op=listarComprobantes'
-				, type: "POST"
-				, dataType: "JSON"
-				, data: { idAlumno: idAlumno
-				}
-				, error: function (e) {
-					console.log(e.responseText);
-				}
-			}
-			, // cambiar el lenguaje de datatable
-			oLanguage: español
-		, }).DataTable();
-		//Aplicar ordenamiento y autonumeracion , index
-		tablaComprobantes.on('order.dt search.dt', function () {
-			tablaComprobantes.column(0, {
-				search: 'applied'
-				, order: 'applied'
-			}).nodes().each(function (cell, i) {
-				cell.innerHTML = i + 1;
-			});
-		}).draw();
-	}
-	else {
-		tablaComprobantes.destroy();
-		tablaComprobantes = $('#tablaComprobantes').dataTable({
-			"aProcessing": true
-			, "aServerSide": true
-			, "processing": true
-			, "paging": true, // Paginacion en tabla
-			"ordering": true, // Ordenamiento en columna de tabla
-			"info": true, // Informacion de cabecera tabla
-			"responsive": true, // Accion de responsive
-			"searching": false,
-			  dom: 'lBfrtip'
-			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-			, "order": [[0, "asc"]]
-			, "bDestroy": true
-			, "columnDefs": [
-				{
-					"className": "text-center"
-					, "targets": [0, 1]
-            }
-            , {
-					"className": "text-left"
-					, "targets": [3]
+                    "className": "text-left",
+                    "targets": [3]
             }, {
-					"className": "text-right"
-					, "targets": [1]
+                    "className": "text-right",
+                    "targets": [1]
             }
          , ],
-			 buttons: [
-            {
-                extend: 'copy',
-                className: 'btn-info',
-                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            buttons: [
+                {
+                    extend: 'copy',
+                    className: 'btn-info',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
 
             , {
-                extend: 'excel',
-                className: 'btn-info',
-                title: "Sistema de Matricula - Jose Galvez - Reporte"
+                    extend: 'excel',
+                    className: 'btn-info',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte"
             }
             , {
-                extend: 'pdfHtml5',
-                className: 'btn-info sombra3',
-                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
-                orientation: 'landscape',
-                pageSize: 'LEGAL',
-                customize: function ( doc ) {
-                    doc.content.splice( 1, 0, {
-                        margin: [ 0, 0, 0, 12 ],
-                        alignment: 'center',
-                        image: RecuperarLogo64(),
-                    } );
+                    extend: 'pdfHtml5',
+                    className: 'btn-info sombra3',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte",
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    customize: function (doc) {
+                        doc.content.splice(1, 0, {
+                            margin: [0, 0, 0, 12],
+                            alignment: 'center',
+                            image: RecuperarLogo64(),
+                        });
+                    }
+            }
+            , {
+                    extend: 'print',
+                    className: 'btn-info',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            ],
+            "ajax": { //Solicitud Ajax Servidor
+                url: '../../controlador/Gestion/CGestion.php?op=listarComprobantes',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    idAlumno: idAlumno
+                },
+                error: function (e) {
+                    console.log(e.responseText);
                 }
+            }, // cambiar el lenguaje de datatable
+            oLanguage: español,
+        }).DataTable();
+        //Aplicar ordenamiento y autonumeracion , index
+        tablaComprobantes.on('order.dt search.dt', function () {
+            tablaComprobantes.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    } else {
+        tablaComprobantes.destroy();
+        tablaComprobantes = $('#tablaComprobantes').dataTable({
+            "aProcessing": true,
+            "aServerSide": true,
+            "processing": true,
+            "paging": true, // Paginacion en tabla
+            "ordering": true, // Ordenamiento en columna de tabla
+            "info": true, // Informacion de cabecera tabla
+            "responsive": true, // Accion de responsive
+            "searching": false,
+            dom: 'lBfrtip',
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "order": [[0, "asc"]],
+            "bDestroy": true,
+            "columnDefs": [
+                {
+                    "className": "text-center",
+                    "targets": [0, 1]
             }
             , {
-                extend: 'print',
-                className: 'btn-info',
-                title: "Sistema de Matricula - Jose Galvez - Reporte"
+                    "className": "text-left",
+                    "targets": [3]
+            }, {
+                    "className": "text-right",
+                    "targets": [1]
             }
-            ]
-			, "ajax": { //Solicitud Ajax Servidor
-				url: '../../controlador/Gestion/CGestion.php?op=listarComprobantes'
-				, type: "POST"
-				, dataType: "JSON"
-				, data: {
-	 idAlumno: idAlumno
-				}
-				, error: function (e) {
-					console.log(e.responseText);
-				}
-			}
-			, // cambiar el lenguaje de datatable
-			oLanguage: español
-		, }).DataTable();
-		//Aplicar ordenamiento y autonumeracion , index
-		tablaComprobantes.on('order.dt search.dt', function () {
-			tablaComprobantes.column(0, {
-				search: 'applied'
-				, order: 'applied'
-			}).nodes().each(function (cell, i) {
-				cell.innerHTML = i + 1;
-			});
-		}).draw();
-	}
+         , ],
+            buttons: [
+                {
+                    extend: 'copy',
+                    className: 'btn-info',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+
+            , {
+                    extend: 'excel',
+                    className: 'btn-info',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            , {
+                    extend: 'pdfHtml5',
+                    className: 'btn-info sombra3',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte",
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    customize: function (doc) {
+                        doc.content.splice(1, 0, {
+                            margin: [0, 0, 0, 12],
+                            alignment: 'center',
+                            image: RecuperarLogo64(),
+                        });
+                    }
+            }
+            , {
+                    extend: 'print',
+                    className: 'btn-info',
+                    title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            ],
+            "ajax": { //Solicitud Ajax Servidor
+                url: '../../controlador/Gestion/CGestion.php?op=listarComprobantes',
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    idAlumno: idAlumno
+                },
+                error: function (e) {
+                    console.log(e.responseText);
+                }
+            }, // cambiar el lenguaje de datatable
+            oLanguage: español,
+        }).DataTable();
+        //Aplicar ordenamiento y autonumeracion , index
+        tablaComprobantes.on('order.dt search.dt', function () {
+            tablaComprobantes.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    }
 }
 
 

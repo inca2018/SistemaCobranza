@@ -16,6 +16,11 @@
 
            return ejecutarConsulta($sql);
        }
+        public function Borrar_TipoPago($idTipoPago){
+           $sql="DELETE FROM `generalimportes` WHERE `idGeneral`='$idTipoPago'";
+
+           return ejecutarConsulta($sql);
+       }
       public function ValidarTipoPago($TipoPagonom,$idTipoPago){
           $sql="";
           if($idTipoPago=='' || $idTipoPago==null || empty($idTipoPago)){

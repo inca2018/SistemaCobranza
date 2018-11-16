@@ -182,6 +182,19 @@ function RecuperarGrado(idGrado){
 }
 function EliminarGrado(idGrado){
       swal({
+      title: "Deshabilitar?",
+      text: "Esta Seguro que desea Deshabilitar Grado!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Deshabilitar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarGrado(idGrado);
+   });
+}
+function BorrarGrado(idGrado){
+      swal({
       title: "Eliminar?",
       text: "Esta Seguro que desea Eliminar Grado!",
       type: "warning",
@@ -190,11 +203,24 @@ function EliminarGrado(idGrado){
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarGrado(idGrado);
+      ajaxBorrarGrado(idGrado);
    });
 }
 function ajaxEliminarGrado(idGrado){
     $.post("../../controlador/Mantenimiento/CGrado.php?op=Eliminar_Grado", {idGrado: idGrado}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Eliminado!", Mensaje, "success");
+         tablaGrado.ajax.reload();
+      }
+   });
+}
+function ajaxBorrarGrado(idGrado){
+    $.post("../../controlador/Mantenimiento/CGrado.php?op=Borrar_Grado", {idGrado: idGrado}, function (data, e) {
       data = JSON.parse(data);
       var Error = data.Error;
       var Mensaje = data.Mensaje;

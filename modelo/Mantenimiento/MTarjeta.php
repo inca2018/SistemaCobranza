@@ -16,6 +16,11 @@
 
            return ejecutarConsulta($sql);
        }
+       public function Borrar_Tarjeta($idTarjeta){
+           $sql="DELETE FROM `tipotarjeta` WHERE `idTipoTarjeta`='$idTarjeta'";
+
+           return ejecutarConsulta($sql);
+       }
       public function ValidarTarjeta($Tarjetanom,$idTarjeta){
           $sql="";
           if($idTarjeta=='' || $idTarjeta==null || empty($idTarjeta)){

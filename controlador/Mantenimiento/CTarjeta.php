@@ -29,7 +29,8 @@
         if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
             return '
             <button type="button"   title="Editar" class="btn btn-warning btn-sm" onclick="EditarTarjeta('.$reg->idTipoTarjeta.')"><i class="fa fa-edit"></i></button>
-               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="EliminarTarjeta('.$reg->idTipoTarjeta.')"><i class="fa fa-trash"></i></button>
+               <button type="button"  title="Deshabilitar" class="btn btn-info btn-sm" onclick="EliminarTarjeta('.$reg->idTipoTarjeta.')"><i class="fa fa-times"></i></button>
+                <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="BorrarTarjeta('.$reg->idTipoTarjeta.')"><i class="fa fa-trash"></i></button>
                ';
         }elseif($reg->Estado_idEstado==4){
             return '<button type="button"  title="Habilitar" class="btn btn-info btn-sm" onclick="HabilitarTarjeta('.$reg->idTipoTarjeta.')"><i class="fa fa-sync"></i></button>';
@@ -117,9 +118,18 @@
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
          $rspta['Eliminar']=$mantenimiento->Eliminar_Tarjeta($idTarjeta,1,$login_idLog);
 
+         $rspta['Eliminar']?$rspta['Mensaje']="Tarjeta Deshabilitado.":$rspta['Mensaje']="Tarjeta no se pudo Deshabilitar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+     case 'Borrar_Tarjeta':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->Borrar_Tarjeta($idTarjeta,1,$login_idLog);
+
          $rspta['Eliminar']?$rspta['Mensaje']="Tarjeta Eliminado.":$rspta['Mensaje']="Tarjeta no se pudo eliminar comuniquese con el area de soporte";
          echo json_encode($rspta);
       break;
+
 
       case 'Recuperar_Tarjeta':
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);

@@ -16,6 +16,13 @@
 
            return ejecutarConsulta($sql);
        }
+      public function Borrar_Grado($idGrado){
+           $sql="DELETE FROM `grado` WHERE `idGrado`='$idGrado'";
+
+           return ejecutarConsulta($sql);
+       }
+
+
       public function ValidarGrado($Gradonom,$idGrado){
           $sql="";
           if($idGrado=='' || $idGrado==null || empty($idGrado)){

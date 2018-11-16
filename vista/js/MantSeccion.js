@@ -182,6 +182,19 @@ function RecuperarSeccion(idSeccion){
 }
 function EliminarSeccion(idSeccion){
       swal({
+      title: "Deshabilitar?",
+      text: "Esta Seguro que desea Deshabilitar Seccion!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, Deshabilitar!",
+      closeOnConfirm: false
+   }, function () {
+      ajaxEliminarSeccion(idSeccion);
+   });
+}
+function BorrarSeccion(idSeccion){
+      swal({
       title: "Eliminar?",
       text: "Esta Seguro que desea Eliminar Seccion!",
       type: "warning",
@@ -190,7 +203,20 @@ function EliminarSeccion(idSeccion){
       confirmButtonText: "Si, Eliminar!",
       closeOnConfirm: false
    }, function () {
-      ajaxEliminarSeccion(idSeccion);
+      ajaxBorrarSeccion(idSeccion);
+   });
+}
+function ajaxBorrarSeccion(idSeccion){
+    $.post("../../controlador/Mantenimiento/CSeccion.php?op=Borrar_Seccion", {idSeccion: idSeccion}, function (data, e) {
+      data = JSON.parse(data);
+      var Error = data.Error;
+      var Mensaje = data.Mensaje;
+      if (Error) {
+         swal("Error", Mensaje, "error");
+      } else {
+         swal("Eliminado!", Mensaje, "success");
+         tablaSeccion.ajax.reload();
+      }
    });
 }
 function ajaxEliminarSeccion(idSeccion){

@@ -29,7 +29,8 @@
         if($reg->Estado_idEstado==1 || $reg->Estado_idEstado==2 ){
             return '
             <button type="button" title="Editar" class="btn btn-warning btn-sm" onclick="EditarNivel('.$reg->idNivel.')"><i class="fa fa-edit"></i></button>
-               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="EliminarNivel('.$reg->idNivel.')"><i class="fa fa-trash"></i></button>
+               <button type="button"  title="Deshabilitar" class="btn btn-info btn-sm" onclick="EliminarNivel('.$reg->idNivel.')"><i class="fa fa-times"></i></button>
+               <button type="button"  title="Eliminar" class="btn btn-danger btn-sm" onclick="BorrarNivel('.$reg->idNivel.')"><i class="fa fa-trash"></i></button>
                ';
         }elseif($reg->Estado_idEstado==4){
             return '<button type="button"  title="Habilitar" class="btn btn-info btn-sm" onclick="HabilitarNivel('.$reg->idNivel.')"><i class="fa fa-sync"></i></button>';
@@ -116,6 +117,14 @@
          $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
          /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
          $rspta['Eliminar']=$mantenimiento->Eliminar_Nivel($idNivel,1,$login_idLog);
+
+         $rspta['Eliminar']?$rspta['Mensaje']="Nivel Deshabilitado.":$rspta['Mensaje']="Nivel no se pudo Deshabilitar comuniquese con el area de soporte";
+         echo json_encode($rspta);
+      break;
+    case 'Borrar_Nivel':
+         $rspta = array("Mensaje"=>"","Eliminar"=>false,"Error"=>false);
+         /*------ Cuando el usuario ya se esta facturando, ya no se puede eliminar --------*/
+         $rspta['Eliminar']=$mantenimiento->Borrar_Nivel($idNivel);
 
          $rspta['Eliminar']?$rspta['Mensaje']="Nivel Eliminado.":$rspta['Mensaje']="Nivel no se pudo eliminar comuniquese con el area de soporte";
          echo json_encode($rspta);

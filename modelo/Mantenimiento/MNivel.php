@@ -16,6 +16,10 @@
 
            return ejecutarConsulta($sql);
        }
+       public function Borrar_Nivel($idNivel){
+           $sql="DELETE FROM `nivel` WHERE `idNivel`='$idNivel'";
+           return ejecutarConsulta($sql);
+       }
       public function ValidarNivel($Nivelnom,$idNivel){
           $sql="";
           if($idNivel=='' || $idNivel==null || empty($idNivel)){
