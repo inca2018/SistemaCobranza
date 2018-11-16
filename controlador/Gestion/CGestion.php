@@ -569,10 +569,11 @@
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-               "1"=>$reg->fecha,
-               "2"=>$reg->CuotaPagada,
-               "3"=>$reg->CuotaTotal,
-               "4"=>number_format(($reg->CuotaPagada/$reg->CuotaTotal),2)
+				   "1"=>$reg->AlumnoNombre,
+               "2"=>$reg->fecha,
+               "3"=>$reg->CuotaPagada,
+               "4"=>$reg->CuotaTotal,
+               "5"=>number_format(($reg->CuotaPagada/$reg->CuotaTotal),2)
 
 
             );
@@ -592,10 +593,11 @@
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-               "1"=>$reg->fecha,
-               "2"=>$reg->CuotaVencida,
-               "3"=>$reg->CuotaTotal,
-               "4"=>number_format(($reg->CuotaVencida/$reg->CuotaTotal),2)
+				   "1"=>$reg->AlumnoNombre,
+               "2"=>$reg->fecha,
+               "3"=>$reg->CuotaVencida,
+               "4"=>$reg->CuotaTotal,
+               "5"=>number_format(($reg->CuotaVencida/$reg->CuotaTotal),2)
 
 
             );

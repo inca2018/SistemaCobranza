@@ -176,14 +176,15 @@
          <div class="modal-body">
          <form id="formularioCliente" class="form-horizontal" method="POST">
 
-              <table class="table my-4 w-100 table-hover table-sm dt-responsive " id="tabla_Detalles1">
+              <table class="table my-4 w-100 table-hover table-sm dt-responsive" id="tabla_Detalles1" style="font-size:10px">
                      <thead class="thead-light">
                        <tr>
-                         <th width="20%" data-priority="1">#</th>
-                         <th width="20%" >Fecha</th>
-                         <th width="20%">Numero de Cuentas Pagadas(NCPA)</th>
-                         <th width="20%">Numero de Cuentas Programadas(NCPR)</th>
-                         <th width="20%">ICP=(NCPA/NCPR)</th>
+                         <th data-priority="1">#</th>
+                         <th >Alumno</th>
+                         <th >Fecha</th>
+                         <th >Numero de Cuentas Pagadas(NCPA)</th>
+                         <th >Numero de Cuentas Programadas(NCPR)</th>
+                         <th >ICP=(NCPA/NCPR)</th>
 
                        </tr>
                      </thead>
@@ -214,14 +215,15 @@
          <div class="modal-body">
          <form id="formularioCliente" class="form-horizontal" method="POST">
 
-              <table class="table my-4 w-100 table-hover table-sm dt-responsive " id="tabla_Detalles2">
+              <table class="table my-4 w-100 table-hover table-sm dt-responsive " id="tabla_Detalles2" style="font-size:10px">
                      <thead class="thead-light">
                        <tr>
-                         <th idth="20%" data-priority="1">#</th>
-                         <th idth="20%">Fecha</th>
-                         <th idth="20%">Cartera Vencida (CV)</th>
-                         <th idth="20%">Cartera Total (CT)</th>
-                         <th idth="20%">IMOR=(CV/CT)</th>
+                         <th data-priority="1">#</th>
+                         <th >Alumno</th>
+                         <th >Fecha</th>
+                         <th >Cartera Vencida (CV)</th>
+                         <th >Cartera Total (CT)</th>
+                         <th >IMOR=(CV/CT)</th>
 
                        </tr>
                      </thead>
