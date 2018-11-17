@@ -276,6 +276,53 @@ address, td{
     padding: 0px;
 }
 
+.CabeceraArea{
+    width: 300px;
+    height: auto;
+
+
+}
+.imagen_altura{
+    height: 50px;
+    width: 200px;
+    margin: 5px;
+}
+.titulo_recibo{
+    font-size: 10px;
+    text-align: center;
+    align-content: center;
+
+}
+.titulo_normal{
+    font-size: 8px;
+     text-align: center;
+    align-content: center;
+}
+.centrar{
+    align-content: center;
+    text-align: center;
+}
+.puntear{
+    border:1px dotted black;
+}
+.izquierda{
+    text-align: left;
+}
+.derecha{
+    text-align: right;
+}
+
+.columnaA{
+    width: 10%;
+}
+.columnaB{
+    width: 60%;
+}
+.columnaC{
+    width: 30%;
+}
+
+
 
 
 

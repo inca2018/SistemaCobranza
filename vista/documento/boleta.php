@@ -54,111 +54,82 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
 	while ($reg=$cuerpo->fetch_object()){
 
 			$detalle_documento.= '
-            <tr id="cuerpoFactura">
-               <td class="DNumero">'.$correlativo.'</td>
-               <td colspan="2" class="DDetalle" >'.$reg->NombrePago.'</td>
-               <td class="DTotal">S/. '.number_format($reg->ImportePago,2).'</td>
+            <tr>
+               <th class="columnaA titulo_normal izquierda">'.$correlativo.'.-</th>
+               <th class="columnaB titulo_normal izquierda" >'.$reg->NombrePago.'</th>
+               <th class="columnaC titulo_normal derecha">S/. '.number_format($reg->ImportePago,2).'</th>
             </tr>';
           $correlativo=$correlativo+1;
 	}
 
+     $html = '<body>
 
-   $html = '<body>
+      <div class="CabeceraArea">
+         <table>
+          <tr>
+            <th colspan="2" class="imagen_altura centrar"><img src="../../vista/documento/logo.png" class="Logo"></th>
+          </tr>
+           <tr>
+            <th colspan="2" class="titulo_recibo"><b>COLEGIO JOSÉ GÁLVEZ</b></th>
+          </tr>
+          <tr>
+            <th colspan="2" class="titulo_normal">RUC: 20508843411</th>
+          </tr>
+         </table>
+          <hr class="puntear">
+         <table>
+           <tr>
+            <th colspan="2" class="titulo_normal izquierda"><b>FECHA: </b>'.$fecha_emi.'</th>
+          </tr>
+          <tr>
+            <th  class="titulo_normal izquierda"><b>CLIENTE: </b>'.$alumnoNombre.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$alumnoDNI.'</th>
+          </tr>
+           <tr>
+            <th colspan="2" class="titulo_normal izquierda"><b>DIRECCIÓN: </b>'.$alumnoDireccion.'</th>
+          </tr>
+         </table>
+          <hr class="puntear">
 
-      <div class="content-wrapper">
-            <div class="colum-2">
-               <img src="../../vista/documento/logo.png" class="Logo">
-            </div>
-            <div class="colum-2">
-              <address>
-                <b>COLEGIO JOSÉ GÁLVEZ</b><br>
-                Cal. AREQUIPA- CALLAO<br>
-                Ruc: 20508843411<br >
-                Telefono: 01-4627633<br>
-                Correo:contactoqs@example.com.pe <br>
-                Web: www.colegio.com.pe
-              </address>
-            </div>
-            <div class="colum-2">
-              <div>
-                 <div class="bloqueA">
-                 <span class="titulo2">R.U.C 20508843411</span>
-                 </div>
-                 <div class="bloqueB">
-                 <span class="titulo3">RECIBO DE PAGO</span>
-                 </div>
-                  <div class="bloqueC">
-                  <span class="titulo2">'.$corre.'</span>
-              </div>
-            </div>
-            </div>
-         <hr class="general">
+          <table>
+           <tr>
+            <th class="columnaA titulo_recibo centrar">N°</th>
+            <th class="columnaB titulo_recibo centrar">DETALLE</th>
+            <th class="columnaC titulo_recibo centrar">IMPORTE</th>
+          </tr>
+             '.$detalle_documento.'
+         </table>
+         <hr class="puntear">
+          <table>
+           <tr>
+            <th colspan="2" class="titulo_normal izquierda">MONTO TOTAL:</th>
+            <th class="titulo_normal derecha">'.$valor. $detalles['ImporteTotal'] .'</th>
+          </tr>
+          <tr>
+            <th colspan="2" class="titulo_normal izquierda">MONTO PAGADO:</th>
+            <th class="titulo_normal derecha">'.$valor. $detalles['ImportePagar'] .'</th>
+          </tr>
+          <tr>
+            <th colspan="2" class="titulo_normal izquierda">VUELTO:</th>
+            <th class="titulo_normal derecha">'.$valor. $detalles['ImporteVuelto'] .'</th>
+          </tr>
+          <tr>
+            <th  class="titulo_normal izquierda">SON:</th>
+            <th colspan="2" class="titulo_normal izquierda">'.$cambio.'</th>
+          </tr>
+          <tr>
+            <th  class="titulo_normal izquierda">FECHA:</th>
+            <th colspan="2" class="titulo_normal izquierda">'.$fecha_letras.'</th>
+          </tr>
+
+         </table>
+          <hr class="puntear">
+          <table>
+          <tr>
+            <th colspan="3"  class="titulo_normal izquierda">GRACIAS POR LA REALIZACIÓN DE SU PAGO.</th>
+           </tr>
+           </table>
      </div>';
 
-$html .="
-        <div class='cliente-info'>
-            <div class='caja'>
-                <span class='DatosCliente'>Datos del Alumno:</span>
-            </div>
-            <div class='DatosClienteTabla'>
-               <table class='table table-bordered'>
-                  <tbody>
-                     <tr>
-                        <td>Nombres y Apellidos:</td>
-                        <td>".$alumnoNombre." </td>
-                        <td>DNI:</td>
-                        <td>".$alumnoDNI."</td>
-                     </tr>
-                     <tr>
-                        <td>Dirección:</td>
-                        <td>".$alumnoDireccion."</td>
-                        <td>Teléfono:</td>
-                        <td>".$alumnoTelefono."</td>
-                     </tr>
-                     <tr>
-                        <td>Atención:</td>
-                        <td> </td>
-                        <td>Fecha:</td>
-                        <td>".$fecha_emi."</td>
-                     </tr>
-                  </tody>
-               </table>
-            <div>
-        </div>";
-
-$html .='<table id="tablaFactura" class="table table-bordered">
-           <thead class="CabeceraFactura">
-             <tr>
-               <th class="TNumero">Nº</th>
-               <th colspan="2" class="TDetalle">Detalle</th>
-               <th class="TTotal">Importes</th>
-             </tr>
-           </thead>
-   ';
-$html .='<tbody id="tbody">
-            '.$detalle_documento.'
-         </tbody>';
-
-$html .='<tfoot>
-            <tr>
-               <td class="DNumero">Sol</td>
-               <td class="Fdetalle">'. $cambio .'</td>
-               <td class="FNomSub">Monto Total</td>
-               <td class="DTotal">'.$valor. $detalles['ImporteTotal'] .'</td>
-            </tr>
-            <tr>
-               <td class="DNumero" >Fecha </td>
-               <td class="Fdetalle">'. $fecha_letras .'</td>
-               <td class="FNomSub">Monto Pagado:</td>
-               <td class="DTotal"> '.$valor. $detalles['ImportePagar'] .'</td>
-            </tr>
-            <tr>
-               <td colspan="2"></td>
-               <td class="FNomSub" >Vuelto:</td>
-               <td class="DTotal">'.$valor. $detalles['ImporteVuelto'] .'</td>
-            </tr>
-         </tfoot>
-      </table>';
 
 $html .='</body>';
 

@@ -76,7 +76,7 @@
 												</h4> </div>
 												</div>
 											</div>
-											<a class="card-footer p-2 bg-green  bt0 clearfix btn-block d-flex" href="#" onclick="MostrarOperaciones();"> <span>Detalles</span> <span class="ml-auto">
+											<a class="card-footer p-2 bg-green  bt0 clearfix btn-block d-flex" href="#"  > <span></span> <span class="ml-auto">
 											<em class="fa fa-chevron-circle-right"></em>
 										</span> </a>
 										</div>
@@ -95,7 +95,7 @@
 												</h4> </div>
 												</div>
 											</div>
-											<a class="card-footer p-2 bg-danger-light  bt0 clearfix btn-block d-flex" href="#" onclick="MostrarInformacionAsignado();"> <span>Detalles</span> <span class="ml-auto">
+											<a class="card-footer p-2 bg-danger-light  bt0 clearfix btn-block d-flex" href="#"  > <span></span> <span class="ml-auto">
 											<em class="fa fa-chevron-circle-right"></em>
 										</span> </a>
 										</div>
