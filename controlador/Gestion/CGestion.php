@@ -99,7 +99,7 @@
 
    function Verificar_Pendiente($reg){
 		if($reg->Estado_idEstado==5){
-			return "S/. ".number_format($reg->Importe+$reg->Mora,2)
+			return "S/. ".number_format($reg->Importe+$reg->Mora,2);
 		}else{
 			return "S/. ".number_format(($reg->Importe-$reg->Diferencia)+$reg->Mora,2);
 		}
