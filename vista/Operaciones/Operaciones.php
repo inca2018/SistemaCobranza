@@ -72,7 +72,7 @@
 													<div class="col-9 text-right">
 														<div class="text-lg" id="ind_empleados_operaciones">0</div>
 														<h4>
-													<p class="m-0">Cuotas Pagadas Hoy</p>
+													<p class="m-0">Pagos Realizados Hoy</p>
 												</h4> </div>
 												</div>
 											</div>
