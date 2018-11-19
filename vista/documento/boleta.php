@@ -136,7 +136,7 @@ $html .='</body>';
         //==============================================================
         include("../../pdf/mpdf.php");
 
-        $mpdf=new mPDF();
+        $mpdf=new mPDF('format' => 'A6');
 
         $mpdf->SetDisplayMode('fullpage');
         // LOAD a stylesheet
