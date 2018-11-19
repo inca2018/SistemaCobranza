@@ -97,6 +97,14 @@
     $fechaFin = date("Y-m-d", strtotime($date));
 
 
+   function Verificar_Pendiente($reg){
+		if($reg->Estado_idEstado==5){
+			return "S/. ".number_format($reg->Importe+$reg->Mora,2)
+		}else{
+			return "S/. ".number_format(($reg->Importe-$reg->Diferencia)+$reg->Mora,2);
+		}
+	}
+
 
    function BuscarEstado($reg){
         if($reg->Estado_idEstado=='1' || $reg->Estado_idEstado==1 ){
@@ -377,7 +385,7 @@
                "0"=>$count++,
                "1"=>BuscarEstado($reg),
                "2"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
-               "3"=>"S/. ".number_format(($reg->Importe-$reg->Diferencia)+$reg->Mora,2),
+               "3"=>Verificar_Pendiente($reg),
                "4"=>$reg->fechaVencimiento
 
             );
