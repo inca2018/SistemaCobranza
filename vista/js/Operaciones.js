@@ -231,14 +231,14 @@ function Listar_Deudas2(idAlumno, year) {
 			, "columnDefs": [
 				{
 					"className": "text-center"
-					, "targets": [1, 2, 3 ]
+					, "targets": [1, 2 ]
             }
             , {
 					"className": "text-left"
 					, "targets": [0]
             }, {
 					"className": "text-right"
-					, "targets": [4]
+					, "targets": [3,4,5]
             }
          , ], buttons: [
             {
@@ -314,14 +314,14 @@ function Listar_Deudas2(idAlumno, year) {
 			, "columnDefs": [
 				{
 					"className": "text-center"
-					, "targets": [1, 2, 3]
+					, "targets": [1, 2]
             }
             , {
 					"className": "text-left"
 					, "targets": [0]
             }, {
 					"className": "text-right"
-					, "targets": [4]
+					, "targets": [3,4,5]
             }
          , ], buttons: [
             {

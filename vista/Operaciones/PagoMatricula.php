@@ -133,8 +133,10 @@ if(isset($_POST["idAlumno"])){
                                                             <th width="5%" >*</th>
                                                             <th width="15%" >ESTADO</th>
                                                             <th width="15%" >PAGO</th>
-                                                            <th width="15%" >IMPORTE</th>
-                                                            <th width="15%" >F.V.</th>
+                                                            <th width="10%" >IMP. POR PAGAR</th>
+                                                            <th width="10%" >IMP. MORA</th>
+                                                            <th width="10%" >IMP. TOTAL</th>
+                                                            <th width="10%" >F.V.</th>
                                                             <th width="10%" >ACCION</th>
                                                         </tr>
                                                     </thead>

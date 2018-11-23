@@ -82,10 +82,13 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
             <th colspan="2" class="titulo_normal izquierda"><b>FECHA: </b>'.$fecha_emi.'</th>
           </tr>
           <tr>
-            <th  class="titulo_normal izquierda"><b>CLIENTE: </b>'.$alumnoNombre.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$alumnoDNI.'</th>
+            <th  class="titulo_normal izquierda"><b>ALUMNO: </b>'.$alumnoNombre.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$alumnoDNI.'</th>
           </tr>
            <tr>
-            <th colspan="2" class="titulo_normal izquierda"><b>DIRECCIÓN: </b>'.$alumnoDireccion.'</th>
+            <th colspan="2" class="titulo_normal izquierda"><b>DIRECCIÓN: </b>Jr. Arequipa Norte 577,Callao</th>
+          </tr>
+			 <tr>
+            <th colspan="2" class="titulo_normal izquierda"><b>TELEFONO: </b>4293485</th>
           </tr>
          </table>
           <hr class="puntear">

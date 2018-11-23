@@ -207,8 +207,10 @@
 													<th width="5%" data-priority="1">#</th>
 													<th width="15%">ESTADO</th>
 													<th width="15%">PAGO</th>
-													<th width="15%">IMPORTE</th>
-													<th width="15%">F.V.</th>
+													<th width="10%">IMP. TOTAL</th>
+													<th width="10%">IMP. PENSIÓN</th>
+													<th width="10%">IMP. MORA</th>
+													<th width="10%">F.V.</th>
 												</tr>
 											</thead>
 											<tbody> </tbody>

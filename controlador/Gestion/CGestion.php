@@ -363,9 +363,11 @@
                      </div>',
                "2"=>BuscarEstado($reg),
                "3"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
-               "4"=>"S/. ".number_format($reg->Diferencia+(($reg->DiasMora*1)-$reg->Mora),2),
-               "5"=>$reg->fechaVencimiento,
-               "6"=>'<div class="badge badge-purple  " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idCuota.','.$reg->year.','.$reg->Diferencia.','.(($reg->DiasMora*1)-$reg->Mora).',2,\'PENSIÓN '.$recursos->convertir($reg->Mes).'\')"><i class="fas fa-angle-double-right"></i></div>'
+				   "4"=>"S/.".number_format($reg->Diferencia,2),
+				   "5"=>"S/.".number_format($reg->DiasMora-$reg->Mora,2),
+               "6"=>"S/. ".number_format($reg->Diferencia+(($reg->DiasMora*1)-$reg->Mora),2),
+               "7"=>$reg->fechaVencimiento,
+               "8"=>'<div class="badge badge-purple  " title="PAGAR" onclick="EnviarPago('.$reg->Alumno_idAlumno.','.$reg->idCuota.','.$reg->year.','.$reg->Diferencia.','.(($reg->DiasMora*1)-$reg->Mora).',2,\'PENSIÓN '.$recursos->convertir($reg->Mes).'\')"><i class="fas fa-angle-double-right"></i></div>'
 
             );
          }
@@ -386,7 +388,9 @@
                "1"=>BuscarEstado($reg),
                "2"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
                "3"=>Verificar_Pendiente($reg),
-               "4"=>$reg->fechaVencimiento
+					"4"=>"S/. ".number_format($reg->Importe,2),
+					"5"=>"S/. ".number_format($reg->Mora,2),
+               "6"=>$reg->fechaVencimiento
 
             );
          }
