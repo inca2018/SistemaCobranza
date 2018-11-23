@@ -146,6 +146,7 @@ function actualizar_indicadores1(f_inicio,f_fin,idAlumno){
 	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarGraficoFechasAlumno",{fechaInicio:f_inicio,fechaFin:f_fin,idAlumno:idAlumno}, function(data, status){
       data = JSON.parse(data);
 		console.log(data);
+
       var cuotaTotal = parseInt(data.CuotaTotales);
       var cuotaPendiente = parseInt(data.CuotaPendiente);
 		var cuotaPagada = parseInt(data.CuotaPagada);

@@ -145,6 +145,7 @@ function actualizar_indicadores1(f_inicio,f_fin){
 	$.post("../../controlador/Gestion/CGestion.php?op=RecuperarGraficoFechas",{fechaInicio:f_inicio,fechaFin:f_fin}, function(data, status){
       data = JSON.parse(data);
 		console.log(data);
+		debugger;
       var cuotaTotal = parseInt(data.CuotaTotales);
       var cuotaPendiente = parseInt(data.CuotaPendiente);
       var cuotaPagada = parseInt(data.CuotaPagada);
@@ -177,7 +178,7 @@ function actualizar_indicadores1(f_inicio,f_fin){
 
 
 									],
-									data : [porcCartNoPagadas,porcCartNoPagadas]
+									data : [porcCartPagadas,porcCartNoPagadas]
 								};
 		datos.data.datasets.push(newData);
 		window.pie.update();
