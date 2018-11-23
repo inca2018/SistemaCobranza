@@ -193,7 +193,7 @@
                         <span>Reportes</span>
                      </a>
                      <ul class="sidebar-nav sidebar-subnav collapse" id="multilevelServicios">
-                        <li class="sidebar-subnav-header"> Servicios </li>
+
                         <li id="Asignacion" class="">
                            <a href="<?php echo  $conexionConfig->rutaOP().'vista/Reporte/Indicadores.php';?>" title="Indicadores">
                               <span>Indicadores</span>

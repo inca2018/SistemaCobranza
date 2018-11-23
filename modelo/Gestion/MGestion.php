@@ -53,6 +53,8 @@
 			$sql="CALL `SP_OPERACIONES_INFO_DEUDA1`('$idAlumno','$year');";
 			return ejecutarConsulta($sql);
 		}
+
+
        public function ListarDeudasPensiones($idAlumno,$year){
 			$sql="CALL `SP_OPERACIONES_RECUPERAR_PENSIONES`('$idAlumno','$year');";
 			return ejecutarConsulta($sql);
@@ -228,6 +230,15 @@ INNER JOIN tipotarjeta tt ON tt.idTipoTarjeta=pg.TipoTarjeta_idTipoTarjeta WHERE
         return ejecutarConsulta($sql);
     }
 
+
+		public function ListarDeudasOperacionesInfo($idAlumno,$year){
+			$sql="CALL `SP_OPERACIONES_INFO_DEUDA_MATRICULA_ALUMNO`('$idAlumno','$year');";
+			return ejecutarConsulta($sql);
+		}
+		 public function ListarDeudasPensionesOperacionesInfo($idAlumno,$year){
+			$sql="CALL `SP_OPERACIONES_INFO_DEUDA_PENSION_ALUMNO`('$idAlumno','$year');";
+			return ejecutarConsulta($sql);
+		}
 
    }
 

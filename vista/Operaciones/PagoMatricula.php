@@ -148,7 +148,6 @@ if(isset($_POST["idAlumno"])){
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="row mt-3">

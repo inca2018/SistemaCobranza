@@ -151,6 +151,7 @@
        }else{
 
          $respuesta.='<button type="button"   title="Realizar Pago" class="btn btn-success btn-sm m-1" onclick="Pagos('.$reg->idAlumno.')"><i class="fas fa-dollar-sign fa-lg"></i></button><button type="button"   title="Comprobantes de Pago" class="btn btn-info btn-sm m-1" onclick="Comprobantes('.$reg->idAlumno.')"><i class="fas fa-bars"></i></button>
+			<button type="button"   title="Información de Pagos" class="btn btn-primary btn-sm m-1" onclick="MatriculaInfo('.$reg->idAlumno.')"><i class="fas fa-eye"></i></button>
             ';
 
        }
@@ -349,6 +350,25 @@
             "aaData"=>$data);
          echo json_encode($results);
       break;
+	  case 'ListarDeuda1B':
+         $rspta=$gestion->ListarDeudasOperacionesInfo($idAlumno,$year);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>BuscarEstado($reg),
+               "2"=>$reg->NombrePago,
+               "3"=>"S/. ".number_format($reg->Importe,2)
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
     case 'ListarDeuda2':
          $rspta=$gestion->ListarDeudasPensiones($idAlumno,$year);
          $data= array();
@@ -380,6 +400,29 @@
       break;
 	 case 'ListarDeuda2A':
          $rspta=$gestion->ListarDeudasPensionesOperaciones($idAlumno,$year);
+         $data= array();
+         $count=1;
+         while ($reg=$rspta->fetch_object()){
+         $data[]=array(
+               "0"=>$count++,
+               "1"=>BuscarEstado($reg),
+               "2"=>"PENSIÓN ".($recursos->convertir($reg->Mes)),
+               "3"=>Verificar_Pendiente($reg),
+					"4"=>"S/. ".number_format($reg->Importe,2),
+					"5"=>"S/. ".number_format($reg->Mora,2),
+               "6"=>$reg->fechaVencimiento
+
+            );
+         }
+         $results = array(
+            "sEcho"=>1, //Información para el datatables
+            "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+            "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+            "aaData"=>$data);
+         echo json_encode($results);
+      break;
+	 case 'ListarDeuda2B':
+         $rspta=$gestion->ListarDeudasPensionesOperacionesInfo($idAlumno,$year);
          $data= array();
          $count=1;
          while ($reg=$rspta->fetch_object()){
@@ -581,7 +624,7 @@
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-				   "1"=>$reg->AlumnoNombre,
+				   "1"=>"Cod. Pago ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
                "3"=>$reg->CuotaPagada,
                "4"=>$reg->CuotaTotal,
@@ -605,7 +648,7 @@
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-				   "1"=>$reg->AlumnoNombre,
+				   "1"=>"Cod. Mo. ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
                "3"=>$reg->CuotaVencida,
                "4"=>$reg->CuotaTotal,

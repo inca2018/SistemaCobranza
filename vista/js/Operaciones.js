@@ -1,7 +1,8 @@
 var tablaOperacion;
 var tablaDeuda1;
 var tablaDeuda2;
-
+var tablaDeuda1_Info;
+var tablaDeuda2_Info;
 var tablaComprobantes;
 
 function init(){
@@ -28,6 +29,15 @@ RecuperarInformacionMatricula(usuario);
 		Listar_Deudas1(idAlumno, year);
 		Listar_Deudas2(idAlumno, year);
 	});
+
+
+	$("#yearSelectInfo").change(function () {
+		var year = $("#yearSelectInfo").val();
+		var idAlumno = $("#AlumnoRecuperadoInfo").val();
+		$("#year_Actual").val(year);
+		Listar_Deudas1_Info(idAlumno, year);
+		Listar_Deudas2_Info(idAlumno, year);
+	});
 }
 
 
@@ -39,7 +49,6 @@ function ListarYear() {
 		$("#year_Actual").val(year);
 		Listar_Deudas1(idAlumno, year);
 		Listar_Deudas2(idAlumno, year);
-
 
 	});
 }
@@ -694,4 +703,358 @@ function RecuperarInformacionMatricula(idAlumno) {
 		//$("#info_apo_telefono").html("<strong>" + data.ApoderadoTelefono + "</strong>");
 	});
 }
+
+function MatriculaInfo(idAlumno){
+	$("#ModalInformacion").modal("show");
+	$("#AlumnoRecuperadoInfo").val(idAlumno);
+
+	$.post("../../controlador/Gestion/CMatricula.php?op=ListarYear", function (ts) {
+		$("#yearSelectInfo").append(ts);
+		var year = $("#yearSelectInfo").val();
+      var idAlumno = $("#AlumnoRecuperadoInfo").val();
+	   Listar_Deudas1_Info(idAlumno, year);
+		Listar_Deudas2_Info(idAlumno, year);
+	});
+}
+
+function Listar_Deudas1_Info(idAlumno, year) {
+	if (tablaDeuda1_Info == null) {
+		tablaDeuda1_Info = $('#tablaDeudas1_Info').dataTable({
+			"aProcessing": true
+			, "aServerSide": true
+			, "processing": true
+			, "paging": true, // Paginacion en tabla
+			"ordering": true, // Ordenamiento en columna de tabla
+			"info": true, // Informacion de cabecera tabla
+			"responsive": true, // Accion de responsive
+			"searching": false,
+			  dom: 'lBfrtip'
+			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			, "order": [[0, "asc"]]
+			, "bDestroy": true
+			, "columnDefs": [
+				{
+					"className": "text-center"
+					, "targets": [0, 1]
+            }
+            , {
+					"className": "text-left"
+					, "targets": [3]
+            }, {
+					"className": "text-right"
+					, "targets": [1]
+            }
+         , ], buttons: [
+            {
+                extend: 'copy',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+
+            , {
+                extend: 'excel',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            , {
+                extend: 'pdfHtml5',
+                className: 'btn-info sombra3',
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                 customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
+            }
+            , {
+                extend: 'print',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            ]
+			, "ajax": { //Solicitud Ajax Servidor
+				url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda1B'
+				, type: "POST"
+				, dataType: "JSON"
+				, data: {
+					year: year
+					, idAlumno: idAlumno
+				}
+				, error: function (e) {
+					console.log(e.responseText);
+				}
+			}
+			, // cambiar el lenguaje de datatable
+			oLanguage: español
+		, }).DataTable();
+		//Aplicar ordenamiento y autonumeracion , index
+		tablaDeuda1_Info.on('order.dt search.dt', function () {
+			tablaDeuda1_Info.column(0, {
+				search: 'applied'
+				, order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+	}
+	else {
+		tablaDeuda1_Info.destroy();
+		tablaDeuda1_Info = $('#tablaDeudas1_Info').dataTable({
+			"aProcessing": true
+			, "aServerSide": true
+			, "processing": true
+			, "paging": true, // Paginacion en tabla
+			"ordering": true, // Ordenamiento en columna de tabla
+			"info": true, // Informacion de cabecera tabla
+			"responsive": true, // Accion de responsive
+			"searching": false,
+			  dom: 'lBfrtip'
+			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			, "order": [[0, "asc"]]
+			, "bDestroy": true
+			, "columnDefs": [
+				{
+					"className": "text-center"
+					, "targets": [0, 1]
+            }
+            , {
+					"className": "text-left"
+					, "targets": [3]
+            }, {
+					"className": "text-right"
+					, "targets": [1]
+            }
+         , ],
+			 buttons: [
+            {
+                extend: 'copy',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+
+            , {
+                extend: 'excel',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            , {
+                extend: 'pdfHtml5',
+                className: 'btn-info sombra3',
+               title: "Sistema de Matricula - Jose Galvez - Reporte" ,
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                 customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
+            }
+            , {
+                extend: 'print',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            ]
+			, "ajax": { //Solicitud Ajax Servidor
+				url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda1B'
+				, type: "POST"
+				, dataType: "JSON"
+				, data: {
+					year: year
+					, idAlumno: idAlumno
+				}
+				, error: function (e) {
+					console.log(e.responseText);
+				}
+			}
+			, // cambiar el lenguaje de datatable
+			oLanguage: español
+		, }).DataTable();
+		//Aplicar ordenamiento y autonumeracion , index
+		tablaDeuda1_Info.on('order.dt search.dt', function () {
+			tablaDeuda1_Info.column(0, {
+				search: 'applied'
+				, order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+	}
+}
+function Listar_Deudas2_Info(idAlumno, year) {
+	if (tablaDeuda2_Info == null) {
+		tablaDeuda2_Info = $('#tablaDeudas2_Info').dataTable({
+			"aProcessing": true
+			, "aServerSide": true
+			, "processing": true
+			, "paging": true, // Paginacion en tabla
+			"ordering": true, // Ordenamiento en columna de tabla
+			"info": true, // Informacion de cabecera tabla
+			"responsive": true, // Accion de responsive
+			"searching": false,
+			  dom: 'lBfrtip'
+			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			, "order": [[0, "asc"]]
+			, "columnDefs": [
+				{
+					"className": "text-center"
+					, "targets": [1, 2 ]
+            }
+            , {
+					"className": "text-left"
+					, "targets": [0]
+            }, {
+					"className": "text-right"
+					, "targets": [3,4,5]
+            }
+         , ], buttons: [
+            {
+                extend: 'copy',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+
+            , {
+                extend: 'excel',
+                className: 'btn-info',
+               title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            , {
+                extend: 'pdfHtml5',
+                className: 'btn-info sombra3',
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                 customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
+            }
+            , {
+                extend: 'print',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            ]
+			, "ajax": { //Solicitud Ajax Servidor
+				url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda2B'
+				, type: "POST"
+				, dataType: "JSON"
+				, data: {
+					year: year
+					, idAlumno: idAlumno
+				}
+				, error: function (e) {
+					console.log(e.responseText);
+				}
+			}
+			, // cambiar el lenguaje de datatable
+			oLanguage: español
+		, }).DataTable();
+		//Aplicar ordenamiento y autonumeracion , index
+		tablaDeuda2_Info.on('order.dt search.dt', function () {
+			tablaDeuda2_Info.column(0, {
+				search: 'applied'
+				, order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+	}
+	else {
+		tablaDeuda2_Info.destroy();
+		tablaDeuda2_Info = $('#tablaDeudas2_Info').dataTable({
+			"aProcessing": true
+			, "aServerSide": true
+			, "processing": true
+			, "paging": true, // Paginacion en tabla
+			"ordering": true, // Ordenamiento en columna de tabla
+			"info": true, // Informacion de cabecera tabla
+			"responsive": true, // Accion de responsive
+			"searching": false,
+			  dom: 'lBfrtip'
+			, "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+			, "order": [[0, "asc"]]
+			, "columnDefs": [
+				{
+					"className": "text-center"
+					, "targets": [1, 2]
+            }
+            , {
+					"className": "text-left"
+					, "targets": [0]
+            }, {
+					"className": "text-right"
+					, "targets": [3,4,5]
+            }
+         , ], buttons: [
+            {
+                extend: 'copy',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+
+            , {
+                extend: 'excel',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            , {
+                extend: 'pdfHtml5',
+                className: 'btn-info sombra3',
+                title: "Sistema de Matricula - Jose Galvez - Reporte" ,
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: RecuperarLogo64(),
+                    } );
+                }
+
+            }
+            , {
+                extend: 'print',
+                className: 'btn-info',
+                title: "Sistema de Matricula - Jose Galvez - Reporte"
+            }
+            ]
+			, "ajax": { //Solicitud Ajax Servidor
+				url: '../../controlador/Gestion/CGestion.php?op=ListarDeuda2B'
+				, type: "POST"
+				, dataType: "JSON"
+				, data: {
+					year: year
+					, idAlumno: idAlumno
+				}
+				, error: function (e) {
+					console.log(e.responseText);
+				}
+			}
+			, // cambiar el lenguaje de datatable
+			oLanguage: español
+		, }).DataTable();
+		//Aplicar ordenamiento y autonumeracion , index
+		tablaDeuda2_Info.on('order.dt search.dt', function () {
+			tablaDeuda2_Info.column(0, {
+				search: 'applied'
+				, order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+	}
+}
+
+
 init();
