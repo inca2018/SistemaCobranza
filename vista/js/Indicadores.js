@@ -59,9 +59,9 @@ function Mostrar_Indicadores(){
 											}],
 
 											labels : [
+"% Cuotas Pagadas",
+												"% Cuotas No Pagadas",
 
-												"% Cuotas No vencidas",
-												"% Cuotas Vencidas",
 
 											]
 										   },
@@ -89,8 +89,9 @@ function Mostrar_Indicadores(){
 
 													],
 												backgroundColor: [
-                                                    "#EE2D2A",
+
 													"#5BC374",
+													"#EE2D2A",
 
 
 												],
@@ -98,8 +99,8 @@ function Mostrar_Indicadores(){
 
 											labels : [
 
-												"% Cuotas Pagadas",
-												"% Cuotas No Pagadas",
+												"% Cuotas No vencidas",
+												"% Cuotas Vencidas",
 
 
 											]
@@ -177,7 +178,7 @@ function actualizar_indicadores1(f_inicio,f_fin,idAlumno){
 
 
 									],
-									data : [porcCartNoVencida,porcCartVencida]
+									data : [porcCartPagadas,porcCartNoPagadas]
 								};
 		datos.data.datasets.push(newData);
 		window.pie.update();
@@ -185,11 +186,12 @@ function actualizar_indicadores1(f_inicio,f_fin,idAlumno){
 		datos2.data.datasets.splice(0);
 		var newData2 = {
 									backgroundColor : [
-                                            "#EE2D2A",
+
 											"#5BC374",
+										"#EE2D2A",
 
 									],
-									data : [porcCartNoPagadas,porcCartPagadas]
+									data : [porcCartNoVencida,porcCartVencida]
 								};
 		datos2.data.datasets.push(newData2);
 		window.pie2.update();

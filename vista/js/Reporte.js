@@ -69,9 +69,8 @@ function Mostrar_Indicadores(){
 											}],
 
 											labels : [
-
-												"% Cuotas No vencidas",
-												"% Cuotas Vencidas",
+	"% Cuotas Pagadas",
+												"% Cuotas No Pagadas",
 
 											]
 										   },
@@ -99,18 +98,18 @@ function Mostrar_Indicadores(){
 
 													],
 												backgroundColor: [
-
-													"#5BC374",
 													"#EE2D2A",
+													"#5BC374",
+
 
 												],
 											}],
 
 											labels : [
 
-												"% Cuotas Pagadas",
-												"% Cuotas No Pagadas",
 
+												"% Cuotas No vencidas",
+												"% Cuotas Vencidas",
 
 											]
 										   },
@@ -178,7 +177,7 @@ function actualizar_indicadores1(f_inicio,f_fin){
 
 
 									],
-									data : [porcCartNoVencida,porcCartVencida]
+									data : [porcCartNoPagadas,porcCartNoPagadas]
 								};
 		datos.data.datasets.push(newData);
 		window.pie.update();
@@ -191,7 +190,7 @@ function actualizar_indicadores1(f_inicio,f_fin){
 
 
 									],
-									data : [porcCartNoPagadas,porcCartPagadas]
+									data : [porcCartNoVencida,porcCartVencida]
 								};
 		datos2.data.datasets.push(newData2);
 		window.pie2.update();

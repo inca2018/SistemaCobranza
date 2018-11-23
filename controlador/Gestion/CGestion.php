@@ -163,6 +163,24 @@
       }
   }
 
+function VerificarMontoReporte($reg,$accion){
+	if($accion==1){
+		if($reg->CuotaTotal==0 || $reg->CuotaTotal=='0'){
+			return number_format(0,2);
+		}else{
+			return number_format(($reg->CuotaPagada/$reg->CuotaTotal),2);
+		}
+
+	}else{
+		if($reg->CuotaTotal==0 || $reg->CuotaTotal=='0'){
+			return number_format(0,2);
+		}else{
+			return number_format(($reg->CuotaVencida/$reg->CuotaTotal),2);
+		}
+
+	}
+}
+
    switch($_GET['op']){
        case 'RecuperarDatosPerfil':
          $rspta=$gestion->RecuperarDatosPerfil($login_idLog);
@@ -628,7 +646,7 @@
                "2"=>$reg->fecha,
                "3"=>$reg->CuotaPagada,
                "4"=>$reg->CuotaTotal,
-               "5"=>number_format(($reg->CuotaPagada/$reg->CuotaTotal),2)
+               "5"=>VerificarMontoReporte($reg,1)
 
 
             );
@@ -652,7 +670,7 @@
                "2"=>$reg->fecha,
                "3"=>$reg->CuotaVencida,
                "4"=>$reg->CuotaTotal,
-               "5"=>number_format(($reg->CuotaVencida/$reg->CuotaTotal),2)
+               "5"=>VerificarMontoReporte($reg,2)
 
 
             );
