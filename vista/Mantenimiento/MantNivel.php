@@ -60,7 +60,7 @@
 <!-- Fin del Footer -->
 
 <div class="modal fade " id="ModalNivel" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
-	<div class="modal-dialog modal-lg  ">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
             <div class="row m-1 bb">
                 <div class="col-md-12">

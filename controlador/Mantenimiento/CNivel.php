@@ -8,7 +8,6 @@
 
 	$idNivel=isset($_POST["idNivel"])?limpiarCadena($_POST["idNivel"]):"";
 	$NivelNombre=isset($_POST["NivelNombre"])?limpiarCadena($_POST["NivelNombre"]):"";
-
 	$NivelEstado=isset($_POST["NivelEstado"])?limpiarCadena($_POST["NivelEstado"]):"";
 
 

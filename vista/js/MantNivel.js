@@ -2,12 +2,9 @@ var tablaNivel;
 function init(){
    Iniciar_Componentes();
    Listar_Nivel();
-	Listar_Estado();
+   Listar_Estado();
 }
 function Iniciar_Componentes(){
-   //var fecha=hoyFecha();
-
-	//$('#date_fecha_comprobante').datepicker('setDate',fecha);
 
     $("#FormularioNivel").on("submit",function(e)
 	{
@@ -36,7 +33,7 @@ function RegistroNivel(event){
 }
 function AjaxRegistroNivel(){
     var formData = new FormData($("#FormularioNivel")[0]);
-		console.log(formData);
+
 		$.ajax({
 			url: "../../controlador/Mantenimiento/CNivel.php?op=AccionNivel",
 			 type: "POST",
@@ -154,7 +151,7 @@ function NuevoNivel(){
       backdrop: 'static'
       , keyboard: false
     });
-    $("#ModalNivel").modal("show");
+    $("#ModalNivel").modal("show");//mostrar
     $("#tituloModalNivel").empty();
     $("#tituloModalNivel").append("Nuevo Nivel:");
 }
@@ -267,6 +264,4 @@ function Cancelar(){
     LimpiarNivel();
     $("#ModalNivel").modal("hide");
 }
-
-
 init();
