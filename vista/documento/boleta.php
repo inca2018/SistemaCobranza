@@ -32,6 +32,9 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
     $alumnoTelefono=$detalles["telefono"];
     $alumnoDireccion=$detalles["direccion"];
 
+    $Grado=$detalles["GradoAlumno"];
+    $Seccion=$detalles["SeccionAlumno"];
+
    $cambio = valorEnLetras($total,1);
    $fecha = $detalles['fechaRegistro'];
    $fecha_letras = fechaCastellano($fecha);
@@ -83,6 +86,9 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
           </tr>
           <tr>
             <th  class="titulo_normal izquierda"><b>ALUMNO: </b>'.$alumnoNombre.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$alumnoDNI.'</th>
+          </tr>
+          <tr>
+            <th colspan="2" class="titulo_normal izquierda"><b>GRADO Y SECCIÓN: </b>'.$Grado.' - '.$Seccion.'</th>
           </tr>
            <tr>
             <th colspan="2" class="titulo_normal izquierda"><b>DIRECCIÓN: </b>Jr. Arequipa Norte 577,Callao</th>

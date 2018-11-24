@@ -72,7 +72,17 @@
            $sql="CALL `SP_MATRICULA_ACTUALIZAR`('$idPersona','$idAlumno','$year','$idNivel','$idGrado','$idSeccion');";
            return ejecutarConsulta($sql);
        }
+       public function RecuperarNombreAlumno($idAlumno){
+			$sql="SELECT CONCAT('ALUMNO : ',p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno,' DNI: ',p.DNI)  AS DatosAlumno  FROM alumno al INNER JOIN persona p ON p.idPersona=al.Persona_idPersona WHERE al.idAlumno='$idAlumno'";
 
+			return ejecutarConsultaSimpleFila($sql);
+		}
+
+         public function RecuperarNombreAlumno2($idAlumno){
+			$sql="SELECT CONCAT(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno,' DNI: ',p.DNI)  AS DatosPersona FROM alumno al INNER JOIN persona p ON p.idPersona=al.Persona_idPersona INNER JOIN usuario u On u.Persona_idPersona=p.idPersona WHERE u.idUsuario='$idAlumno'";
+
+			return ejecutarConsultaSimpleFila($sql);
+		}
 
    }
 

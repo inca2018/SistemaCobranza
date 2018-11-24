@@ -290,6 +290,16 @@ function verificarMatricula($reg){
          echo json_encode($rspta);
       break;
 
+       case 'RecuperarNombreAlumno':
+			$rspta=$gestion->RecuperarNombreAlumno($idAlumno);
+            echo json_encode($rspta);
+        break;
+         case 'RecuperarNombreAlumno2':
+			$rspta=$gestion->RecuperarNombreAlumno2($idAlumno);
+            echo json_encode($rspta);
+        break;
+
+
    }
 
 
