@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 23-11-2018 a las 22:18:06
--- Versión del servidor: 5.7.19
--- Versión de PHP: 5.6.31
+-- Tiempo de generación: 24-11-2018 a las 22:16:45
+-- Versión del servidor: 5.7.21
+-- Versión de PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -930,7 +930,7 @@ SET @DiasVenc=(DATEDIFF(DATE_FORMAT(NOW(),"%Y-%m-%d"),@FECHA_VENCIM));
 
 if(@DiasVenc>0)then
 
-INSERT INTO `pagodetalle`(`idDetallePago`, `Cabecera_idCabecera`, `Alumno_idAlumno`, `year`,`TipoPago`, `NombrePago`, `ImportePago`, `Cuota_idCuota`, `TipoPago_idTipoPago`, `fechaRegistro`, `Estado_idEstado`) VALUES (NULL,NULL,idAlumnoU,yearU,2,CONCAT("MORA DE PENSIÓN ",FU_RECUPERAR_MES(@MES)),@DiasVenc,idCuotaU,NULL,NOW(),9);
+INSERT INTO `pagodetalle`(`idDetallePago`, `Cabecera_idCabecera`, `Alumno_idAlumno`, `year`,`TipoPago`, `NombrePago`, `ImportePago`, `Cuota_idCuota`, `TipoPago_idTipoPago`, `fechaRegistro`, `Estado_idEstado`) VALUES (NULL,NULL,idAlumnoU,yearU,2,CONCAT("MORA DE LA PENSIÓN ",FU_RECUPERAR_MES(@MES)),@DiasVenc,idCuotaU,NULL,NOW(),9);
 
 
 UPDATE `cuota` SET  `Mora`=@DiasVenc  WHERE `idCuota`=idCuotaU and `Alumno_idAlumno`=idAlumnoU and `year`=yearU; 
@@ -1067,7 +1067,7 @@ if(pagarMora>0)then
 SET @MoraPagada=(SELECT cc.Mora FROM cuota cc WHERE cc.Alumno_idAlumno=idAlumnoP and cc.year=yearP and cc.idCuota=codigoPago);
 
 SET @PagoMora=@MoraPagada+pagarMora;
-		INSERT INTO `pagodetalle`(`idDetallePago`, `Cabecera_idCabecera`, `Alumno_idAlumno`, `year`,`TipoPago`, `NombrePago`, `ImportePago`, `Cuota_idCuota`, `TipoPago_idTipoPago`, `fechaRegistro`, `Estado_idEstado`) VALUES (NULL,NULL,idAlumnoP,yearP,2,CONCAT("MORA DE ",TituloPago),pagarMora,codigoPago,NULL,NOW(),9);
+		INSERT INTO `pagodetalle`(`idDetallePago`, `Cabecera_idCabecera`, `Alumno_idAlumno`, `year`,`TipoPago`, `NombrePago`, `ImportePago`, `Cuota_idCuota`, `TipoPago_idTipoPago`, `fechaRegistro`, `Estado_idEstado`) VALUES (NULL,NULL,idAlumnoP,yearP,2,CONCAT("MORA DE LA  ",TituloPago),pagarMora,codigoPago,NULL,NOW(),9);
         
   UPDATE `cuota` SET `Mora`=@PagoMora WHERE `idCuota`=codigoPago and `Alumno_idAlumno`=idAlumnoP and `year`=yearP;  
     end if;
@@ -1149,8 +1149,8 @@ al.idAlumno,
 CONCAT(per.nombrePersona,' ',per.apellidoPaterno,' ',per.apellidoMaterno) as AlumnoNombres,
 per.DNI as ALumnoDNI,
 ni.Descripcion as AlumnoNivel,
-CONCAT(gra.Descripcion,' GRADO - SECCION ',sec.Descripcion) as AlumnoGradoSeccion,
-
+CONCAT("GRADO - '",gra.Descripcion,"'  -  SECCION '",sec.Descripcion,"'") as AlumnoGradoSeccion,
+  
 IFNULL((SELECT per.idPersona FROM relacionhijos rel INNER JOIN apoderado apo ON apo.idApoderado=rel.Apoderado_idApoderado INNER JOIN persona per2 ON per2.idPersona=apo.Persona_idPersona  WHERE rel.Alumno_idAlumno=al.idAlumno),'-') as ApoderadoID,
 
 IFNULL((SELECT CONCAT(per2.nombrePersona,' ',per2.apellidoPaterno,' ',per2.apellidoMaterno) FROM relacionhijos rel INNER JOIN apoderado apo ON apo.idApoderado=rel.Apoderado_idApoderado INNER JOIN persona per2 ON per2.idPersona=apo.Persona_idPersona  WHERE rel.Alumno_idAlumno=al.idAlumno),'-') as ApoderadoNombre,
@@ -2076,7 +2076,7 @@ CREATE TABLE IF NOT EXISTS `alumnopagos` (
   KEY `FK_AlumnoPagosImportes` (`TipoPago_idTipoPago`),
   KEY `FK_Alumno_idAlumnoPago` (`Alumno_idAlumno`),
   KEY `FK_ALUMNOSPAGOS` (`Estado_idEstado`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `alumnopagos`
@@ -2089,7 +2089,10 @@ INSERT INTO `alumnopagos` (`idAlumnoPago`, `Alumno_idAlumno`, `year`, `TipoPago_
 (4, 4, 2018, 5, '120.00', '0.00', '0.00', 7, '2018-11-15 23:13:55'),
 (5, 5, 2018, 1, '250.00', '250.00', '0.00', 5, '2018-11-23 12:02:30'),
 (6, 5, 2018, 3, '120.00', '120.00', '0.00', 5, '2018-11-23 12:02:30'),
-(7, 5, 2018, 4, '100.00', '100.00', '0.00', 5, '2018-11-23 12:02:30');
+(7, 5, 2018, 4, '100.00', '100.00', '0.00', 5, '2018-11-23 12:02:30'),
+(8, 6, 2018, 1, '250.00', '250.00', '0.00', 5, '2018-11-24 16:48:52'),
+(9, 6, 2018, 3, '120.00', '120.00', '0.00', 5, '2018-11-24 16:48:52'),
+(10, 6, 2018, 4, '100.00', '100.00', '0.00', 5, '2018-11-24 16:48:52');
 
 -- --------------------------------------------------------
 
@@ -2658,7 +2661,7 @@ CREATE TABLE IF NOT EXISTS `cuota` (
   KEY `FK_PlanPago_idPlanPago` (`PlanPago_idPlanPago`),
   KEY `FK_Estado_idEstadoCuota` (`Estado_idEstado`),
   KEY `FKALUMNOCUOTA` (`Alumno_idAlumno`)
-) ENGINE=InnoDB AUTO_INCREMENT=1059 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1069 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `cuota`
@@ -2684,7 +2687,17 @@ INSERT INTO `cuota` (`idCuota`, `Alumno_idAlumno`, `PlanPago_idPlanPago`, `Impor
 (1055, 5, NULL, '200.00', '0.00', '54.00', 2018, 9, '2018-09-01', '2018-09-30', 7),
 (1056, 5, NULL, '200.00', '0.00', '24.00', 2018, 10, '2018-10-01', '2018-10-30', 7),
 (1057, 5, NULL, '200.00', '0.00', '0.00', 2018, 11, '2018-11-01', '2018-11-30', 7),
-(1058, 5, NULL, '200.00', '0.00', '0.00', 2018, 12, '2018-12-01', '2018-12-30', 7);
+(1058, 5, NULL, '200.00', '0.00', '0.00', 2018, 12, '2018-12-01', '2018-12-30', 7),
+(1059, 6, NULL, '200.00', '0.00', '239.00', 2018, 3, '2018-03-01', '2018-03-30', 7),
+(1060, 6, NULL, '200.00', '0.00', '208.00', 2018, 4, '2018-04-01', '2018-04-30', 7),
+(1061, 6, NULL, '200.00', '200.00', '0.00', 2018, 5, '2018-05-01', '2018-05-30', 5),
+(1062, 6, NULL, '200.00', '200.00', '0.00', 2018, 6, '2018-06-01', '2018-06-30', 5),
+(1063, 6, NULL, '200.00', '200.00', '0.00', 2018, 7, '2018-07-01', '2018-07-30', 5),
+(1064, 6, NULL, '200.00', '200.00', '0.00', 2018, 8, '2018-08-01', '2018-08-30', 5),
+(1065, 6, NULL, '200.00', '200.00', '0.00', 2018, 9, '2018-09-01', '2018-09-30', 5),
+(1066, 6, NULL, '200.00', '200.00', '0.00', 2018, 10, '2018-10-01', '2018-10-30', 5),
+(1067, 6, NULL, '200.00', '200.00', '0.00', 2018, 11, '2018-11-01', '2018-11-30', 5),
+(1068, 6, NULL, '200.00', '200.00', '0.00', 2018, 12, '2018-12-01', '2018-12-30', 5);
 
 -- --------------------------------------------------------
 
@@ -2798,7 +2811,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`idLogin`, `Usuario_idUsuario`, `usuarioLog`, `passwordLog`, `perfilLog`, `fechaLog`, `ip`, `fechaLogout`) VALUES
-(1, 1, 'admin', '$2a$08$RCuzW/8g2Lg4QMNCfmsa/uKp33rvDmdWrC.P40DOECJlMtPu16NMW', 'Administrador', '2018-09-29 14:03:44', '::1', '2018-11-23 14:15:08');
+(1, 1, 'admin', '$2a$08$RCuzW/8g2Lg4QMNCfmsa/uKp33rvDmdWrC.P40DOECJlMtPu16NMW', 'Administrador', '2018-09-29 14:03:44', '::1', '2018-11-24 16:22:07');
 
 -- --------------------------------------------------------
 
@@ -2820,7 +2833,7 @@ CREATE TABLE IF NOT EXISTS `matricula` (
   KEY `FKM2` (`Grado_idGrado`),
   KEY `FKM3` (`Seccion_idSeccion`),
   KEY `FKM4` (`Nivel_idNivel`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `matricula`
@@ -2828,7 +2841,8 @@ CREATE TABLE IF NOT EXISTS `matricula` (
 
 INSERT INTO `matricula` (`idMatricula`, `Alumno_idAlumno`, `Nivel_idNivel`, `Grado_idGrado`, `Seccion_idSeccion`, `year`, `fechaRegistro`) VALUES
 (16, 4, 2, 13, 7, 2018, '2018-11-15 23:13:55'),
-(17, 5, 6, 13, 6, 2018, '2018-11-23 12:02:30');
+(17, 5, 6, 13, 6, 2018, '2018-11-23 12:02:30'),
+(18, 6, 2, 15, 6, 2018, '2018-11-24 16:48:52');
 
 -- --------------------------------------------------------
 
@@ -2882,7 +2896,7 @@ CREATE TABLE IF NOT EXISTS `pagocabecera` (
   KEY `FK_CAB_AP` (`Apoderado_idApoderado`),
   KEY `FK_CAB_TT` (`TipoTarjeta_idTipoTarjeta`),
   KEY `FKEscABE` (`Estado_idEstado`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `pagocabecera`
@@ -2902,7 +2916,8 @@ INSERT INTO `pagocabecera` (`idPago`, `Alumno_idAlumno`, `ImporteTotal`, `Import
 (78, 4, '100.00', '0.00', '100.00', 'qefew', 1, NULL, NULL, NULL, 1, 'COMP-0011', 'COMP-0011.pdf', '2018-11-16 00:19:25'),
 (79, 4, '100.00', '0.00', '100.00', 'wtg', 1, NULL, NULL, NULL, 1, 'COMP-0012', 'COMP-0012.pdf', '2018-11-19 11:23:29'),
 (80, 5, '845.00', '55.00', '900.00', 'wefgwe', 1, NULL, NULL, NULL, 1, 'COMP-0013', 'COMP-0013.pdf', '2018-11-23 15:56:17'),
-(81, 5, '2202.00', '98.00', '2300.00', 'wefe', 1, NULL, NULL, NULL, 1, 'COMP-0014', 'COMP-0014.pdf', '2018-11-23 17:08:31');
+(81, 5, '2202.00', '98.00', '2300.00', 'wefe', 1, NULL, NULL, NULL, 1, 'COMP-0014', 'COMP-0014.pdf', '2018-11-23 17:08:31'),
+(82, 6, '847.00', '53.00', '900.00', 'qwfwq', 1, NULL, NULL, NULL, 1, 'COMP-0015', 'COMP-0015.pdf', '2018-11-24 17:09:30');
 
 -- --------------------------------------------------------
 
@@ -2929,7 +2944,7 @@ CREATE TABLE IF NOT EXISTS `pagodetalle` (
   KEY `FK_dETALLETIPOvf` (`TipoPago_idTipoPago`),
   KEY `FKEscABEdwqd` (`Cabecera_idCabecera`),
   KEY `FKEscABwdwqE` (`Estado_idEstado`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `pagodetalle`
@@ -2977,7 +2992,11 @@ INSERT INTO `pagodetalle` (`idDetallePago`, `Cabecera_idCabecera`, `Alumno_idAlu
 (41, 81, 5, 2018, 1, 'PENSIÓN  OCTUBRE', '200.00', 1056, NULL, '2018-11-23 17:08:18', 10),
 (42, 81, 5, 2018, 2, 'MORA DE PENSIÓN OCTUBRE', '24.00', 1056, NULL, '2018-11-23 17:08:18', 10),
 (43, 81, 5, 2018, 1, 'PENSIÓN  NOVIEMBRE', '200.00', 1057, NULL, '2018-11-23 17:08:18', 10),
-(44, 81, 5, 2018, 1, 'PENSIÓN  DICIEMBRE', '200.00', 1058, NULL, '2018-11-23 17:08:18', 10);
+(44, 81, 5, 2018, 1, 'PENSIÓN  DICIEMBRE', '200.00', 1058, NULL, '2018-11-23 17:08:18', 10),
+(67, 82, 6, 2018, 1, 'PENSIÓN  MARZO', '200.00', 1059, NULL, '2018-11-24 17:09:19', 10),
+(68, 82, 6, 2018, 2, 'MORA DE LA PENSIÓN MARZO', '239.00', 1059, NULL, '2018-11-24 17:09:19', 10),
+(69, 82, 6, 2018, 1, 'PENSIÓN  ABRIL', '200.00', 1060, NULL, '2018-11-24 17:09:19', 10),
+(70, 82, 6, 2018, 2, 'MORA DE LA PENSIÓN ABRIL', '208.00', 1060, NULL, '2018-11-24 17:09:19', 10);
 
 -- --------------------------------------------------------
 
