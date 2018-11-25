@@ -91,6 +91,9 @@
     $UsuarioPassNuevo=isset($_POST["UsuarioPassNuevo"])?limpiarCadena($_POST["UsuarioPassNuevo"]):"";
 
 
+ $Titulo=isset($_POST["Titulo"])?limpiarCadena($_POST["Titulo"]):"";
+
+
     $date = str_replace('/', '-', $fechaInicio);
     $fechaInicio = date("Y-m-d", strtotime($date));
  	 $date = str_replace('/', '-', $fechaFin);
@@ -737,6 +740,52 @@ function VerificarMontoReporte($reg,$accion){
          echo json_encode($rspta);
       break;
 
+        case 'VerificarComunicado':
+			$rspta=$gestion->VerificarComunicado();
+         echo json_encode($rspta);
+      break;
+
+           case 'RegistroComunicado':
+		 	$rspta=array("Error"=>false,"Mensaje"=>"","Registro"=>false);
+
+
+                $Documento = "";
+                if ($_FILES["adjuntar_documento"]["name"] != '') {
+                    $tipoFile = $_FILES['adjuntar_documento']['type'];
+                    if ($tipoFile == "application/pdf") {
+                        $Documento = "Comunicado.pdf";
+                    } else {
+                        $Documento      = null;
+                        $rspta["Error"] = true;
+                        $rspta["Mensaje"] .= " Documento Adjunto no es un Archivo PDF valido.";
+                    }
+                } else {
+                    $Documento = null;
+                }
+
+
+                if($rspta["Error"]){
+                    $rspta["Mensaje"].="Por estas razones no se puede Registrar el Alumno.";
+                }else{
+                    $RespuestaRegistro=$gestion->RegistroComunicado($Titulo,$Documento);
+
+                     if($Documento!=null || $Documento!='')
+					 {
+						$Subida= $recursos->upload_comunicado(1,"1","Comunicado.pdf");
+					 }
+
+                    if($RespuestaRegistro){
+                        $rspta["Registro"]=true;
+                        $rspta["Mensaje"]="Comunicado se registro Correctamente.";
+                    }else{
+                        $rspta["Registro"]=false;
+                        $rspta["Mensaje"]="Comunicado no se puede registrar comuniquese con el area de soporte.";
+                    }
+                }
+
+
+         echo json_encode($rspta);
+       break;
    }
 
 

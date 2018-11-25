@@ -329,5 +329,24 @@
 					</div>
 				</div>
 			</div>
+
+				<div class="modal fade " id="ModalComunicado" role="dialog" aria-labelledby="myModalLabelLarge" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+					<input type="hidden" id="AlumnoRecuperadoInfo">
+						<div class="row m-1 bb">
+							<div class="col-md-12">
+								<h4 class="text-center text-" id="Titulo"></h4> </div>
+						</div>
+						<div class="modal-body" id="modulo_finalizacion">
+						   <div class="row">
+						       <div class="col-md-12" id="contenedor">
+
+						       </div>
+						   </div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- Fin del Footer -->
 			<script src="<?php echo $conexionConfig->rutaOP(); ?>vista/js/Operaciones.js"></script>

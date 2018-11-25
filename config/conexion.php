@@ -99,6 +99,27 @@ class Conexion {
 
    }
 
+     public function upload_comunicado($tipo,$dni,$nombre) {
+      // ubicar el de recurso
+      $linkDocumento='../../vista/Comunicado/';
+      if(!file_exists($linkDocumento)){
+         mkdir("$linkDocumento",0777);
+      }
+
+     $linkRecurso2='../../vista/Comunicado/'.$nombre;
+            if(file_exists($linkRecurso2)){
+                 unlink($linkRecurso2);
+              }
+               if(isset($_FILES["adjuntar_documento"])){
+
+                 $extension = explode('.', $_FILES['adjuntar_documento']['name']);
+                 $destination ='../../vista/Comunicado/'.$nombre;
+                 $subida = move_uploaded_file($_FILES['adjuntar_documento']['tmp_name'], $destination);
+                 return $subida;
+
+            }
+
+   }
    public function upload_finContrato($idColaborador,$idContrato) {
       // ubicar el de recurso
       $linkDocumento='../../../documentos/RRHH';

@@ -241,6 +241,15 @@ WHERE pg.Alumno_idAlumno=$idAlumno and pg.idPago=$cabecera";
 			$sql="CALL `SP_OPERACIONES_INFO_DEUDA_PENSION_ALUMNO`('$idAlumno','$year');";
 			return ejecutarConsulta($sql);
 		}
+         public function VerificarComunicado(){
+         $sql="Select idComunicado,Titulo,Documento,DATE_FORMAT(fechaRegistro,'%d/%m/%Y') as Fecha from comunicado";
+         return ejecutarConsultaSimpleFila($sql);
+       }
+      public function RegistroComunicado($itulo,$DocumentO){
+          	$sql="CALL `SP_COMUNICADO`('$itulo','$DocumentO');";
+        return ejecutarConsulta($sql);
+      }
+
 
    }
 

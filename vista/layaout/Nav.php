@@ -183,6 +183,11 @@
                               <span> Sección Academica </span>
                            </a>
                         </li>
+                        <li id="" class="">
+                           <a href="<?php echo  $conexionConfig->rutaOP().'vista/Mantenimiento/Comunicado.php';?>" title="Comunicado">
+                              <span> Comunidado </span>
+                           </a>
+                        </li>
                      </ul>
                   </li>
                   <?php  }}else{ };?>

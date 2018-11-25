@@ -15,11 +15,27 @@ function init() {
     RecuperarInformacionMatricula(usuario);
 
     if (perfil == 1 || perfil == 6 || perfil == 8) {
+
         $("#modulo_empleado").show();
         $("#modulo_alumno").hide();
     } else if (perfil == 9) {
+
         $("#modulo_empleado").hide();
         $("#modulo_alumno").show();
+        $.post("../../controlador/Gestion/CGestion.php?op=VerificarComunicado", function (data, status) {
+        data = JSON.parse(data);
+
+        if(data!=null){
+          // si tiene   Titulo   Documento   Fecha
+            var ruta="../Comunicado/"+data.Documento;
+            var src="<embed id='documentoPDF' src='"+ruta+"' type='application/pdf' width='760px' height='1000px'>";
+            $("#Titulo").append(data.Titulo);
+            $("#contenedor").html(src);
+
+            $("#ModalComunicado").modal("show");
+
+        }
+    });
     }
 
     $("#yearSelect").change(function () {
@@ -30,7 +46,7 @@ function init() {
         $.post("../../controlador/Gestion/CMatricula.php?op=RecuperarNombreAlumno2", {
             "idAlumno": idAlumno
         }, function (data, status) {
-            debugger;
+
             data = JSON.parse(data);
              Listar_Deudas1(idAlumno, year,data.DatosPersona);
              Listar_Deudas2(idAlumno, year,data.DatosPersona);
@@ -46,7 +62,7 @@ function init() {
         $.post("../../controlador/Gestion/CMatricula.php?op=RecuperarNombreAlumno", {
             "idAlumno": idAlumno
         }, function (data, status) {
-            debugger;
+
             data = JSON.parse(data);
             console.log(data);
             Listar_Deudas1_Info(idAlumno, year, data.DatosAlumno);
@@ -61,7 +77,7 @@ function ListarYear() {
     $.post("../../controlador/Gestion/CMatricula.php?op=RecuperarNombreAlumno2", {
         "idAlumno": idAlumno
     }, function (data, status) {
-        debugger;
+
         data = JSON.parse(data);
         console.log(data);
         $.post("../../controlador/Gestion/CMatricula.php?op=ListarYear", function (ts) {
@@ -738,7 +754,7 @@ function MatriculaInfo(idAlumno) {
     $.post("../../controlador/Gestion/CMatricula.php?op=RecuperarNombreAlumno", {
         "idAlumno": idAlumno
     }, function (data, status) {
-        debugger;
+
         data = JSON.parse(data);
         console.log(data);
 
