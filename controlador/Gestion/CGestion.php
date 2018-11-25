@@ -43,7 +43,7 @@
     $fechaFin=isset($_POST["fechaFin"])?limpiarCadena($_POST["fechaFin"]):"";
 
     $year=isset($_POST["year"])?limpiarCadena($_POST["year"]):"";
-
+    $mes=isset($_POST["mes"])?limpiarCadena($_POST["mes"]):"";
 
     $idAlumnoP=isset($_POST["idAlumnoP"])?limpiarCadena($_POST["idAlumnoP"]):"";
     $yearP=isset($_POST["yearP"])?limpiarCadena($_POST["yearP"]):"";
@@ -178,7 +178,7 @@ function VerificarMontoReporte($reg,$accion){
 		if($reg->CuotaTotal==0 || $reg->CuotaTotal=='0'){
 			return number_format(0,2);
 		}else{
-			return number_format(($reg->CuotaVencida/$reg->CuotaTotal),2);
+			return number_format(($reg->CuotaNoPagada/$reg->CuotaTotal),2);
 		}
 
 	}
@@ -639,13 +639,13 @@ function VerificarMontoReporte($reg,$accion){
 
 
      case 'ListarReportes1':
-         $rspta=$gestion->BuscarReporteIndicadores($fechaInicio,$fechaFin);
+         $rspta=$gestion->BuscarReporteIndicadores($year,$mes);
          $data= array();
          $count=1;
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-				   "1"=>"Cod. Pago ".$reg->AlumnoNombre,
+               "1"=>"Cod. Pago ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
                "3"=>$reg->CuotaPagada,
                "4"=>$reg->CuotaTotal,
@@ -663,15 +663,15 @@ function VerificarMontoReporte($reg,$accion){
       break;
 
      case 'ListarReportes2':
-         $rspta=$gestion->BuscarReporteIndicadores($fechaInicio,$fechaFin);
+         $rspta=$gestion->BuscarReporteIndicadores($year,$mes);
          $data= array();
          $count=1;
          while ($reg=$rspta->fetch_object()){
          $data[]=array(
                "0"=>$count++,
-				   "1"=>"Cod. Mo. ".$reg->AlumnoNombre,
+               "1"=>"Cod. Mo. ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
-               "3"=>$reg->CuotaVencida,
+               "3"=>$reg->CuotaNoPagada,
                "4"=>$reg->CuotaTotal,
                "5"=>VerificarMontoReporte($reg,2)
 

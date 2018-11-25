@@ -31,10 +31,7 @@
 			return ejecutarConsulta($sql);
 		}
 
-       public function BuscarReporteIndicadores($fechaInicio,$fechaFin){
-           $sql="CALL `SP_REPORTE_1`('$fechaInicio','$fechaFin');";
-			return ejecutarConsulta($sql);
-       }
+
 
        public function BuscarReporteIndicadoresAlumno($fechaInicio,$fechaFin,$idAlumno){
            $sql="CALL `SP_REPORTE_2`('$fechaInicio','$fechaFin','$idAlumno');";
@@ -249,6 +246,13 @@ WHERE pg.Alumno_idAlumno=$idAlumno and pg.idPago=$cabecera";
           	$sql="CALL `SP_COMUNICADO`('$itulo','$DocumentO');";
         return ejecutarConsulta($sql);
       }
+
+
+         public function BuscarReporteIndicadores($year,$mes){
+           $sql="CALL `SP_GENERACION_REPORTE`('$year','$mes');";
+
+			return ejecutarConsulta($sql);
+       }
 
 
    }
