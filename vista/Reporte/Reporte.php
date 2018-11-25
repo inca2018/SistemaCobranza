@@ -99,30 +99,7 @@
 
                     </div>
                 </div>
-                <div class="row  justify-content-center ">
-                    <div class="col-md-6 col-xs-12 card ">
 
-                        <div class="card-body">
-                            <div class="row">
-                                <canvas id="chart"></canvas>
-                            </div>
-                            <div class="row justify-content-center m-2">
-                                <button type="button" class="btn btn-info col-md-6" onclick="detalles1()">REPORTES</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xs-12 card ">
-
-                        <div class="card-body">
-                            <div class="row">
-                                <canvas id="chart2"></canvas>
-                            </div>
-                            <div class="row justify-content-center m-2">
-                                <button type="button" class="btn btn-info col-md-6" onclick="detalles2()">REPORTES</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
