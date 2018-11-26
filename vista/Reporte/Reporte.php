@@ -112,6 +112,4 @@
 
 
 
-
-
 <script src="<?php echo $conexionConfig->rutaOP(); ?>vista/js/Reporte.js"></script>

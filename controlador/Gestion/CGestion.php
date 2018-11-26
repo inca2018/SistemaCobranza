@@ -183,6 +183,21 @@ function VerificarMontoReporte($reg,$accion){
 
 	}
 }
+function VerificarTotal($reg,$accion){
+    if($accion==1){
+        if($reg->AlumnoNombre==1){
+           return $reg->CuotaTotal;
+        }else{
+            return $reg->CuotaNoPagadaAnterior;
+        }
+    }else{
+         if($reg->AlumnoNombre==1){
+            return $reg->CuotaTotal;
+        }else{
+            return $reg->CuotaNoPagadaAnterior;
+        }
+    }
+}
 
    switch($_GET['op']){
        case 'RecuperarDatosPerfil':
@@ -648,7 +663,7 @@ function VerificarMontoReporte($reg,$accion){
                "1"=>"Cod. Pago ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
                "3"=>$reg->CuotaPagada,
-               "4"=>$reg->CuotaTotal,
+               "4"=>VerificarTotal($reg,1),
                "5"=>VerificarMontoReporte($reg,1)
 
 
@@ -672,7 +687,7 @@ function VerificarMontoReporte($reg,$accion){
                "1"=>"Cod. Mo. ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
                "3"=>$reg->CuotaNoPagada,
-               "4"=>$reg->CuotaTotal,
+               "4"=>VerificarTotal($reg,2),
                "5"=>VerificarMontoReporte($reg,2)
 
 
