@@ -52,13 +52,13 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
 
 	 $nombreCliente="";
 	 $dniCliente="";
-	  if($apoderadoNombre==" " || $apoderadoNombre==null){
-		  $nombreCliente=$alumnoNombre;
-		  $dniCliente=$alumnoDNI;
-	   }else{
-		   $nombreCliente=$apoderadoNombre;
-		   $dniCliente=$apoderadoDNI;
+	 $agregado="";
+	  if($apoderadoNombre!=""){
+		  $agregado=' <tr>
+            <th  class="titulo_normal izquierda"><b>APODERADO: </b>'.$apoderadoNombre.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$apoderadoDNI.'</th>
+          </tr>';
 	  }
+
    $Moneda=1;
    $valor='';
 	 if($Moneda=='1'){
@@ -101,9 +101,9 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
          <table>
            <tr>
             <th colspan="2" class="titulo_normal izquierda"><b>FECHA: </b>'.$fecha_emi.'</th>
-          </tr>
-          <tr>
-            <th  class="titulo_normal izquierda"><b>ALUMNO: </b>'.$nombreCliente.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$dniCliente.'</th>
+          </tr>'.$agregado.'
+			 <tr>
+            <th  class="titulo_normal izquierda"><b>ALUMNO: </b>'.$alumnoNombre.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$alumnoDNI.'</th>
           </tr>
           <tr>
             <th colspan="2" class="titulo_normal izquierda"><b>GRADO Y SECCIÓN: </b>'.$Grado.' - '.$Seccion.'</th>
