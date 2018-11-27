@@ -58,15 +58,16 @@
                             <div class="col-md-12">
                                 <table class="table my-4 w-100 table-hover table-sm dt-responsive" id="tabla_Detalles1" style="font-size:10px">
                                     <thead class="thead-light">
-                                        <tr>
-                                            <th width="5%" data-priority="1">#</th>
+                                       <tr>
+                                            <th  width="5%" data-priority="1">#</th>
                                             <th width="20%">Alumno</th>
                                             <th width="20%">Fecha</th>
-                                            <th width="20%">Numero de Cuentas Pagadas(NCPA)</th>
-                                            <th width="20%">Numero de Cuentas Programadas(NCPR)</th>
-                                            <th width="15%">ICP=(NCPA/NCPR)</th>
+                                            <th width="20%">Cartera Vencida (CV)</th>
+                                            <th width="20%">Cartera Total (CT)</th>
+                                            <th width="15%">IMOR=(CV/CT)</th>
 
                                         </tr>
+
                                     </thead>
                                     <tbody id="body_detalles1">
 
@@ -81,18 +82,18 @@
                             <div class="col-md-12">
                                 <table class="table my-4 w-100 table-hover table-sm dt-responsive " id="tabla_Detalles2" style="font-size:10px">
                                     <thead class="thead-light">
-                                        <tr>
-                                            <th  width="5%" data-priority="1">#</th>
-                                            <th width="20%">Alumno</th>
-                                            <th width="20%">Fecha</th>
-                                            <th width="20%">Cartera Vencida (CV)</th>
-                                            <th width="20%">Cartera Total (CT)</th>
-                                            <th width="15%">IMOR=(CV/CT)</th>
 
-                                        </tr>
                                     </thead>
                                     <tbody id="body_detalles2">
+ 													<tr>
+                                            <th width="5%" data-priority="1">#</th>
+                                            <th width="20%">Alumno</th>
+                                            <th width="20%">Fecha</th>
+                                            <th width="20%">Numero de Cuentas Pagadas(NCPA)</th>
+                                            <th width="20%">Numero de Cuentas Programadas(NCPR)</th>
+                                            <th width="15%">ICP=(NCPA/NCPR)</th>
 
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
