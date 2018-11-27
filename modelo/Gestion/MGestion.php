@@ -181,8 +181,8 @@
 
 		public function RecuperarCabecera($cabecera,$idAlumno){
             $sql="SELECT pg.idPago,pg.ImporteTotal,pg.ImporteVuelto,pg.ImportePagar,pg.Observaciones,tt.Descripcion as Tarjeta,pg.NumeroTarjeta,pg.CVV,pg.fechaRegistro,pg.ReciboVoucher,CONCAT(p.nombrePersona,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as NombresAlumno,p.DNI,p.telefono,p.direccion,(SELECT g.Descripcion FROM matricula m INNER JOIN alumno al On al.idAlumno=m.Alumno_idAlumno INNER JOIN grado g On g.idGrado=m.Grado_idGrado WHERE m.year=DATE_FORMAT(pg.fechaRegistro,'%Y') LIMIT 1) as GradoAlumno , (SELECT s.Descripcion FROM matricula m INNER JOIN alumno al On al.idAlumno=m.Alumno_idAlumno INNER JOIN seccion s On s.idSeccion=m.Seccion_idSeccion WHERE m.year=DATE_FORMAT(pg.fechaRegistro,'%Y') LIMIT 1) as SeccionAlumno,
-(SELECT CONCAT(ppp.nombrePersona,' ',ppp.apellidoPaterno,' ',ppp.apellidoMaterno)  FROM persona ppp INNER JOIN apoderado apo On ppp.idPersona=apo.Persona_idPersona INNER JOIN relacionhijos rel On rel.Apoderado_idApoderado=apo.idApoderado WHERE rel.Alumno_idAlumno=pg.Alumno_idAlumno) as Apoderado,
-(SELECT ppp.DNI  FROM persona ppp INNER JOIN apoderado apo On ppp.idPersona=apo.Persona_idPersona INNER JOIN relacionhijos rel On rel.Apoderado_idApoderado=apo.idApoderado WHERE rel.Alumno_idAlumno=pg.Alumno_idAlumno) as ApoderadoDNI
+(SELECT CONCAT(ppp.nombrePersona,' ',ppp.apellidoPaterno,' ',ppp.apellidoMaterno)  FROM persona ppp INNER JOIN apoderado apo On ppp.idPersona=apo.Persona_idPersona INNER JOIN relacionhijos rel On rel.Apoderado_idApoderado=apo.idApoderado WHERE rel.Alumno_idAlumno=pg.Alumno_idAlumno LIMIT 1) as Apoderado,
+(SELECT ppp.DNI  FROM persona ppp INNER JOIN apoderado apo On ppp.idPersona=apo.Persona_idPersona INNER JOIN relacionhijos rel On rel.Apoderado_idApoderado=apo.idApoderado WHERE rel.Alumno_idAlumno=pg.Alumno_idAlumno LIMIT 1) as ApoderadoDNI
 FROM pagocabecera pg  INNER JOIN alumno al ON al.idAlumno=pg.Alumno_idAlumno INNER JOIN persona p On p.idPersona=al.Persona_idPersona
 INNER JOIN tipotarjeta tt ON tt.idTipoTarjeta=pg.TipoTarjeta_idTipoTarjeta
 WHERE pg.Alumno_idAlumno=$idAlumno and pg.idPago=$cabecera;";
