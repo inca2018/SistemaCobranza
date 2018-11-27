@@ -17,16 +17,16 @@
             <div class="card-body ">
                 <div class="row ">
                     <div class="col-md-12 w-100 text-center ">
-                        <h3>Mantenimiento de TipoPago de Pago:</h3>
+                        <h3>Mantenimiento de Tipo de Pago:</h3>
                     </div>
                 </div>
                 <hr class="mt-2 mb-2">
                 <div class="row">
                     <div class="col-md-2 offset-10">
-                        <button class="btn btn-success btn-block btn-sm" onclick="NuevoTipoPago();"><i class="fa fa-plus fa-lg mr-2"></i> Nueva TipoPago</button>
+                        <button class="btn btn-success btn-block btn-sm" onclick="NuevoTipoPago();"><i class="fa fa-plus fa-lg mr-2"></i> Nueva Tipo de Pago</button>
                     </div>
                 </div>
-                <h5 class="mt-3 mb-3 titulo_area"><em><b>Lista General de TipoPago:</b></em></h5>
+                <h5 class="mt-3 mb-3 titulo_area"><em><b>Lista General de Tipo de Pago:</b></em></h5>
                 <div class="row ">
                     <div class="col-md-12">
                         <div class="row">
