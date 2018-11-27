@@ -52,7 +52,8 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="modal-title mt-3 mb-3 bb" id="myModalLabelLarge">Indice de Cumplimiento de Pago: </h4>
+                       <h4 class="modal-title mt-3 mb-3 bb" id="myModalLabelLarge">Indice de Morocidad:</h4>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table my-4 w-100 table-hover table-sm dt-responsive" id="tabla_Detalles1" style="font-size:10px">
@@ -75,7 +76,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h4 class="modal-title mt-3 mb-3 bb" id="myModalLabelLarge">Indice de Morocidad:</h4>
+                         <h4 class="modal-title mt-3 mb-3 bb" id="myModalLabelLarge">Indice de Cumplimiento de Pago: </h4>
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table my-4 w-100 table-hover table-sm dt-responsive " id="tabla_Detalles2" style="font-size:10px">
