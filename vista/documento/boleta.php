@@ -27,10 +27,11 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
     $vuelto=$detalles["ImporteVuelto"];
     $pagado=$detalles["ImportePagar"];
     $corre=$detalles["ReciboVoucher"];
-    $alumnoNombre=$detalles["NombresAlumno"];
-    $alumnoDNI=$detalles["DNI"];
+
+
     $alumnoTelefono=$detalles["telefono"];
     $alumnoDireccion=$detalles["direccion"];
+
 
     $Grado=$detalles["GradoAlumno"];
     $Seccion=$detalles["SeccionAlumno"];
@@ -41,6 +42,23 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
 
    $fecha_emi= date(" d/ m/ Y", strtotime($fecha));
 
+
+
+    $alumnoNombre=$detalles["NombresAlumno"];
+	 $apoderadoNombre=$detalles["Apoderado"];
+
+    $alumnoDNI=$detalles["DNI"];
+	 $apoderadoDNI=$detalles["ApoderadoDNI"];
+
+	 $nombreCliente="";
+	 $dniCliente="";
+	  if($apoderadoNombre==" " || $apoderadoNombre==null){
+		  $nombreCliente=$alumnoNombre;
+		  $dniCliente=$alumnoDNI;
+	   }else{
+		   $nombreCliente=$apoderadoNombre;
+		   $dniCliente=$apoderadoDNI;
+	  }
    $Moneda=1;
    $valor='';
 	 if($Moneda=='1'){
@@ -85,7 +103,7 @@ function GeneracionFacturaPDF($detalles,$cuerpo){
             <th colspan="2" class="titulo_normal izquierda"><b>FECHA: </b>'.$fecha_emi.'</th>
           </tr>
           <tr>
-            <th  class="titulo_normal izquierda"><b>ALUMNO: </b>'.$alumnoNombre.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$alumnoDNI.'</th>
+            <th  class="titulo_normal izquierda"><b>ALUMNO: </b>'.$nombreCliente.'</th><th class="titulo_normal izquierda"><b>DNI:   </b>'.$dniCliente.'</th>
           </tr>
           <tr>
             <th colspan="2" class="titulo_normal izquierda"><b>GRADO Y SECCIÓN: </b>'.$Grado.' - '.$Seccion.'</th>
