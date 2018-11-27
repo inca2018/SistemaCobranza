@@ -183,20 +183,37 @@ function VerificarMontoReporte($reg,$accion){
 
 	}
 }
-function VerificarTotal($reg,$accion){
-    if($accion==1){
-        if($reg->AlumnoNombre==1){
-           return $reg->CuotaTotal;
-        }else{
-            return $reg->CuotaNoPagadaAnterior;
-        }
+function VerificarPago($reg,$accion){
+    if($reg->CuotaTotal==0){
+        return 0;
     }else{
-         if($reg->AlumnoNombre==1){
-            return $reg->CuotaTotal;
+        if($accion==1){
+            return $reg->CuotaPagada;
         }else{
-            return $reg->CuotaNoPagadaAnterior;
+            return $reg->CuotaNoPagada;
         }
     }
+}
+function VerificarTotal($reg,$accion){
+
+           if($accion==1){
+
+                    if($reg->AlumnoNombre==1){
+                       return $reg->CuotaTotal;
+                    }else{
+                        return ($reg->CuotaNoPagadaAnterior+$reg->CuotaPagadaAnterior)-$reg->CuotaPagadaAnterior;
+                    }
+            }else{
+
+                  if($reg->AlumnoNombre==1){
+                        return $reg->CuotaTotal;
+                    }else{
+                        return $reg->CuotaNoPagadaAnterior;
+                    }
+
+            }
+
+
 }
 
    switch($_GET['op']){
@@ -662,7 +679,7 @@ function VerificarTotal($reg,$accion){
                "0"=>$count++,
                "1"=>"Cod. Pago ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
-               "3"=>$reg->CuotaPagada,
+               "3"=>VerificarPago($reg,1),
                "4"=>VerificarTotal($reg,1),
                "5"=>VerificarMontoReporte($reg,1)
 
@@ -686,7 +703,7 @@ function VerificarTotal($reg,$accion){
                "0"=>$count++,
                "1"=>"Cod. Mo. ".$reg->AlumnoNombre,
                "2"=>$reg->fecha,
-               "3"=>$reg->CuotaNoPagada,
+               "3"=>VerificarPago($reg,2),
                "4"=>VerificarTotal($reg,2),
                "5"=>VerificarMontoReporte($reg,2)
 
